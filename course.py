@@ -117,6 +117,55 @@ class Course_check(db.Model):
 
 
 
+#Create a course status
+
+@app.route("/employee_course_status", methods=['POST'])
+def create_status():
+    data = request.get_json()
+    new_status = Course_check(**data)
+
+    try:
+        db.session.add(new_status)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                },
+                "message": "An error occurred with enrollment."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": new_status.json()
+        }
+    ), 201
+
+
+#Find the course IDs that a student completed
+@app.route("/employee_course_status/<string:employee_id>")
+def find_status_by_id(employee_id):
+    courselist = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="completed")
+    if courselist:
+        course_json = [course.json() for course in courselist]
+        completed_course_id = []
+        for json in course_json:
+            completed_course_id.append(json["course_id"])
+        return jsonify(
+            {
+                    "course": completed_course_id
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Data not found."
+        }
+    ), 404
+
 #Update a course status
 
 @app.route("/employee_course_status/", methods=['PUT'])

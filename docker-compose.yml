@@ -23,7 +23,7 @@ services:
 
 
   #################################
-#   Course: The course microservice
+#   Course: The course Service
   #################################
   course:
     build:
@@ -36,18 +36,3 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "6900:6900"
-
-  #################################
-#   Sections: The sections microservice
-  #################################
-  # sections:
-  #   build:
-  #     context: ./
-  #     dockerfile: sections.Dockerfile
-  #   image:  team01/sections:esd
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_course
-  #     PYTHONUNBUFFERED: 1
-  #   ports:
-  #     - "6905:6905"

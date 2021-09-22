@@ -120,7 +120,7 @@ class Course_check(db.Model):
 #Update a course status
 
 @app.route("/employee_course_status/", methods=['PUT'])
-def update_status_new():
+def update_status():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)
 

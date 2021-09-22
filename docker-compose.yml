@@ -8,17 +8,17 @@ services:
   #################################
 #   Trainer: The trainer microservice
   #################################
-  trainer:
-    build:
-      context: ./
-      dockerfile: trainer.Dockerfile
-    image:  team01/trainer:esd
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_trainer
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "6800:6800"
+  # trainer:
+  #   build:
+  #     context: ./
+  #     dockerfile: trainer.Dockerfile
+  #   image:  team01/trainer:esd
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_trainer
+  #     PYTHONUNBUFFERED: 1
+  #   ports:
+  #     - "6800:6800"
 
 
 
@@ -40,14 +40,14 @@ services:
   #################################
 #   Sections: The sections microservice
   #################################
-  sections:
-    build:
-      context: ./
-      dockerfile: sections.Dockerfile
-    image:  team01/sections:esd
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_course
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "6905:6905"
+  # sections:
+  #   build:
+  #     context: ./
+  #     dockerfile: sections.Dockerfile
+  #   image:  team01/sections:esd
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_course
+  #     PYTHONUNBUFFERED: 1
+  #   ports:
+  #     - "6905:6905"

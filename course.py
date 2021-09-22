@@ -100,7 +100,57 @@ class Lesson(db.Model):
     def json(self):
         return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "coursem_id": self.coursem_id, "section_description": self.section_description}
 
+class Course_check(db.Model):
+    __tablename__ = 'employee_enrolled'
 
+    employee_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, employee_id, course_id, status):
+        self.employee_id = employee_id
+        self.course_id = course_id
+        self.status = status
+
+    def json(self):
+        return {"employee_id": self.employee_id, "course_id": self.course_id, "status": self.status}
+
+
+
+#Update a course status
+
+@app.route("/employee_course_status/", methods=['PUT'])
+def update_status_new():
+    employee_id = request.args.get('employee_id',1,type=int)
+    course_id = request.args.get('course_id',1,type=int)
+
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+    print(status_data)
+
+    if status_data:
+        data = request.get_json()
+        if data['status']:
+            status_data.status = data['status']
+
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": status_data.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "employee_id": employee_id
+            },
+            "message": "Data is not found."
+        }
+    ), 404
+
+
+# Get All Courses
 @app.route("/course")
 def get_all():
     courselist = Course.query.all()

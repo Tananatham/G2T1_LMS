@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 22, 2021 at 08:16 AM
+-- Generation Time: Sep 22, 2021 at 09:05 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -80,6 +80,29 @@ CREATE TABLE IF NOT EXISTS `course` (
 
 INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no_of_lesson`, `class_id`, `course_description`, `course_prerequisite`, `coursem_id`, `employee_id`, `start_time`, `end_time`, `datetime_uploaded`) VALUES
 (1, 'Fix', 2, 0, 4, 'Fix', 0, 2, 1, 'Now', 'Later', '2021-09-14 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee_enrolled`
+--
+
+DROP TABLE IF EXISTS `employee_enrolled`;
+CREATE TABLE IF NOT EXISTS `employee_enrolled` (
+  `employee_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  PRIMARY KEY (`employee_id`,`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `employee_enrolled`
+--
+
+INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `status`) VALUES
+(1, 1, 'pending'),
+(1, 2, 'pending'),
+(2, 1, 'pending');
 
 -- --------------------------------------------------------
 

@@ -17,29 +17,33 @@ class Course(db.Model):
 
     course_id = db.Column(db.Integer, primary_key=True)
     course_name = db.Column(db.String(50), nullable=False)
-    total_no_of_sections = db.Column(db.Integer, nullable=False)
-    section_id = db.Column(db.Integer, nullable=False)
+    total_no_of_class = db.Column(db.Integer, nullable=False)
+    total_no_of_lesson = db.Column(db.Integer, nullable=False)
+    class_id = db.Column(db.Integer, nullable=False)
     course_description = db.Column(db.String(50), nullable=False)
+    course_prerequisite = db.Column(db.String(50), nullable=False)
     coursem_id = db.Column(db.Integer, nullable=False)
-    trainer_id = db.Column(db.Integer, nullable=False)
+    employee_id = db.Column(db.Integer, nullable=False)
     start_time = db.Column(db.String(50), nullable=False)
     end_time = db.Column(db.String(50), nullable=False)
     datetime_uploaded = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, course_id, course_name, total_no_of_sections, section_id, course_description, coursem_id, trainer_id, start_time, end_time, datetime_uploaded):
+    def __init__(self, course_id, course_name, total_no_of_class, total_no_of_lesson, class_id, course_description, course_prerequisite, coursem_id, employee_id, start_time, end_time, datetime_uploaded):
         self.course_id = course_id
         self.course_name = course_name
-        self.total_no_of_sections = total_no_of_sections
-        self.section_id = section_id
+        self.total_no_of_class = total_no_of_class
+        self.total_no_of_lesson = total_no_of_lesson
+        self.class_id = class_id
         self.course_description = course_description
+        self.course_prerequisite = course_prerequisite
         self.coursem_id = coursem_id
-        self.trainer_id = trainer_id
+        self.employee_id = employee_id
         self.start_time = start_time
         self.end_time = end_time
         self.datetime_uploaded = datetime_uploaded
 
     def json(self):
-        return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_sections": self.total_no_of_sections, "section_id": self.section_id, "course_description": self.course_description, "coursem_id": self.coursem_id, "trainer_id": self.trainer_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded}
+        return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded}
 
 
 @app.route("/course")
@@ -115,16 +119,20 @@ def update(course_id):
         data = request.get_json()
         if data['course_name']:
             course.course_name = data['course_name']
-        if data['total_no_of_sections']:
-            course.total_no_of_sections = data['total_no_of_sections']
-        if data['section_id']:
-            course.section_id = data['section_id']
+        if data['total_no_of_class']:
+            course.total_no_of_class = data['total_no_of_class']
+        if data['total_no_of_lesson']:
+            course.total_no_of_lesson = data['total_no_of_lesson']
+        if data['class_id']:
+            course.class_id = data['class_id']
         if data['course_description']:
             course.course_description = data['course_description']
+        if data['course_prerequisite']:
+            course.course_prerequisite = data['course_prerequisite']
         if data['coursem_id']:
             course.coursem_id = data['coursem_id']
-        if data['trainer_id']:
-            course.trainer_id = data['trainer_id']
+        if data['employee_id']:
+            course.employee_id = data['employee_id']
         if data['start_time']:
             course.start_time = data['start_time']
         if data['end_time']:

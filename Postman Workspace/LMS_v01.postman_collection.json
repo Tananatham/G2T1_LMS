@@ -48,7 +48,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"status\": \"pending\"\r\n}\r\n",
+					"raw": "{\r\n   \"status\": \"in-progress\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -74,29 +74,6 @@
 							"key": "course_id",
 							"value": "1"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Course - Update Course Status Copy",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n   \"status\": \"in progress\"\r\n}\r\n"
-				},
-				"url": {
-					"raw": "localhost:6900/employee_course_status/1",
-					"host": [
-						"localhost"
-					],
-					"port": "6900",
-					"path": [
-						"employee_course_status",
-						"1"
 					]
 				}
 			},

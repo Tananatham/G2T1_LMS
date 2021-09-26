@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 26, 2021 at 02:31 PM
+-- Generation Time: Sep 26, 2021 at 02:36 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
-CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `lms_course`;
 
 -- --------------------------------------------------------
 
@@ -129,6 +127,40 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 
 INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `coursem_id`, `lesson_descriptions`) VALUES
 (1, 5, 5, 6, 2, 'Korem Ipsum');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz`
+--
+
+DROP TABLE IF EXISTS `quiz`;
+CREATE TABLE IF NOT EXISTS `quiz` (
+  `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
+  `quiz_name` varchar(50) NOT NULL,
+  `quiz_type` varchar(10) NOT NULL,
+  `quizq_id` int(11) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `quiz_descriptions` varchar(50) NOT NULL,
+  `datetime_created` datetime NOT NULL,
+  `passing_score` int(3) NOT NULL,
+  `start_time` varchar(10) NOT NULL,
+  `end_time` varchar(10) NOT NULL,
+  `quiz_details` varchar(100) NOT NULL,
+  `correct_answer` varchar(100) NOT NULL,
+  PRIMARY KEY (`quiz_id`),
+  KEY `lesson_id` (`lesson_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `quiz`
+--
+ALTER TABLE `quiz`
+  ADD CONSTRAINT `quiz_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`lesson_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

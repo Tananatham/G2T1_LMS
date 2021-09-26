@@ -36,3 +36,18 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "6900:6900"
+
+        #################################
+#   Quiz: The quiz Service
+  #################################
+  quiz:
+    build:
+      context: ./
+      dockerfile: quiz.Dockerfile
+    image:  team01/course:esd
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_course
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "7000:7000"

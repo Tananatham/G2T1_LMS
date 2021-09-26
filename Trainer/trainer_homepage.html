@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<style>
+</style>
+<body>
+    <div  style="padding-top:20px;">
+    <div class="container p-5">
+        <div class="container">
+            <form action="/payment" method="POST" class="needs-validation" autocomplete="off"  novalidate>
+                <!-- <input type="hidden" name="teleID" id="teleID" value="{{ teleID }}" >
+                <input type="hidden" name="custID" id="custID" value="{{ custID }}" > -->
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <div class="form-check text-center">
+                            <h1>Create Lessons</h1>
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="address">Lesson Name:</label>
+                            <input type="text" class="form-control" name="lesson_name" id="lesson_name" >
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="postalCode">Quiz Type:</label>
+                            <select name="bookType" id="bookType" class="form-control">
+                                <option value="graded" selected>Graded</option>
+                                <option value="ungraded">Ungraded</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="region">Course Material:</label>
+                            <input type="text" class="form-control" name="coursematerial" id="coursematerial" >
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="bookType">Created On:</label>
+                                <br>
+                                <label for="bookType">26/9/2021</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label for="address">Description:</label>
+                            <textarea type="text" class="form-control" name="description" id="description" ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
+                 </div>
+                <div class="col-4">
+                    <button class="btn btn-primary w-100 mt-4" id="checkout" type="submit">Book</button>
+                </div>
+               
+            </div>
+           
+    </div>
+</div>
+</div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{url_for('static', filename='stripe.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+
+</body>
+</html>

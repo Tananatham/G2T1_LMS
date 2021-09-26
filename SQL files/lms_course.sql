@@ -127,6 +127,63 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 
 INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `coursem_id`, `lesson_descriptions`) VALUES
 (1, 5, 5, 6, 2, 'Korem Ipsum');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz`
+--
+
+DROP TABLE IF EXISTS `quiz`;
+CREATE TABLE IF NOT EXISTS `1uiz` (
+  `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
+  `quiz_name` varchar(50) NOT NULL,
+  `quiz_type` varchar(10) NOT NULL,
+  `quizq_id` int(11) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `quiz_descriptions` varchar(50) NOT NULL,
+  `datetime_created` datetime NOT NULL,
+  `passing_score` int(3) NOT NULL,
+  `start_time` varchar(10) NOT NULL,
+  `end_time` varchar(10) NOT NULL,
+  `quiz_details` varchar(100) NOT NULL,
+  `correct_answer` varchar(100) NOT NULL,
+  PRIMARY KEY (`quiz_id`)
+  FOREIGN KEY (`lesson_id`) REFERENCES lesson(`lesson_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `quiz`
+--
+
+INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `quiz_type`, `quizq_id`, `lesson_id`, `quiz_descriptions`, `datetime_created`, `passing_score`,`start_time`, `end_time`, `quiz_details`, `correct_answer`) VALUES
+(1, 'E02Quiz1', 'MCQ', 5, 5,'E02', '2021-09-26 00:00:00', 85, '00:00:000', '00:00:30', 'E02', 'Pear');
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quizques`
+--
+
+-- DROP TABLE IF EXISTS `quizq`;
+-- CREATE TABLE IF NOT EXISTS `1uiz` (
+--   `quizq_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `quiz_id` int(11) NOT NULL,
+--   `quiz_name` varchar(10) NOT NULL,
+--   `lesson_id` int(11) NOT NULL,
+--   `quiz_details` varchar(100) NOT NULL,
+--   `correct_answer` varchar(100) NOT NULL,
+--   PRIMARY KEY (`quizq_id`)
+--   FOREIGN KEY (`quiz_id`) REFERENCES quiz(`quiz_id`)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --
+-- -- Dumping data for table `quizq`
+-- --
+
+-- INSERT INTO `quizq` (`quizq_id`, `quiz_id`, `quiz_name`, `lesson_id`, `quiz_details`, `correct_answer`) VALUES
+-- (1, 1, 'E02Quiz1', 5, 'E02', 'Pear');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

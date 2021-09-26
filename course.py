@@ -156,7 +156,11 @@ def find_status_by_id(employee_id):
             completed_course_id.append(json["course_id"])
         return jsonify(
             {
+                "code": 201,
+                "data": {
                     "course": completed_course_id
+                }
+                    
             }
         )
     return jsonify(

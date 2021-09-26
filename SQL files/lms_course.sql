@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 22, 2021 at 09:05 AM
+-- Generation Time: Sep 26, 2021 at 02:22 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -100,9 +100,9 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
 --
 
 INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `status`) VALUES
-(1, 1, 'pending'),
-(1, 2, 'pending'),
-(2, 1, 'pending');
+(1, 1, 'completed'),
+(1, 2, 'completed'),
+(2, 1, 'in-progress');
 
 -- --------------------------------------------------------
 

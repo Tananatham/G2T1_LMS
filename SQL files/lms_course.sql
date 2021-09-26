@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 26, 2021 at 02:27 PM
+-- Generation Time: Sep 26, 2021 at 02:31 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
+CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `lms_course`;
 
 -- --------------------------------------------------------
 

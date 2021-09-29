@@ -49,6 +49,7 @@
                     <th>Number of lessons</th>
                     <th>Start Time</th>
                     <th>End Time</th>
+                    <th>Apply</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +71,65 @@
     </div>
 
 
+    <div id="second-container" class="container">
 
+        <h1>View My Enrolled Course</h1>
+
+        <table id="mycourseTable" class='table ' border='1'>
+            <thead class='thead-dark'>
+                <tr>
+                    <th>ID</th>
+                    <th>Course Name</th>
+                    <th>Course Description</th>
+                    <th>Number of classes</th>
+                    <th>Number of lessons</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+
+
+
+
+
+    <script>
+        let courselist_data = "";
+        let apiUrl = "http://localhost:6900/employee_course_status/1"
+
+        async function getJson(url) {
+            let response = await fetch(url);
+            let data = await response.json()
+            return data;
+        }
+
+        async function main() {
+            //OPTION 2
+            courselist_data = await getJson(apiUrl);
+            courselist_id = courselist_data.data.course;
+            $.each(courselist_id, function(index, value) {
+                async function sub1() {
+                    mycourse_data = await getJson("http://localhost:6900/course/" + value);
+                    mycourse_data = mycourse_data.data;
+                    console.log(mycourse_data)
+
+                    eachRow = `<tr><td>` + mycourse_data.course_id + `</td>
+                    <td>` + mycourse_data.course_name + `</td>
+                    <td>` + mycourse_data.course_description + `</td>
+                    <td>` + mycourse_data.total_no_of_class + `</td>
+                    <td>` + mycourse_data.total_no_of_lesson + `</td>
+                    <td>` + mycourse_data.start_time + `</td>
+                    <td>` + mycourse_data.end_time + `</td></tr>`;
+
+                    document.getElementById("mycourseTable").innerHTML += eachRow;
+                }
+                sub1();
+            });
+        }
+        main();
+    </script>
 
 
     <script>

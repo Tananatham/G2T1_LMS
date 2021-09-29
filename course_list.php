@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+ini_set('display_errors', 1);
 
 require_once 'DAO/CourseDAO.php';
 $dao = new CourseDAO();

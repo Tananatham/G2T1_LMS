@@ -29,14 +29,14 @@
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="address">Lesson Name:</label>
+                            <label for="lesson">Lesson Name:</label>
                             <input type="text" class="form-control" name="lesson_name" id="lesson_name" >
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="postalCode">Quiz Type:</label>
-                            <select name="bookType" id="bookType" class="form-control">
+                            <label for="quiz">Quiz Type:</label>
+                            <select name="quizType" id="quizType" class="form-control">
                                 <option value="graded" selected>Graded</option>
                                 <option value="ungraded">Ungraded</option>
                             </select>
@@ -45,24 +45,35 @@
                 </div>
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
-                        <div class="form-group">
-                            <label for="region">Course Material:</label>
-                            <input type="text" class="form-control" name="coursematerial" id="coursematerial" >
-                        </div>
+                          <div class="form-group">
+                                <label for="course_material">Course Materials</label>
+                                    <input id="course_material" name="course_material[]" type="file" class="file"  data-show-upload="false" data-show-caption="true" multiple>
+                          </div>
+                          <p>
+                            <div class="form-group">
+                                <label for="link">Links</label>
+                                <input type="text" class="form-control" name="link" id="link" >
+                            </div>
+                          </p>  
+                            <p>
+                            <div>
+                                <a href=""><button for= "link" class="btn btn-primary">Add</button></a>
+                            </div>
+                            </p>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="bookType">Created On:</label>
+                            <label for="created">Created On:</label>
                                 <br>
-                                <label for="bookType">26/9/2021</label>
+                                <label for="created">26/9/2021</label>
                         </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-2">
                     <div class="col-8">
                         <div class="form-group">
-                            <label for="address">Description:</label>
-                            <textarea type="text" class="form-control" name="description" id="description" ></textarea>
+                            <label for="desc">Description:</label>
+                            <textarea type="text" class="form-control" name="desc" id="desc" ></textarea>
                         </div>
                     </div>
                 </div>
@@ -72,7 +83,7 @@
                     <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
                  </div>
                 <div class="col-4">
-                    <button class="btn btn-primary w-100 mt-4" id="checkout" type="submit">Book</button>
+                    <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
                 </div>
                
             </div>

@@ -407,7 +407,7 @@ def find_by_lessonid(lesson_id):
     return jsonify(
         {
             "code": 404,
-            "message": "Course not found."
+            "message": "Quiz not found."
         }
     ), 404
 
@@ -427,7 +427,7 @@ def create_quiz():
                 "code": 500,
                 "data": {
                 },
-                "message": "An error occurred creating the course."
+                "message": "An error occurred creating the quiz."
             }
         ), 500
 
@@ -438,7 +438,7 @@ def create_quiz():
         }
     ), 201
 
-#Update a quiz
+# Update a quiz
 @app.route("/quiz/<string:quiz_id>", methods=['PUT'])
 def update_quiz(quiz_id):
     quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
@@ -475,11 +475,11 @@ def update_quiz(quiz_id):
             "data": {
                 "quiz_id": quiz_id
             },
-            "message": "Course is not found."
+            "message": "Quiz is not found."
         }
     ), 404
 
-#Delete a quiz 
+# Delete a quiz 
 @app.route("/quiz/<string:quiz_id>", methods=['DELETE'])
 def delete_quiz(quiz_id):
     quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
@@ -500,7 +500,272 @@ def delete_quiz(quiz_id):
             "data": {
                 "quiz_id": quiz_id
             },
-            "message": "Course not found."
+            "message": "Quiz not found."
+        }
+    ), 404
+
+
+# Get All Classes
+@app.route("/class")
+def get_all_classes():
+    classlist = Class.query.all()
+    if len(classlist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "course": [classes.json() for classes in classlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no class."
+        }
+    ), 404
+
+#  Get details of one class in JSON form by class id
+@app.route("/quiz/<string:class_id>")
+def find_by_classid(class_id):
+    a_class = Class.query.filter_by(class_id=class_id).first()
+    if a_class:
+        return jsonify(
+            {
+                "code": 200,
+                "data": a_class.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Class not found."
+        }
+    ), 404
+
+#  POST > Insert a new class
+@app.route("/class", methods=['POST'])
+def create_class():
+
+    data = request.get_json()
+    new_class = Class(None, **data)
+
+    try:
+        db.session.add(new_class)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                },
+                "message": "An error occurred creating the class."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": new_class.json()
+        }
+    ), 201
+
+# Update a class
+@app.route("/class/<string:class_id>", methods=['PUT'])
+def update_class(class_id):
+    a_class = Class.query.filter_by(class_id=class_id).first()
+    print(a_class)
+    if a_class:
+        data = request.get_json()
+        if data['class_id']:
+            a_class.class_id = data['class_id']
+        if data['lesson_id']:
+            a_class.lesson_id = data['lesson_id']
+        if data['course_name']:
+            a_class.course_namen = data['course_name']
+        if data['start_date']:
+            a_class.start_date = data['start_date']
+        if data['end_date']:
+            a_class.end_date = data['end_date']
+        if data['start_time']:
+            a_class.start_time = data['start_time']
+        if data['end_time']:
+            a_class.end_time = data['end_time']
+        if data['class_size']:
+            a_class.class_size = data['class_size']    
+        if data['current_class_size']:
+            a_class.current_class_size = data['current_class_size']   
+        if data['employee_id']:
+            a_class.employee_id = data['employee_id']   
+        if data['duration_of_class']:
+            a_class.duration_of_class = data['duration_of_class']   
+        
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": a_class.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "class_id": class_id
+            },
+            "message": "Class is not found."
+        }
+    ), 404
+
+# Delete a class
+@app.route("/class/<string:class_id>", methods=['DELETE'])
+def delete_class(class_id):
+    a_class = Class.query.filter_by(class_id=class_id).first()
+    if a_class:
+        db.session.delete(a_class)
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "class_id": class_id
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "class_id": class_id
+            },
+            "message": "Class not found."
+        }
+    ), 404
+
+# Get All lessons
+@app.route("/lesson")
+def get_all_lessons():
+    lessonlist = Lesson.query.all()
+    if len(lessonlist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "lessons": [lessons.json() for lessons in lessonlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no lesson."
+        }
+    ), 404
+
+#  Get details of one lesson in JSON form
+@app.route("/lesson/<string:lesson_id>")
+def find_by_lessonid2(lesson_id):
+    lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
+    if lesson:
+        return jsonify(
+            {
+                "code": 200,
+                "data": lesson.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Lesson not found."
+        }
+    ), 404
+
+#  POST > Insert a new lesson
+@app.route("/lesson", methods=['POST'])
+def create_lesson():
+
+    data = request.get_json()
+    lesson = Lesson(None, **data)
+
+    try:
+        db.session.add(lesson)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                },
+                "message": "An error occurred creating the lesson."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": lesson.json()
+        }
+    ), 201
+
+# Update a lesson
+@app.route("/lesson/<string:lesson_id>", methods=['PUT'])
+def update_lesson(lesson_id):
+    lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
+    print(lesson)
+    if lesson:
+        data = request.get_json()
+        if data['lesson_id']:
+            lesson.lesson_id = data['lesson_id']
+        if data['class_id']:
+            lesson.class_id = data['class_id']
+        if data['course_id']:
+            lesson.course_id = data['course_id']
+        if data['quiz_id']:
+            lesson.quiz_id = data['quiz_id']
+        if data['coursem_id']:
+            lesson.coursem_id = data['coursem_id']
+        if data['lesson_descriptions']:
+            lesson.lesson_descriptions = data['lesson_descriptions']
+        
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": lesson.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "lesson_id": lesson_id
+            },
+            "message": "Lesson is not found."
+        }
+    ), 404
+
+# Delete a lesson
+@app.route("/lesson/<string:lesson_id>", methods=['DELETE'])
+def delete_lesson(lesson_id):
+    lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
+    if lesson:
+        db.session.delete(lesson)
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "lesson_id": lesson_id
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "lesson_id": lesson_id
+            },
+            "message": "Lesson not found."
         }
     ), 404
 

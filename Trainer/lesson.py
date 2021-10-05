@@ -1,13 +1,16 @@
 from flask import Flask, request, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
+from flask_cors import CORS
 
 app = Flask (__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
 
+CORS(app)
 
 # Lessons
 class Lesson(db.Model):
@@ -50,6 +53,7 @@ def get_all_lessons():
             "message": "There are no lesson."
         }
     ), 404
+
 
 #  Get details of one lesson in JSON form
 @app.route("/lesson/<string:lesson_id>")

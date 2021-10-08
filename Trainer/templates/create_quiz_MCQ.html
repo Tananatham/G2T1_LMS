@@ -46,7 +46,7 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="lesson">Lesson Name:</label>
-                            <label for="lesson" id="lesson">Lesson 3</label>
+                            <label for="lesson" id="lesson"></label>
                         </div>
                     </div>
                     <div class="col-4">
@@ -175,6 +175,16 @@
                 cell8.innerHTML = document.getElementById("created").textContent;
             }
 
+
+                var url = window.location.href;
+                var queryparams = url.split('?')[1];
+                var params = queryparams.split('&');
+                console.log(params);
+                ln= params[0].split("=")
+                document.getElementById("lesson").textContent = ln[1];
+                qtype= params[1].split("=")
+                document.getElementById("quiz").textContent = qtype[1];
+               
     </script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>

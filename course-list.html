@@ -55,12 +55,16 @@
             <tbody>
                 <tr v-for="record in courses">
                     <td><strong>{{ record.course_id }}</strong></td>
-                    <td>{{ record.course_name }}</td>
+                    <!-- <td>{{ record.course_name }}</td> -->
+                    <td>
+                        <course-name :id="record.course_id"></course-name>
+                    </td>
                     <td>{{ record.course_description }}</td>
                     <td>{{ record.total_no_of_class }}</td>
                     <td>{{ record.total_no_of_lesson }}</td>
                     <td>{{ record.start_time }}</td>
                     <td>{{ record.end_time }}</td>
+                    <td><button>Apply</button></td>
                 </tr>
             </tbody>
         </table>
@@ -73,7 +77,7 @@
 
     <div id="second-container" class="container">
 
-        <h1>View My Enrolled Course</h1>
+        <h1>My Currently Enrolled Course</h1>
 
         <table id="mycourseTable" class='table ' border='1'>
             <thead class='thead-dark'>
@@ -133,19 +137,18 @@
 
 
     <script>
-        Vue.component('person-comp', {
+        Vue.component('course-name', {
             props: ['id'],
-            template: '<span><strong>{{title}}</strong> {{name}}</span>',
+            template: '<span>{{name}}</span>',
             data: function() {
                 return {
-                    title: '',
-                    name: 'Unknown'
+                    name: ''
                 };
             },
             created: function() {
-                axios.get('http://localhost:6900/course')
+                axios.get('http://localhost:6900/course_name/' + this.id)
                     .then(response => {
-                        this.courses = response.data.course;
+                        this.name = response.data.data;
                     });
             },
         });

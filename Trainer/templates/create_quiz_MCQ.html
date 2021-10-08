@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Lessons</title>
+    <title>Create Quiz</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <div class="form-check text-center">
-                            <h1>Create Lessons</h1>
+                            <h1>Create Quiz</h1>
                         </div>
                     </div>
                     <div class="col-1"></div>
@@ -53,51 +53,67 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="lesson">Lesson Name:</label>
-                            <input type="text" v-model="lesson_name" class="form-control" name="lesson_name" id="lesson_name" >
+                            <label for="lesson">Lesson 3</label>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label for="quiz">Quiz Type:</label>
-                            <select name="quizType" id="quizType" v-model="quizType" class="form-control">
-                                <option value="graded" selected>Graded</option>
-                                <option value="ungraded">Ungraded</option>
-                            </select>
+                            <label for="quiz">Ungraded</label>
                         </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="quiz">Question Type:</label>
+                            <select name="qnsType" id="qnsType" v-model="qnsType" class="form-control">
+                                <option value="MCQ" selected>MCQ</option>
+                                <option value="truefalse">True/False</option>
+                            </select>
+                        <p></p>
+                        <button class="btn btn-primary" type="submit">Add</button>
+                        <button class="btn btn-primary" type="submit">Delete</button>
+                        </div>
+                    </div>
                     <div class="col-4">
                           <div class="form-group">
-                                <label for="course_material">Lesson Materials</label>
-                                    <input id="course_material"  v-model="course_material" name="course_material[]" type="file" class="file"  data-show-upload="false" data-show-caption="true" multiple>
+                                <label for="course_material">Quiz Question</label>
+                                    <textarea type="text" class="form-control" v-model="quiz_qns" name="quiz_qns" id="quiz_qns" ></textarea>
                           </div>
-                          <p>
-                            <div class="form-group">
-                                <label for="link">Links</label>
-                                <input type="text" class="form-control" name="link" id="link" >
-                            </div>
-                          </p>  
-                            <p>
-                            <div>
-                                <a href=""><button for= "link" class="btn btn-primary">Add</button></a>
-                            </div>
-                            </p>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="created">Created On:</label>
-                                <br>
-                                <label for="created">26/9/2021</label>
-                        </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-2">
-                    <div class="col-8">
-                        <div class="form-group">
-                            <label for="desc">Description:</label>
-                            <textarea type="text" class="form-control" v-model="desc" name="desc" id="desc" ></textarea>
-                        </div>
+                    <div class="col-4">
+                        <label for="quiz">Answer Selection:</label>
+                            <input type="text" class="form-control" name="ans" value="" id="answers"> <p></p>
+                            <button class="btn btn-primary" type="submit" onclick="myFunction()">Insert selection</button>
+                            <ul id="mySelect">
+                            </ul>
+                    </div>
+                    <div class="col-4">
+                          <div class="form-group">
+                            <div class="col-12">
+                                <label for="timelimit">Time Limit</label>
+                                    <input type="text" class="form-control" name="timelimit" value="" id="timelimit">
+                                <select name="time" id="time" v-model="time" class="form-control">
+                                    <option value="hours" selected>Hours</option>
+                                    <option value="minute">Minutes</option>
+                                </select>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <label for="answer">Answer</label>
+                            <input type="text" class="form-control" name="answer" value="" id="answer"> <p></p>
+                    </div>
+                    <div class="col-4">
+                          <div class="form-group">
+                                <label for="created">Created On</label>
+                                    <label for="created">25/10/2021</label>
+                          </div>
                     </div>
                 </div>
             </form>
@@ -138,6 +154,16 @@
                 }
             }
         });
+
+            function myFunction() {
+                var input = document.getElementById("answers").value;
+                var x = document.getElementById("mySelect");
+                const para = document.createElement("li");
+                var text = document.createTextNode(input);
+                para.appendChild(text);
+                x.appendChild(para);
+            }
+
     </script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>

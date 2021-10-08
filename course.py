@@ -150,8 +150,8 @@ class Quiz(db.Model):
     def json(self):
         return {"quiz_id": self.quiz_id, "quiz_name": self.quiz_name, "quizq_id": self.quizq_id, "lesson_id": self.lesson_id, "quiz_descriptions": self.quiz_descriptions, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "start_time":self.start_time, "end_time":self.end_time, "quiz_details":self.quiz_details, "correct_answer":self.correct_answer}
 
-
 #Create a course status
+
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
@@ -178,25 +178,6 @@ def create_status():
     ), 201
 
 
-#Find the course name
-@app.route("/course_name/<string:course_id>")
-def find_course_name_by_id(course_id):
-    course = Course.query.filter_by(course_id=course_id).first()
-    if course:
-        course_name = course.course_name
-        return jsonify(
-            {
-                "code": 200,
-                "data": course_name
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Course not found."
-        }
-    ), 404
-
 #Find the course IDs that a student completed
 @app.route("/employee_course_status/<string:employee_id>")
 def find_status_by_id(employee_id):
@@ -222,9 +203,8 @@ def find_status_by_id(employee_id):
         }
     ), 404
 
-
-
 #Update a course status
+
 @app.route("/employee_course_status/", methods=['PUT'])
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)

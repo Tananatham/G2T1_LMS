@@ -178,6 +178,25 @@ def create_status():
     ), 201
 
 
+#Find the course name
+@app.route("/course_name/<string:course_id>")
+def find_course_name_by_id(course_id):
+    course = Course.query.filter_by(course_id=course_id).first()
+    if course:
+        course_name = course.course_name
+        return jsonify(
+            {
+                "code": 200,
+                "data": course_name
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Course not found."
+        }
+    ), 404
+
 #Find the course IDs that a student completed
 @app.route("/employee_course_status/<string:employee_id>")
 def find_status_by_id(employee_id):

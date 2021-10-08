@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Quiz</title>
+
+    <link rel="stylesheet" href="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<style>
+</style>
+<body>
+    <div style="padding-top:20px;">
+    <div class="container p-5">
+        <div id="main-container" class="container">
+            <form method="POST" autocomplete="off"  novalidate>
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <div class="form-check text-center">
+                            <h1>Create Quiz</h1>
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="lesson">Lesson Name:</label>
+                            <label for="lesson" id="lesson">Lesson 3</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="quiz">Quiz Type:</label>
+                            <label for="quiz" id="quiz">Ungraded</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="quiz">Question Type:</label>
+                            <select name="qnsType" id="qnsType" class="form-control">
+                                <option value="MCQ" selected>MCQ</option>
+                                <option value="True/False">True/False</option>
+                            </select>
+                        <p></p>
+                        <button class="btn btn-primary" onclick="table()" type="button">Add</button>
+                        <button class="btn btn-primary" type="submit">Delete</button>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                          <div class="form-group">
+                                <label for="course_material">Quiz Question</label>
+                                    <textarea type="text" class="form-control" name="quiz_qns" id="quiz_qns" ></textarea>
+                          </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <label for="quiz">Answer Selection:</label>
+                            <input type="text" class="form-control" name="ans" value="" id="answers"> <p></p>
+                            <button class="btn btn-primary" onclick="myFunction()" type="button" >Insert selection</button>
+                            <ul id="mySelect">
+                            </ul>
+                    </div>
+                    <div class="col-4">
+                          <div class="form-group">
+                            <div class="col-12">
+                                <label for="timelimit">Time Limit</label>
+                                    <input type="text" class="form-control" name="timelimit" value="" id="timelimit">
+                                <select name="time" id="time" class="form-control">
+                                    <option value="hours" selected>Hours</option>
+                                    <option value="minute">Minutes</option>
+                                </select>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-4">
+                        <label for="answer">Answer</label>
+                            <input type="text" class="form-control" name="answer" value="" id="answer"> <p></p>
+                    </div>
+                    <div class="col-4">
+                          <div class="form-group">
+                                <label for="created">Created On</label>
+                                    <label for="created" id="created">25/10/2021</label>
+                          </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
+                 </div>
+                <div class="col-4">
+                    <button class="btn btn-success w-100 mt-4" id="checkout">Create</button>
+                </div>
+            </div>
+            <p></p>
+            <div class="row justify-content-center">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Lesson Name</th>
+                        <th scope="col">Quiz Type</th>
+                        <th scope="col">Question Type</th>
+                        <th scope="col">Quiz Question</th>
+                        <th scope="col">Answer Selection</th>
+                        <th scope="col">Time Limit</th>
+                        <th scope="col">Answer</th>
+                        <th scope="col">Created On</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+</div>
+    <script>
+
+            function myFunction() {
+                var input = document.getElementById("answers").value;
+                var x = document.getElementById("mySelect");
+                const para = document.createElement("li");
+                var text = document.createTextNode(input);
+                para.appendChild(text);
+                x.appendChild(para);
+            }
+            function table() {
+                var table = document.getElementById("myTable");
+                var row = table.insertRow(0);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+                var cell7 = row.insertCell(6);
+                var cell8 = row.insertCell(7);
+
+                selection = document.getElementById("mySelect").innerText;
+                new_selection = selection.split(" ").join(",");
+                console.log(new_selection);
+                cell1.innerHTML = document.getElementById("lesson").textContent;
+                cell2.innerHTML = document.getElementById("quiz").textContent;
+                cell3.innerHTML = document.getElementById("qnsType").value;
+                cell4.innerHTML = document.getElementById("quiz_qns").value;
+                cell5.innerHTML = new_selection;
+                cell6.innerHTML = document.getElementById("timelimit").value + document.getElementById("time").value;
+                cell7.innerHTML = document.getElementById("answer").value;
+                cell8.innerHTML = document.getElementById("created").textContent;
+            }
+
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+
+</body>
+</html>

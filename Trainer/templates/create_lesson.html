@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Create Lessons</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <title>Document</title>
 </head>
 <style>
 </style>
 <body>
-    <div  style="padding-top:20px;">
+    <div style="padding-top:20px;">
     <div class="container p-5">
-        <div class="container">
-            <form action="/payment" method="POST" class="needs-validation" autocomplete="off"  novalidate>
-                <!-- <input type="hidden" name="teleID" id="teleID" value="{{ teleID }}" >
-                <input type="hidden" name="custID" id="custID" value="{{ custID }}" > -->
+        <div id="main-container" class="container">
+            <form method="POST" autocomplete="off"  novalidate>
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <div class="form-check text-center">
@@ -30,13 +53,13 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="lesson">Lesson Name:</label>
-                            <input type="text" class="form-control" name="lesson_name" id="lesson_name" >
+                            <input type="text" v-model="lesson_name" class="form-control" name="lesson_name" id="lesson_name" >
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label for="quiz">Quiz Type:</label>
-                            <select name="quizType" id="quizType" class="form-control">
+                            <select name="quizType" id="quizType" v-model="quizType" class="form-control">
                                 <option value="graded" selected>Graded</option>
                                 <option value="ungraded">Ungraded</option>
                             </select>
@@ -46,8 +69,8 @@
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
                           <div class="form-group">
-                                <label for="course_material">Course Materials</label>
-                                    <input id="course_material" name="course_material[]" type="file" class="file"  data-show-upload="false" data-show-caption="true" multiple>
+                                <label for="course_material">Lesson Materials</label>
+                                    <input id="course_material"  v-model="course_material" name="course_material[]" type="file" class="file"  data-show-upload="false" data-show-caption="true" multiple>
                           </div>
                           <p>
                             <div class="form-group">
@@ -73,7 +96,7 @@
                     <div class="col-8">
                         <div class="form-group">
                             <label for="desc">Description:</label>
-                            <textarea type="text" class="form-control" name="desc" id="desc" ></textarea>
+                            <textarea type="text" class="form-control" v-model="desc" name="desc" id="desc" ></textarea>
                         </div>
                     </div>
                 </div>
@@ -83,7 +106,7 @@
                     <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
                  </div>
                 <div class="col-4">
-                    <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
+                    <button class="btn btn-success w-100 mt-4" v-on:click="submitForm" id="checkout" type="submit">Create</button>
                 </div>
                
             </div>
@@ -91,10 +114,34 @@
     </div>
 </div>
 </div>
+    <script>
+        const vm = new Vue({
+            el: '#main-container',
+            data: {
+                lesson_name: '',
+                quizType: '',
+                course_material: [],
+                desc: ''
+            },
+            methods: {
+                submitForm: function() {
+                axios.post("http://localhost:5000/lessons/"+ lesson_name, {
+                        lesson_name: this.lesson_name,
+                        quizType: this.quizType,
+                        course_material: this.course_material,
+                        desc: this.desc
+                    })
+                .then(response => {
+                        return false;
+                    })
+                .catch(error => { this.error = error.response.data.message });
+                }
+            }
+        });
+    </script>
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="{{url_for('static', filename='stripe.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
 
 </body>
 </html>

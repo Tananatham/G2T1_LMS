@@ -8,18 +8,11 @@
     <title>Create Quiz</title>
 
     <link rel="stylesheet" href="">
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!-- Bootstrap libraries -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
@@ -53,13 +46,13 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="lesson">Lesson Name:</label>
-                            <label for="lesson">Lesson 3</label>
+                            <label for="lesson" id="lesson">Lesson 3</label>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label for="quiz">Quiz Type:</label>
-                            <label for="quiz">Ungraded</label>
+                            <label for="quiz" id="quiz">Ungraded</label>
                         </div>
                     </div>
                 </div>
@@ -67,19 +60,19 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="quiz">Question Type:</label>
-                            <select name="qnsType" id="qnsType" v-model="qnsType" class="form-control">
+                            <select name="qnsType" id="qnsType" class="form-control">
                                 <option value="MCQ" selected>MCQ</option>
-                                <option value="truefalse">True/False</option>
+                                <option value="True/False">True/False</option>
                             </select>
                         <p></p>
-                        <button class="btn btn-primary" type="submit">Add</button>
+                        <button class="btn btn-primary" onclick="table()" type="button">Add</button>
                         <button class="btn btn-primary" type="submit">Delete</button>
                         </div>
                     </div>
                     <div class="col-4">
                           <div class="form-group">
                                 <label for="course_material">Quiz Question</label>
-                                    <textarea type="text" class="form-control" v-model="quiz_qns" name="quiz_qns" id="quiz_qns" ></textarea>
+                                    <textarea type="text" class="form-control" name="quiz_qns" id="quiz_qns" ></textarea>
                           </div>
                     </div>
                 </div>
@@ -87,7 +80,7 @@
                     <div class="col-4">
                         <label for="quiz">Answer Selection:</label>
                             <input type="text" class="form-control" name="ans" value="" id="answers"> <p></p>
-                            <button class="btn btn-primary" type="submit" onclick="myFunction()">Insert selection</button>
+                            <button class="btn btn-primary" onclick="myFunction()" type="button" >Insert selection</button>
                             <ul id="mySelect">
                             </ul>
                     </div>
@@ -96,7 +89,7 @@
                             <div class="col-12">
                                 <label for="timelimit">Time Limit</label>
                                     <input type="text" class="form-control" name="timelimit" value="" id="timelimit">
-                                <select name="time" id="time" v-model="time" class="form-control">
+                                <select name="time" id="time" class="form-control">
                                     <option value="hours" selected>Hours</option>
                                     <option value="minute">Minutes</option>
                                 </select>
@@ -112,7 +105,7 @@
                     <div class="col-4">
                           <div class="form-group">
                                 <label for="created">Created On</label>
-                                    <label for="created">25/10/2021</label>
+                                    <label for="created" id="created">25/10/2021</label>
                           </div>
                     </div>
                 </div>
@@ -122,38 +115,32 @@
                     <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
                  </div>
                 <div class="col-4">
-                    <button class="btn btn-success w-100 mt-4" v-on:click="submitForm" id="checkout" type="submit">Create</button>
+                    <button class="btn btn-success w-100 mt-4" id="checkout">Create</button>
                 </div>
-               
             </div>
-           
+            <p></p>
+            <div class="row justify-content-center">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Lesson Name</th>
+                        <th scope="col">Quiz Type</th>
+                        <th scope="col">Question Type</th>
+                        <th scope="col">Quiz Question</th>
+                        <th scope="col">Answer Selection</th>
+                        <th scope="col">Time Limit</th>
+                        <th scope="col">Answer</th>
+                        <th scope="col">Created On</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                    </tbody>
+                </table>
+            </div>
     </div>
 </div>
 </div>
     <script>
-        const vm = new Vue({
-            el: '#main-container',
-            data: {
-                lesson_name: '',
-                quizType: '',
-                course_material: [],
-                desc: ''
-            },
-            methods: {
-                submitForm: function() {
-                axios.post("http://localhost:5000/lessons/"+ lesson_name, {
-                        lesson_name: this.lesson_name,
-                        quizType: this.quizType,
-                        course_material: this.course_material,
-                        desc: this.desc
-                    })
-                .then(response => {
-                        return false;
-                    })
-                .catch(error => { this.error = error.response.data.message });
-                }
-            }
-        });
 
             function myFunction() {
                 var input = document.getElementById("answers").value;
@@ -162,6 +149,30 @@
                 var text = document.createTextNode(input);
                 para.appendChild(text);
                 x.appendChild(para);
+            }
+            function table() {
+                var table = document.getElementById("myTable");
+                var row = table.insertRow(0);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+                var cell7 = row.insertCell(6);
+                var cell8 = row.insertCell(7);
+
+                selection = document.getElementById("mySelect").innerText;
+                new_selection = selection.split(" ").join(",");
+                console.log(new_selection);
+                cell1.innerHTML = document.getElementById("lesson").textContent;
+                cell2.innerHTML = document.getElementById("quiz").textContent;
+                cell3.innerHTML = document.getElementById("qnsType").value;
+                cell4.innerHTML = document.getElementById("quiz_qns").value;
+                cell5.innerHTML = new_selection;
+                cell6.innerHTML = document.getElementById("timelimit").value + document.getElementById("time").value;
+                cell7.innerHTML = document.getElementById("answer").value;
+                cell8.innerHTML = document.getElementById("created").textContent;
             }
 
     </script>

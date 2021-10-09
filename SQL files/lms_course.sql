@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 09, 2021 at 12:01 PM
+-- Generation Time: Oct 09, 2021 at 01:38 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -101,6 +101,30 @@ CREATE TABLE IF NOT EXISTS `course_material` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `course_prerequisite`
+--
+
+DROP TABLE IF EXISTS `course_prerequisite`;
+CREATE TABLE IF NOT EXISTS `course_prerequisite` (
+  `course_id` int(11) NOT NULL,
+  `prerequisite_course_id` int(11) NOT NULL,
+  PRIMARY KEY (`course_id`,`prerequisite_course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `course_prerequisite`
+--
+
+INSERT INTO `course_prerequisite` (`course_id`, `prerequisite_course_id`) VALUES
+(2, 5),
+(2, 6),
+(3, 7),
+(3, 8),
+(45, 46);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -142,13 +166,14 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
 --
 
 INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `status`) VALUES
-(1, 1, 'in-progress'),
-(1, 2, 'completed'),
+(1, 1, 'completed'),
 (1, 4, 'in-progress'),
 (1, 5, 'pending'),
 (1, 12, 'pending'),
 (1, 15, 'pending'),
-(1, 25, 'pending');
+(1, 25, 'pending'),
+(2, 5, 'completed'),
+(2, 6, 'completed');
 
 -- --------------------------------------------------------
 

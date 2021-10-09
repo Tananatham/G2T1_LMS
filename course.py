@@ -115,6 +115,24 @@ class Class(db.Model):
         self.current_class_size = current_class_size
         self.employee_id = employee_id
         self.duration_of_class = duration_of_class
+    
+    def class_enroll(self):
+        """
+        Add one to class size
+        """
+        if self.current_class_size < self.class_size:
+            self.current_class_size += 1
+        else:
+            raise Exception("Class is now full.")
+
+    def class_withdraw(self):
+        """
+        When a student finish or withdraw a class
+        """
+        if self.current_class_size >= 0:
+            self.current_class_size -= 1
+        else:
+            raise Exception("Class size cannot be less than zero.")
 
     def json(self):
         return {"class_id": self.class_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
@@ -153,9 +171,45 @@ class Course_check(db.Model):
         self.employee_id = employee_id
         self.course_id = course_id
         self.status = status
+    
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
 
     def json(self):
         return {"employee_id": self.employee_id, "course_id": self.course_id, "status": self.status}
+
+
+class PrerequisiteCheck(db.Model):
+    __tablename__ = 'course_prerequisite'
+
+    course_id = db.Column(db.Integer, primary_key=True)
+    prerequisite_course_id = db.Column(db.Integer, primary_key=True)
+
+    def __init__(self, course_id, prerequisite_course_id):
+        self.course_id = course_id
+        self.prerequisite_course_id = prerequisite_course_id
+    
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+
+    def json(self):
+        return {"course_id": self.course_id, "prerequisite_course_id": self.prerequisite_course_id}
 
 
 #Create Quiz
@@ -234,27 +288,6 @@ def create_status():
         }
     ), 201
 
-
-
-#Find the course name
-@app.route("/course_name/<string:course_id>")
-def find_course_name_by_id(course_id):
-    course = Course.query.filter_by(course_id=course_id).first()
-    if course:
-        course_name = course.course_name
-        return jsonify(
-            {
-                "code": 200,
-                "data": course_name
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Course not found."
-        }
-    ), 404
-
 #Find the course IDs that a student completed
 @app.route("/employee_course_status/<string:employee_id>")
 def find_status_by_id(employee_id):
@@ -280,6 +313,89 @@ def find_status_by_id(employee_id):
         }
     ), 404
 
+
+#Find all the prerequiste of a course
+@app.route("/course_prerequisite/<string:course_id>")
+def find_prerequisites_by_id(course_id):
+    courselist = PrerequisiteCheck.query.filter_by(course_id=course_id)
+    if courselist:
+        course_json = [course.json() for course in courselist]
+        prerequsities = []
+        for json in course_json:
+            prerequsities.append(json["prerequisite_course_id"])
+        return jsonify(
+            {
+                "code": 201,
+                "data": {
+                    "prerequsities": prerequsities
+                }
+                    
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Data not found."
+        }
+    ), 404
+
+#check if an employee compeleted prerequisite ### ------------------------------------------
+@app.route("/course_employee_prerequisite_check")
+def employee_course_prerequisite_check():
+    
+    employee_id = request.args.get('employee_id',1,type=int)
+    if employee_id:
+        employee_completed_course = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="completed")
+        employee_completed_json = [data.json() for data in employee_completed_course]
+        employee_completed_array = []
+        for json in employee_completed_json:
+            employee_completed_array.append(json["course_id"])
+
+    course_id = request.args.get('course_id',1,type=int)
+    if course_id:
+        course_prerequisite = PrerequisiteCheck.query.filter_by(course_id=course_id)
+        course_prerequisite_json = [course.json() for course in course_prerequisite]
+        prerequisite_array = []
+        for json in course_prerequisite_json:
+            prerequisite_array.append(json["prerequisite_course_id"])
+
+
+    if set(prerequisite_array).issubset(set(employee_completed_array)):
+        return jsonify(
+                {
+                    "code": 200,
+                    "data": prerequisite_array,
+                    "data2": employee_completed_array
+                }
+            ), 200
+    else:
+        return jsonify(
+        {
+            "code": 404,
+            "message": "Employee has not completed the prerequisites."
+        }
+    ), 404
+
+#Find the course name
+@app.route("/course_name/<string:course_id>")
+def find_course_name_by_id(course_id):
+    course = Course.query.filter_by(course_id=course_id).first()
+    if course:
+        course_name = course.course_name
+        return jsonify(
+            {
+                "code": 200,
+                "data": course_name
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Course not found."
+        }
+    ), 404
+
+
 #Update a course status
 @app.route("/employee_course_status/", methods=['PUT'])
 def update_status():
@@ -287,7 +403,6 @@ def update_status():
     course_id = request.args.get('course_id',1,type=int)
 
     status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
-    print(status_data)
 
     if status_data:
         data = request.get_json()

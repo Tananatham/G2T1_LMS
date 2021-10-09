@@ -247,6 +247,23 @@ class Quiz(db.Model):
         return {"quiz_id": self.quiz_id, "quiz_name": self.quiz_name, "quizq_id": self.quizq_id, "lesson_id": self.lesson_id, "quiz_descriptions": self.quiz_descriptions, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "start_time":self.start_time, "end_time":self.end_time, "quiz_details":self.quiz_details, "correct_answer":self.correct_answer}
 
 
+def employee_course_prerequisite_check(employee_id, course_id):
+    employee_completed_course = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="completed")
+    employee_completed_json = [data.json() for data in employee_completed_course]
+    employee_completed_array = []
+    for json in employee_completed_json:
+        employee_completed_array.append(json["course_id"])
+
+    course_prerequisite = PrerequisiteCheck.query.filter_by(course_id=course_id)
+    course_prerequisite_json = [course.json() for course in course_prerequisite]
+    prerequisite_array = []
+    for json in course_prerequisite_json:
+        prerequisite_array.append(json["prerequisite_course_id"])
+
+    if set(prerequisite_array).issubset(set(employee_completed_array)):
+        return True
+    else:
+        return False
 
 @app.route("/employee_name_lookup")
 def name_lookup_employee():
@@ -266,27 +283,43 @@ def name_lookup_employee():
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
-    new_status = Course_check(**data)
 
-    try:
-        db.session.add(new_status)
-        db.session.commit()
-    except:
+    employee_id = data["employee_id"]
+    course_id = data["course_id"]
+    if employee_course_prerequisite_check(employee_id, course_id):
+        new_status = Course_check(**data)
+        try:
+            db.session.add(new_status)
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                    },
+                    "message": "An error occurred with enrollment. Please select an employee or course. The employee may have already been enrolled."
+                }
+            ), 500
+
+        return jsonify(
+            {
+                "code": 201,
+                "data": new_status.json()
+            }
+        ), 201
+
+    else:
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                },
-                "message": "An error occurred with enrollment. Please select an employee or course. The employee may have already been enrolled."
+                "data": {},
+                "message": "This ID has not completed all of the prerequisite courses!"
             }
         ), 500
 
-    return jsonify(
-        {
-            "code": 201,
-            "data": new_status.json()
-        }
-    ), 201
+    
+
+    
 
 #Find the course IDs that a student completed
 @app.route("/employee_course_status/<string:employee_id>")
@@ -336,43 +369,6 @@ def find_prerequisites_by_id(course_id):
         {
             "code": 404,
             "message": "Data not found."
-        }
-    ), 404
-
-#check if an employee compeleted prerequisite ### ------------------------------------------
-@app.route("/course_employee_prerequisite_check")
-def employee_course_prerequisite_check():
-    
-    employee_id = request.args.get('employee_id',1,type=int)
-    if employee_id:
-        employee_completed_course = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="completed")
-        employee_completed_json = [data.json() for data in employee_completed_course]
-        employee_completed_array = []
-        for json in employee_completed_json:
-            employee_completed_array.append(json["course_id"])
-
-    course_id = request.args.get('course_id',1,type=int)
-    if course_id:
-        course_prerequisite = PrerequisiteCheck.query.filter_by(course_id=course_id)
-        course_prerequisite_json = [course.json() for course in course_prerequisite]
-        prerequisite_array = []
-        for json in course_prerequisite_json:
-            prerequisite_array.append(json["prerequisite_course_id"])
-
-
-    if set(prerequisite_array).issubset(set(employee_completed_array)):
-        return jsonify(
-                {
-                    "code": 200,
-                    "data": prerequisite_array,
-                    "data2": employee_completed_array
-                }
-            ), 200
-    else:
-        return jsonify(
-        {
-            "code": 404,
-            "message": "Employee has not completed the prerequisites."
         }
     ), 404
 

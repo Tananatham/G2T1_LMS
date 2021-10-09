@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 09, 2021 at 01:38 PM
+-- Generation Time: Oct 09, 2021 at 02:49 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -171,7 +171,6 @@ INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `status`) VALUES
 (1, 5, 'pending'),
 (1, 12, 'pending'),
 (1, 15, 'pending'),
-(1, 25, 'pending'),
 (2, 5, 'completed'),
 (2, 6, 'completed');
 

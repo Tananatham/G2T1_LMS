@@ -44,9 +44,10 @@
                 <tr>
                     <th>Employee ID</th>
                     <th>Employee Name</th>
+                    <th></th>
                     <th>Course ID</th>
                     <th>Course Name</th>
-                    <th>Approve</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,12 +56,14 @@
                     <td>
                         <employee-namer :employee_id=record.employee_id></employee-namer>
                     </td>
+                    <td>has applied for...</td>
                     <td>{{ record.course_id }}</td>
                     <td>
                         <course-namer :course_id=record.course_id></course-namer>
                     </td>
                     <td>
                         <approve-button :course_id=record.course_id :employee_id=record.employee_id></approve-button>
+                        <deny-button :course_id=record.course_id :employee_id=record.employee_id></deny-button>
                     </td>
                 </tr>
             </tbody>
@@ -119,6 +122,23 @@
                         })
                         .then(response => {
                             window.alert("The course has been approved.");
+                            location.reload();
+                        })
+                        .catch(error => alert(error));
+                }
+            }
+        })
+
+        Vue.component("deny-button", {
+            template: "<button @click='clicked' class='btn btn-danger'>Deny</button>",
+            props: ["course_id", "employee_id"],
+            methods: {
+                clicked: function(event) {
+                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
+                            status: this.status,
+                        })
+                        .then(response => {
+                            window.alert("The course has been denied and removed.");
                             location.reload();
                         })
                         .catch(error => alert(error));

@@ -426,6 +426,33 @@ def update_status():
         }
     ), 404
 
+@app.route("/employee_course_status/", methods=['DELETE'])
+def delete_status():
+    employee_id = request.args.get('employee_id',1,type=int)
+    course_id = request.args.get('course_id',1,type=int)
+
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+    if status_data:
+        db.session.delete(status_data)
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "course_id": course_id
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "course_id": course_id
+            },
+            "message": "Status not found."
+        }
+    ), 404
+
 # Get All course enrollment with pending
 @app.route("/enrollment_pending")
 def get_pending_enrollment():

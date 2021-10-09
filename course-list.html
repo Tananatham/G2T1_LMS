@@ -67,10 +67,10 @@
                 </tr>
             </tbody>
         </table>
-
+        <!-- 
         <p>
             <em><strong>Pages:</strong> <a href="create-course.html">Create a Course</a></em>
-        </p>
+        </p> -->
     </div>
 
 
@@ -111,14 +111,12 @@
         }
 
         async function main() {
-            //OPTION 2
             courselist_data = await getJson(apiUrl);
             courselist_id = courselist_data.data.course;
             $.each(courselist_id, function(index, value) {
                 async function sub1() {
                     mycourse_data = await getJson("http://localhost:6900/course/" + value);
                     mycourse_data = mycourse_data.data;
-                    console.log(mycourse_data)
 
                     eachRow = `<tr><td>` + mycourse_data.course_id + `</td>
                     <td>` + mycourse_data.course_name + `</td>

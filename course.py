@@ -12,6 +12,37 @@ db = SQLAlchemy(app)
 
 CORS(app)
 
+
+class Employee(db.Model):
+    __tablename__ = 'employee'
+
+    employee_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, nullable=True)
+    employee_name = db.Column(db.String(50), nullable=False)
+    employee_role = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, employee_id, course_id, employee_name, employee_role):
+        self.employee_id = employee_id
+        self.course_id = course_id
+        self.employee_name = employee_name
+        self.employee_role = employee_role
+    
+    
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+
+    def json(self):
+        return {"employee_id": self.employee_id, "course_id": self.course_id, "employee_name": self.employee_name, "employee_role": self.employee_role}
+
+
 class Course(db.Model):
     __tablename__ = 'course'
 
@@ -151,6 +182,21 @@ class Quiz(db.Model):
         return {"quiz_id": self.quiz_id, "quiz_name": self.quiz_name, "quizq_id": self.quizq_id, "lesson_id": self.lesson_id, "quiz_descriptions": self.quiz_descriptions, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "start_time":self.start_time, "end_time":self.end_time, "quiz_details":self.quiz_details, "correct_answer":self.correct_answer}
 
 
+
+@app.route("/employee_name_lookup")
+def name_lookup_employee():
+    search_name = request.args.get('name')
+    if search_name:
+        employee_list = Employee.query.filter(Employee.employee_name.contains(search_name))
+    else:
+        employee_list = Employee.query.all()
+    return jsonify(
+        {
+            "data": [employee.to_dict() for employee in employee_list]
+        }
+    ), 200
+
+
 #Create a course status
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
@@ -166,7 +212,7 @@ def create_status():
                 "code": 500,
                 "data": {
                 },
-                "message": "An error occurred with enrollment."
+                "message": "An error occurred with enrollment. Please select an employee or course. The employee may have already been enrolled."
             }
         ), 500
 
@@ -176,6 +222,7 @@ def create_status():
             "data": new_status.json()
         }
     ), 201
+
 
 
 #Find the course name
@@ -278,7 +325,7 @@ def get_all():
 
 #  Get details of one course in JSON form
 @app.route("/course/<string:course_id>")
-def find_by_id(course_id):
+def find_by_course_id(course_id):
     course = Course.query.filter_by(course_id=course_id).first()
     if course:
         return jsonify(

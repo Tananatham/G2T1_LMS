@@ -198,6 +198,7 @@ def name_lookup_employee():
 
 
 #Create a course status
+
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
@@ -269,9 +270,8 @@ def find_status_by_id(employee_id):
         }
     ), 404
 
-
-
 #Update a course status
+
 @app.route("/employee_course_status/", methods=['PUT'])
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)

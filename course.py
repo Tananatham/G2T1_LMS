@@ -73,6 +73,17 @@ class Course(db.Model):
         self.end_time = end_time
         self.datetime_uploaded = datetime_uploaded
 
+    def to_dict(self):
+        """
+        'to_dict' converts the object into a dictionary,
+        in which the keys correspond to database columns
+        """
+        columns = self.__mapper__.column_attrs.keys()
+        result = {}
+        for column in columns:
+            result[column] = getattr(self, column)
+        return result
+
     def json(self):
         return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "course_prerequisite": self.course_prerequisite, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded}
 
@@ -198,7 +209,6 @@ def name_lookup_employee():
 
 
 #Create a course status
-
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
@@ -271,7 +281,6 @@ def find_status_by_id(employee_id):
     ), 404
 
 #Update a course status
-
 @app.route("/employee_course_status/", methods=['PUT'])
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)
@@ -302,6 +311,44 @@ def update_status():
         }
     ), 404
 
+# Get All course enrollment with pending
+@app.route("/enrollment_pending")
+def get_pending_enrollment():
+    courselist = Course_check.query.filter_by(status="pending")
+    if courselist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "course": [course.json() for course in courselist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no courses."
+        }
+    ), 404
+
+
+#  Get details of one employee 
+@app.route("/employee/<string:employee_id>")
+def find_employee_by_id(employee_id):
+    employee = Employee.query.filter_by(employee_id=employee_id).first()
+    if employee:
+        return jsonify(
+            {
+                "code": 200,
+                "data": employee.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Employee not found."
+        }
+    ), 404
 
 # Get All Courses
 @app.route("/course")
@@ -323,7 +370,7 @@ def get_all():
         }
     ), 404
 
-#  Get details of one course in JSON form
+#  Get details of one course 
 @app.route("/course/<string:course_id>")
 def find_by_course_id(course_id):
     course = Course.query.filter_by(course_id=course_id).first()

@@ -93,8 +93,8 @@
                             status: this.status
                         })
                         .then(response => {
-                            window.location.replace("./course-list.html");
-                            return false;
+                            window.alert("The course as been assigned to the engineer");
+                            windows.reload();
                         })
                         .catch(error => {
                             this.error = error.response.data.message

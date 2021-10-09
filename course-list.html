@@ -156,10 +156,11 @@
                         })
                         .then(response => {
                             window.alert("You have successfully applied to this course, please wait while an administrator approves.");
+                            locatoin.reload();
                         })
                         .catch(error => {
                             this.error = error.response.data.message
-                            window.alert("You may have already applied to this course and it is pending with an administrator. Error:" + this.error)
+                            window.alert("You may have already applied to or completed this course, or it is pending with an administrator. Error:" + this.error)
                         });
                 }
             }

@@ -53,32 +53,32 @@ services:
 #       - "7000:7000"
 
 
-  #################################
-#   Class: The class Service
-  #################################
-  class:
-    build:
-      context: ./
-      dockerfile: class.Dockerfile
-    image:  team01/course:esd
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_course
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "6700:6700"
+#   #################################
+# #   Class: The class Service
+#   #################################
+#   class:
+#     build:
+#       context: ./
+#       dockerfile: class.Dockerfile
+#     image:  team01/course:esd
+#     restart: always
+#     environment:
+#       dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/lms_course
+#       PYTHONUNBUFFERED: 1
+#     ports:
+#       - "6700:6700"
 
-  #################################
-#   Lesson: The lesson Service
-  #################################
-  lesson:
-    build:
-      context: ./
-      dockerfile: lesson.Dockerfile
-    image:  team01/course:esd
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/lms_course
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "6600:6600"
+#   #################################
+# #   Lesson: The lesson Service
+#   #################################
+#   lesson:
+#     build:
+#       context: ./
+#       dockerfile: lesson.Dockerfile
+#     image:  team01/course:esd
+#     restart: always
+#     environment:
+#       dbURL: mysql+mysqlconnector://root@host.docker.internal:3306/lms_course
+#       PYTHONUNBUFFERED: 1
+#     ports:
+#       - "6600:6600"

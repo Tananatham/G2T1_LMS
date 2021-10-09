@@ -154,7 +154,7 @@
                         })
                         .then(response => {
                             window.alert("You have successfully applied to this course, please wait while an administrator approves.");
-                            locatoin.reload();
+                            location.reload();
                         })
                         .catch(error => {
                             this.error = error.response.data.message

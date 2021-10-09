@@ -119,11 +119,9 @@
                         })
                         .then(response => {
                             window.alert("The course has been approved.");
-                            window.reload();
+                            location.reload();
                         })
-                        .catch(error => {
-                            window.alert("There is an error with approving this course.")
-                        });
+                        .catch(error => alert(error));
                 }
             }
         })

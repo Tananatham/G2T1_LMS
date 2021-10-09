@@ -159,7 +159,7 @@
                         })
                         .catch(error => {
                             this.error = error.response.data.message
-                            window.alert("You may have already applied to this course and it is pending with an administrator.")
+                            window.alert("You may have already applied to this course and it is pending with an administrator. Error:" + this.error)
                         });
                 }
             }

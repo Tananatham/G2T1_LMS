@@ -265,6 +265,27 @@ def employee_course_prerequisite_check(employee_id, course_id):
     else:
         return False
 
+def course_prereq_okay_check(course_id, preq_course_id):
+    if course_id == preq_course_id:
+        return False
+    
+    course_prerequisite = PrerequisiteCheck.query.filter_by(course_id=course_id)
+    course_prerequisite_json = [data.json() for data in course_prerequisite]
+    course_prerequisite_array = []
+    for json in course_prerequisite_json:
+        course_prerequisite_array.append(json["prerequisite_course_id"])
+    
+    course_prerequisite_reverse = PrerequisiteCheck.query.filter_by(prerequisite_course_id=preq_course_id)
+    course_prerequisite_reverse_json = [data.json() for data in course_prerequisite_reverse]
+    course_prerequisite_reverse_array = []
+    for json in course_prerequisite_reverse_json:
+        course_prerequisite_reverse_array.append(json["prerequisite_course_id"])
+
+    if preq_course_id in course_prerequisite_array or course_id in course_prerequisite_reverse_array:
+        return False
+    else:
+        return True
+
 @app.route("/employee_name_lookup")
 def name_lookup_employee():
     search_name = request.args.get('name')
@@ -318,7 +339,43 @@ def create_status():
         ), 500
 
     
+@app.route("/set_course_prerequisite", methods=['POST'])
+def set_course_prereq():
+    data = request.get_json()
 
+    course_id = data["course_id"]
+    prerequisite_course_id = data["prerequisite_course_id"]
+
+    if course_prereq_okay_check(course_id, prerequisite_course_id):
+        new_status = PrerequisiteCheck(**data)
+        try:
+            db.session.add(new_status)
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                    },
+                    "message": "An error occurred with setting a prerequisite."
+                }
+            ), 500
+
+        return jsonify(
+            {
+                "code": 201,
+                "data": new_status.json()
+            }
+        ), 201
+
+    else:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {},
+                "message": "An error occured, the course is already a prerequisite, or it's the same course."
+            }
+        ), 500
     
 
 #Find the course IDs that a student completed
@@ -346,6 +403,31 @@ def find_status_by_id(employee_id):
         }
     ), 404
 
+
+#Find the course IDs that a student is in progress
+@app.route("/employee_course_status_progress/<string:employee_id>")
+def find_employee_in_progress(employee_id):
+    courselist = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="in-progress")
+    if courselist:
+        course_json = [course.json() for course in courselist]
+        completed_course_id = []
+        for json in course_json:
+            completed_course_id.append(json["course_id"])
+        return jsonify(
+            {
+                "code": 201,
+                "data": {
+                    "course": completed_course_id
+                }
+                    
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Data not found."
+        }
+    ), 404
 
 #Find all the prerequiste of a course
 @app.route("/course_prerequisite/<string:course_id>")
@@ -453,6 +535,26 @@ def delete_status():
 @app.route("/enrollment_pending")
 def get_pending_enrollment():
     courselist = Course_check.query.filter_by(status="pending")
+    if courselist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "course": [course.json() for course in courselist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no courses."
+        }
+    ), 404
+
+# Get All course enrollment with in-progress
+@app.route("/enrollment_in_progress")
+def get_in_progress_enrollment():
+    courselist = Course_check.query.filter_by(status="in-progress")
     if courselist:
         return jsonify(
             {

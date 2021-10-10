@@ -37,7 +37,7 @@
 
     <div id="main-container" class="container">
 
-        <h1>View Current Applications</h1>
+        <h1>View Current Pending Applications</h1>
 
         <table id="consultationsTable" class='table'>
             <thead class='thead-dark'>
@@ -64,6 +64,41 @@
                     <td>
                         <approve-button :course_id=record.course_id :employee_id=record.employee_id></approve-button>
                         <deny-button :course_id=record.course_id :employee_id=record.employee_id></deny-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div id="main-container-2" class="container">
+
+        <h1>View Current In-Progress</h1>
+
+        <table id="consultationsTable" class='table'>
+            <thead class='thead-dark'>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th></th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="record in enrolment">
+                    <td>{{ record.employee_id }}</td>
+                    <td>
+                        <employee-namer :employee_id=record.employee_id></employee-namer>
+                    </td>
+                    <td>is currently studying...</td>
+                    <td>{{ record.course_id }}</td>
+                    <td>
+                        <course-namer :course_id=record.course_id></course-namer>
+                    </td>
+                    <td>
+                        <withdraw-button :course_id=record.course_id :employee_id=record.employee_id></withdraw-button>
                     </td>
                 </tr>
             </tbody>
@@ -146,6 +181,23 @@
             }
         })
 
+        Vue.component("withdraw-button", {
+            template: "<button @click='clicked' class='btn btn-danger'>Withdraw</button>",
+            props: ["course_id", "employee_id"],
+            methods: {
+                clicked: function(event) {
+                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
+                            status: this.status,
+                        })
+                        .then(response => {
+                            window.alert("The student has been withdrawn from this course.");
+                            location.reload();
+                        })
+                        .catch(error => alert(error));
+                }
+            }
+        })
+
         const vm = new Vue({
             el: '#main-container',
             data: {
@@ -153,6 +205,20 @@
             },
             mounted: function() {
                 axios.get('http://localhost:6900/enrollment_pending')
+                    .then(response => {
+                        this.enrolment = response.data.data.course;
+                    })
+                    .catch(error => alert(error));
+            }
+        });
+
+        const vm2 = new Vue({
+            el: '#main-container-2',
+            data: {
+                enrolment: []
+            },
+            mounted: function() {
+                axios.get('http://localhost:6900/enrollment_in_progress')
                     .then(response => {
                         this.enrolment = response.data.data.course;
                     })

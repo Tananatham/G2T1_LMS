@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>View Classes</title>
+    <title>View Lessons</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -36,7 +36,15 @@
 <body>
     <script>
         $(async()=>{
-            var serviceURL ="http://localhost:5000/class";
+            
+                var url = window.location.href;
+                var queryparams = url.split('?')[1];
+                var params = queryparams.split('&');
+                console.log(params);
+                id= params[0].split("=")
+                name= params[1].split("=")
+                document.getElementById("classname").textContent = name.split(',')[1];
+                var serviceURL ="http://localhost:5000/lessonclass/"+ id[1];
 
             try {
                 const response =
@@ -46,19 +54,15 @@
                 const result = await response.json();
                 if (response.status === 200) {
                     // success case
-                    var classes = result.data.course; 
+                    var lessons = result.data; 
                     console.log(result)
-                    var rows = "";
-                    for (const classrow of classes) {
-                    eachRow ="<td>" + classrow.course_name + "</td>" +
-                                "<td>" + classrow.start_date + "</td>" +
-                                "<td>" + classrow.end_date + "</td>" +
-                                "<td>" + classrow.class_size + "</td>" +
-                                "<td> <a class='btn btn-primary' href='http://localhost/SPM/templates/listoflesson.html?classid=" +  classrow.class_id + "&classname="+ classrow.course_name +"' role='button'>View Lesson</a> </td>";
-                    rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
-                    }
-                    // add all the rows to the table
-                    $('#classTable').append(rows);
+                    eachRow ="<tbody><tr>" +
+                                "<td>" + lessons.lesson_name + "</td>" +
+                                "<td>" + lessons.quiz_type + "</td>" +
+                                "<td>" + lessons.created_on + "</td>" +
+                                "<td> <a class='btn btn-primary' href='http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lessons.lesson_name + "&quiztype="+ lessons.quiz_type + "' role='button'>View</a> </td>" + 
+                            "</tr></tbody>";
+                    $('#classTable').append(eachRow);
                 } else if (response.status == 404) {
                     showError(result.message);
                 } else {
@@ -77,38 +81,26 @@
     <div id="main-container"  style="padding-top:20px;">
     <div class="container p-5">
         <div class="container">
-                <!-- <input type="hidden" name="teleID" id="teleID" value="{{ teleID }}" >
-                <input type="hidden" name="custID" id="custID" value="{{ custID }}" > -->
                 <div class="row justify-content-center">
-                    <div class="col-11">
+                    <div class="col-12">
                         <div class="form-check text-center">
-                            <h1>My Current Classes</h1>
+                            <h1>List of Lessons For </h1><h1 id="classname"></h1>
                         </div>
                     </div>
-                        <div class="dropdown col-1">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Filter
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <button class="dropdown-item" type="button">All</button>
-                                <button class="dropdown-item" type="button">Current</button>
-                                <button class="dropdown-item" type="button">Completed</button>
-                            </div>
-                        </div>
                     
                 <table class="table" id ="classTable">
                     <thead>
                         <tr>
-                        <th scope="col">Class Name</th>
-                        <th scope="col">Start Date Time</th>
-                        <th scope="col">End Date Time</th>
-                        <th scope="col">Class Size</th>
+                        <th scope="col">Lessons Name</th>
+                        <th scope="col">Quiz Type</th>
                         <th scope="col">Created On</th>
                         <th></th>
                         </tr>
                     </thead>
                 </table>
-           
+                <div class="col-4">
+                    <a type="button" class="btn btn-success w-100 mt-4" href="http://localhost/SPM/templates/create_lesson.html" id="checkout">Create Lesson</a>
+                </div>
     </div>
 </div>
 </div>

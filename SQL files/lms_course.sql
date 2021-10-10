@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 30, 2021 at 01:28 PM
+-- Generation Time: Oct 09, 2021 at 02:49 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
-CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `lms_course`;
 
 -- --------------------------------------------------------
 
@@ -74,14 +72,80 @@ CREATE TABLE IF NOT EXISTS `course` (
   `end_time` varchar(50) NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
   PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `course`
 --
 
 INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no_of_lesson`, `class_id`, `course_description`, `course_prerequisite`, `coursem_id`, `employee_id`, `start_time`, `end_time`, `datetime_uploaded`) VALUES
-(1, 'Fix', 2, 0, 4, 'Fix', 0, 2, 1, 'Now', 'Later', '2021-09-14 00:00:00');
+(1, 'PlaceHolder', 5, 2, 1, 'Fix', 2, 2, 1, 'Now', 'Later', '2021-09-14 00:00:00'),
+(4, 'New Teester', 2, 2, 4, 'Fix', 2, 2, 1, 'Now', 'Later', '2021-09-14 00:00:00'),
+(6, 'New Course', 2, 2, 3, 'placeholder', 2, 2, 2, '24 July', '28 July', '2021-10-08 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_material`
+--
+
+DROP TABLE IF EXISTS `course_material`;
+CREATE TABLE IF NOT EXISTS `course_material` (
+  `coursem_id` int(11) NOT NULL,
+  `coursem_description` varchar(50) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `datetime_uploaded` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_prerequisite`
+--
+
+DROP TABLE IF EXISTS `course_prerequisite`;
+CREATE TABLE IF NOT EXISTS `course_prerequisite` (
+  `course_id` int(11) NOT NULL,
+  `prerequisite_course_id` int(11) NOT NULL,
+  PRIMARY KEY (`course_id`,`prerequisite_course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `course_prerequisite`
+--
+
+INSERT INTO `course_prerequisite` (`course_id`, `prerequisite_course_id`) VALUES
+(2, 5),
+(2, 6),
+(3, 7),
+(3, 8),
+(45, 46);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE IF NOT EXISTS `employee` (
+  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `employee_name` varchar(50) NOT NULL,
+  `employee_role` varchar(50) NOT NULL,
+  PRIMARY KEY (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`employee_id`, `course_id`, `employee_name`, `employee_role`) VALUES
+(1, 1, 'James', 'Engineer'),
+(2, 2, 'Richard', 'Engineer'),
+(3, 3, 'Lamy', 'Engineer'),
+(4, 4, 'Kane', 'Human Resource');
 
 -- --------------------------------------------------------
 
@@ -103,8 +167,12 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
 
 INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `status`) VALUES
 (1, 1, 'completed'),
-(1, 2, 'completed'),
-(2, 1, 'in-progress');
+(1, 4, 'in-progress'),
+(1, 5, 'pending'),
+(1, 12, 'pending'),
+(1, 15, 'pending'),
+(2, 5, 'completed'),
+(2, 6, 'completed');
 
 -- --------------------------------------------------------
 
@@ -153,13 +221,6 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `quiz`
---
-
-INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `quiz_type`, `quizq_id`, `lesson_id`, `quiz_descriptions`, `datetime_created`, `passing_score`, `start_time`, `end_time`, `quiz_details`, `correct_answer`) VALUES
-(1, 'E01Quiz1', 'MCQ', 1, 1, 'abc', '2021-09-30 04:00:00', 0, 'Now', 'Later', 'abc', 'abc');
 
 --
 -- Constraints for dumped tables

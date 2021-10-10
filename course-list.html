@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
 
-    <title>Create a Consultation Record</title>
+    <title>View my courses</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -37,12 +37,12 @@
 
     <div id="main-container" class="container">
 
-        <h1>View Courses</h1>
+        <h1>View All Courses</h1>
 
-        <table id="consultationsTable" class='table ' border='1'>
+        <table id="consultationsTable" class='table'>
             <thead class='thead-dark'>
                 <tr>
-                    <th>ID</th>
+                    <th>Course ID</th>
                     <th>Course Name</th>
                     <th>Course Description</th>
                     <th>Number of classes</th>
@@ -54,28 +54,31 @@
             </thead>
             <tbody>
                 <tr v-for="record in courses">
-                    <td><strong>{{ record.course_id }}</strong></td>
-                    <td>{{ record.course_name }}</td>
+                    <td>{{ record.course_id }}</td>
+                    <td><strong>{{ record.course_name }}</strong></td>
                     <td>{{ record.course_description }}</td>
                     <td>{{ record.total_no_of_class }}</td>
                     <td>{{ record.total_no_of_lesson }}</td>
                     <td>{{ record.start_time }}</td>
                     <td>{{ record.end_time }}</td>
+                    <td>
+                        <apply-button_1 :course_id=record.course_id></apply-button_1>
+                    </td>
                 </tr>
             </tbody>
         </table>
-
+        <!-- 
         <p>
             <em><strong>Pages:</strong> <a href="create-course.html">Create a Course</a></em>
-        </p>
+        </p> -->
     </div>
 
 
     <div id="second-container" class="container">
 
-        <h1>View My Enrolled Course</h1>
+        <h1>View My Enrolled Courses</h1>
 
-        <table id="mycourseTable" class='table ' border='1'>
+        <table id="mycourseTable" class='table'>
             <thead class='thead-dark'>
                 <tr>
                     <th>ID</th>
@@ -96,8 +99,10 @@
 
 
     <script>
+        //These codes is for displaying courses that an employee is currently enrolled in, it's kinda spaghetti but idk how else to make it work
+
         let courselist_data = "";
-        let apiUrl = "http://localhost:6900/employee_course_status/1"
+        let apiUrl = "http://localhost:6900/employee_course_status_progress/1"
 
         async function getJson(url) {
             let response = await fetch(url);
@@ -106,14 +111,12 @@
         }
 
         async function main() {
-            //OPTION 2
             courselist_data = await getJson(apiUrl);
             courselist_id = courselist_data.data.course;
             $.each(courselist_id, function(index, value) {
                 async function sub1() {
                     mycourse_data = await getJson("http://localhost:6900/course/" + value);
                     mycourse_data = mycourse_data.data;
-                    console.log(mycourse_data)
 
                     eachRow = `<tr><td>` + mycourse_data.course_id + `</td>
                     <td>` + mycourse_data.course_name + `</td>
@@ -133,22 +136,33 @@
 
 
     <script>
-        Vue.component('person-comp', {
-            props: ['id'],
-            template: '<span><strong>{{title}}</strong> {{name}}</span>',
+        Vue.component("apply-button_1", {
+            template: "<button @click='clicked' class='btn btn-success'>Apply</button>",
+            props: ["course_id"],
             data: function() {
                 return {
-                    title: '',
-                    name: 'Unknown'
+                    employee_id: 1,
+                    status: "pending"
                 };
             },
-            created: function() {
-                axios.get('http://localhost:6900/course')
-                    .then(response => {
-                        this.courses = response.data.course;
-                    });
-            },
-        });
+            methods: {
+                clicked: function(event) {
+                    axios.post('http://localhost:6900/employee_course_status', {
+                            course_id: this.course_id,
+                            employee_id: this.employee_id,
+                            status: this.status
+                        })
+                        .then(response => {
+                            window.alert("You have successfully applied to this course, please wait while an administrator approves.");
+                            location.reload();
+                        })
+                        .catch(error => {
+                            this.error = error.response.data.message
+                            window.alert("There is an error with applying for this course. Error: " + this.error)
+                        });
+                }
+            }
+        })
 
         const vm = new Vue({
             el: '#main-container',

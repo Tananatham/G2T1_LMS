@@ -571,6 +571,25 @@ def get_in_progress_enrollment():
         }
     ), 404
 
+#  Get All employee/learners 
+@app.route("/employee")
+def get_all_employees():
+    employeelist = Employee.query.all()
+    if len(employeelist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "employee":[employee.json() for employee in employeelist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Employee not found."
+        }
+    ), 404
 
 #  Get details of one employee 
 @app.route("/employee/<string:employee_id>")

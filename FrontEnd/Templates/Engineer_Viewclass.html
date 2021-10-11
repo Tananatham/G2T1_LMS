@@ -57,10 +57,12 @@
 
 
 <!-- User's Courses -->
+<br>
 <div id="main-container" class="container">
 
-  <div id="courseName" class="container"></div>
-  <div id="courseID" class="container"></div>
+<h3 id="courseName" class="container" v-for="record in classes">Classs Name: {{ record.course_name }}</h3>
+<div id="courseID" class="container"></div>
+<br>
 
   <table id="consultationsTable" class='table'>
       <thead class='thead-dark'>
@@ -76,10 +78,11 @@
               <th>Enrol</th>
           </tr>
       </thead>
+      
       <tbody>
           <tr v-for="record in classes">
               <td>{{ record.class_id }}</td>
-              <td><strong>{{ record.employee_id }}</td>
+              <td>{{ record.employee_id }}</td>
               <td>{{ record.start_date }}</td>
               <td>{{ record.end_date }}</td>
               <td>{{ record.start_time }}</td>
@@ -99,11 +102,9 @@
 </div>
 
 
-  
-
 <script>
 Vue.component("apply-button_1", {
-    template: "<button @click='clicked' class='btn btn-primary'>Available Classes</button>",
+    template: "<button @click='clicked' class='btn btn-primary'>Enrol</button>",
     props: ["course_id"],
     data: function() {
         return {
@@ -139,7 +140,7 @@ Vue.component("apply-button_1", {
       mounted: function() {
           axios.get('http://localhost:6900/class')
               .then(response => {
-                  this.classes = response.data.data.class;
+                  this.classes = response.data.data.course;
               })
               .catch(error => alert(error));
       }

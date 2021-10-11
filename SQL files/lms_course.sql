@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `class` (
   `employee_id` int(11) NOT NULL,
   `duration_of_class` int(11) NOT NULL,
   PRIMARY KEY (`class_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `class`
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `end_time` varchar(50) NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
   PRIMARY KEY (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `course`
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `course_material` (
   `course_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `datetime_uploaded` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `course_prerequisite` (
   `course_id` int(11) NOT NULL,
   `prerequisite_course_id` int(11) NOT NULL,
   PRIMARY KEY (`course_id`,`prerequisite_course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `course_prerequisite`
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `employee_name` varchar(50) NOT NULL,
   `employee_role` varchar(50) NOT NULL,
   PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employee`
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
   `course_id` int(11) NOT NULL,
   `status` varchar(50) NOT NULL,
   PRIMARY KEY (`employee_id`,`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employee_enrolled`
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `coursem_id` int(11) NOT NULL,
   `lesson_descriptions` varchar(50) NOT NULL,
   PRIMARY KEY (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lesson`
@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `correct_answer` varchar(100) NOT NULL,
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Constraints for dumped tables

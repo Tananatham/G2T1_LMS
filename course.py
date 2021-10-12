@@ -158,7 +158,7 @@ class Lesson(db.Model):
         self.lesson_descriptions = lesson_descriptions
 
     def json(self):
-        return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "coursem_id": self.coursem_id, "section_description": self.section_description}
+        return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "coursem_id": self.coursem_id, "lesson_descriptions": self.lesson_descriptions}
 
 class Course_check(db.Model):
     __tablename__ = 'employee_enrolled'
@@ -644,6 +644,26 @@ def find_by_course_id(course_id):
         {
             "code": 404,
             "message": "Course not found."
+        }
+    ), 404
+
+#find lesson by class ID
+@app.route("/lesson_by_class_id/<string:class_id>")
+def find_lesson_by_class_id(class_id):
+    lessonlist = Lesson.query.filter_by(class_id=class_id)
+    if lessonlist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "lesson": [lesson.json() for lesson in lessonlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Lessons not found for this course ID."
         }
     ), 404
 

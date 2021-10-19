@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 19, 2021 at 10:45 AM
+-- Generation Time: Oct 19, 2021 at 10:50 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -33,6 +33,7 @@ USE `lms_course`;
 DROP TABLE IF EXISTS `class`;
 CREATE TABLE IF NOT EXISTS `class` (
   `class_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `course_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `start_date` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
@@ -50,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `class` (
 -- Dumping data for table `class`
 --
 
-INSERT INTO `class` (`class_id`, `lesson_id`, `course_name`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `current_class_size`, `employee_id`, `duration_of_class`) VALUES
-(1, 1, 'PlaceHolder', 'Start', 'Ebd', 'Start', 'End', 23, 4, 5, 5);
+INSERT INTO `class` (`class_id`, `course_id`, `lesson_id`, `course_name`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `current_class_size`, `employee_id`, `duration_of_class`) VALUES
+(1, 0, 1, 'PlaceHolder', 'Start', 'Ebd', 'Start', 'End', 23, 4, 5, 5);
 
 -- --------------------------------------------------------
 

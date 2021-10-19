@@ -92,6 +92,7 @@ class Class(db.Model):
     __tablename__ = 'class'
 
     class_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, nullable=False)
     lesson_id = db.Column(db.Integer, nullable=False)
     course_name = db.Column(db.String(50), nullable=False)
     start_date = db.Column(db.String(50), nullable=False)
@@ -103,8 +104,9 @@ class Class(db.Model):
     employee_id = db.Column(db.Integer, nullable=False)
     duration_of_class = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, class_id, lesson_id, course_name, start_date, end_date, start_time, end_time, class_size, current_class_size, employee_id, duration_of_class):
+    def __init__(self, class_id, course_id, lesson_id, course_name, start_date, end_date, start_time, end_time, class_size, current_class_size, employee_id, duration_of_class):
         self.class_id = class_id
+        self.course_id = course_id
         self.lesson_id = lesson_id
         self.course_name = course_name
         self.start_date = start_date
@@ -135,7 +137,7 @@ class Class(db.Model):
             raise Exception("Class size cannot be less than zero.")
 
     def json(self):
-        return {"class_id": self.class_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
+        return {"class_id": self.class_id, "course_id": self.course_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
 
 # Lesson Class
 

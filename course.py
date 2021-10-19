@@ -318,7 +318,7 @@ def create_status():
                     "code": 500,
                     "data": {
                     },
-                    "message": "An error occurred with enrollment. Please select an employee or course. The employee may have already been enrolled."
+                    "message": "An error occurred with enrollment. The employee may have already been enrolled or completed the course."
                 }
             ), 500
 

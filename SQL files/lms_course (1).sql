@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 12, 2021 at 02:53 PM
+-- Generation Time: Oct 19, 2021 at 10:45 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `total_no_of_class` int(11) NOT NULL,
   `total_no_of_lesson` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
-  `course_description` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `course_description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `course_prerequisite` int(11) NOT NULL,
   `coursem_id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
@@ -81,9 +81,10 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no_of_lesson`, `class_id`, `course_description`, `course_prerequisite`, `coursem_id`, `employee_id`, `start_time`, `end_time`, `datetime_uploaded`) VALUES
-(1, 'PlaceHolder', 5, 2, 1, 'Fix', 2, 2, 1, 'Now', 'Later', '2021-09-14 00:00:00'),
-(4, 'New Teester', 2, 2, 4, 'Fix', 2, 2, 1, 'Now', 'Later', '2021-09-14 00:00:00'),
-(6, 'New Course', 2, 2, 3, 'placeholder', 2, 2, 2, '24 July', '28 July', '2021-10-08 00:00:00');
+(1, 'Chemical engineering', 1, 1, 1, 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', 0, 1, 2, '1 July 2021', '1 December 2021', '2021-06-23 00:00:00'),
+(4, 'Civil Engineer', 1, 1, 1, 'Civil engineering is the professional practice of designing and developing infrastructure projects. This can be on a huge scale, such as the development of nationwide transport systems or water supply networks, or on a smaller scale, such as the development of single roads or buildings.', 0, 1, 2, '5 August 2021', '1 December 2021', '2021-08-17 00:00:00'),
+(5, 'Electrical/electronic engineering', 1, 2, 5, 'Electrical and electronics engineering both focus on applications of electrical power. The two fields differ in that electrical engineers chiefly focus on the large-scale production and supply of electrical power, while electronics engineers focus on much smaller electronic circuits, such as those used in computers.', 0, 1, 1, '5 July 2021', '1 December 2021', '2021-09-14 00:00:00'),
+(6, 'Computer Engineering', 1, 1, 5, 'Computer engineering concerns the design and prototyping of computing hardware and software. This subject merges electrical engineering with computer science, and you may prefer to study computer engineering alongside one of these similar subjects.', 0, 1, 1, '8 September 2021', '18 September 2021', '2021-07-13 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -171,7 +172,6 @@ INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `status`) VALUES
 (1, 1, 'completed'),
 (1, 4, 'in-progress'),
 (1, 5, 'pending'),
-(1, 12, 'pending'),
 (1, 15, 'pending'),
 (2, 5, 'completed'),
 (2, 6, 'completed');

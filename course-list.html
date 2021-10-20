@@ -77,6 +77,7 @@
     <div id="second-container" class="container">
 
         <h1>View My Enrolled Courses</h1>
+        <h4>Click Course Name to see classes</h4>
 
         <table id="mycourseTable" class='table'>
             <thead class='thead-dark'>
@@ -119,7 +120,7 @@
                     mycourse_data = mycourse_data.data;
 
                     eachRow = `<tr><td>` + mycourse_data.course_id + `</td>
-                    <td>` + mycourse_data.course_name + `</td>
+                    <td><a href='course-applyclass.html?course_id=` + mycourse_data.course_id + `'>` + mycourse_data.course_name + `</a></td>
                     <td>` + mycourse_data.course_description + `</td>
                     <td>` + mycourse_data.total_no_of_class + `</td>
                     <td>` + mycourse_data.total_no_of_lesson + `</td>

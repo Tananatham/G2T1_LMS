@@ -669,6 +669,26 @@ def find_lesson_by_class_id(class_id):
         }
     ), 404
 
+#find classes by course ID
+@app.route("/class_by_course_id/<string:course_id>")
+def find_classes_by_course_id(course_id):
+    classlist = Class.query.filter_by(course_id=course_id)
+    if classlist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "class": [classes.json() for classes in classlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Classes not found for this course ID."
+        }
+    ), 404
+
 #  POST Insert a new course
 @app.route("/course", methods=['POST'])
 def create():

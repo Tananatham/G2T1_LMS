@@ -311,8 +311,23 @@ def create_status():
 
     employee_id = data["employee_id"]
     course_id = data["course_id"]
+    class_id = data['class_id']
+    status = data["status"]
     if employee_course_prerequisite_check(employee_id, course_id):
         new_status = Course_check(**data)
+        if status == "in-progress":
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            try:
+                class_data.class_enroll()
+            except:
+                return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                    },
+                    "message": "The class is full."
+                }
+            ), 500
         try:
             db.session.add(new_status)
             db.session.commit()
@@ -322,7 +337,7 @@ def create_status():
                     "code": 500,
                     "data": {
                     },
-                    "message": "An error occurred with enrollment. The employee may have already been enrolled or completed the course."
+                    "message": "You have already applied for this class."
                 }
             ), 500
 
@@ -338,7 +353,7 @@ def create_status():
             {
                 "code": 500,
                 "data": {},
-                "message": "This ID has not completed all of the prerequisite courses!"
+                "message": "This engineer has not completed all of the prerequisite courses!"
             }
         ), 500
 
@@ -396,6 +411,36 @@ def find_status_by_id(employee_id):
                 "code": 201,
                 "data": {
                     "course": completed_course_id
+                }
+                    
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Data not found."
+        }
+    ), 404
+
+#Find the course IDs that a student completed
+@app.route("/class_by_engineer_in_progress/<string:employee_id>/<string:course_id>")
+def find_inprogress_class_id(employee_id, course_id):
+    in_progress_list = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(status="in-progress")
+
+    output_data = []
+    for each_status in in_progress_list:
+        status_json = each_status.json()
+        class_id = status_json["class_id"]
+
+        class_detail = Class.query.filter_by(class_id=class_id).first()
+        output_data.append(class_detail.json())
+
+    if in_progress_list:
+        return jsonify(
+            {
+                "code": 201,
+                "data": {
+                    "class": output_data
                 }
                     
             }
@@ -483,12 +528,21 @@ def find_course_name_by_id(course_id):
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)
+    class_id = request.args.get('class_id',1,type=int)
 
-    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
 
     if status_data:
         data = request.get_json()
-        if data['status']:
+        if data['status'] == 'in-progress':
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_enroll()
+            status_data.status = data['status']
+        elif data['status'] == 'completed':
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_withdraw()
+            status_data.status = data['status']
+        else:
             status_data.status = data['status']
 
         db.session.commit()
@@ -554,9 +608,13 @@ def update_class_enrollment():
 def delete_status():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)
+    class_id = request.args.get('class_id',1,type=int)
 
-    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
     if status_data:
+        if status_data.status == "in-progress":
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_withdraw()
         db.session.delete(status_data)
         db.session.commit()
         return jsonify(

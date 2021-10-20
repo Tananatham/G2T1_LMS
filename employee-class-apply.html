@@ -74,7 +74,7 @@
 
     <div id="main-container-2" class="container">
 
-        <h1>View My Classes</h1>
+        <h1>Classes I am enrolled in</h1>
 
         <table id="consultationsTable" class='table'>
             <thead class='thead-dark'>
@@ -118,7 +118,7 @@
 
         var url_course_id = getParameterByName('course_id');
         if (url_course_id == null) {
-            window.location.replace("course-list.html")
+            window.location.replace("employee-course-list.html")
         }
 
         const vm = new Vue({
@@ -140,10 +140,11 @@
             el: '#main-container-2',
             data: {
                 classes: [],
+                employee_id: 1,
                 course_id: url_course_id
             },
             mounted: function() {
-                axios.get('http://localhost:6900/class_by_course_id/' + this.course_id)
+                axios.get('http://localhost:6900/class_by_engineer_in_progress/' + this.employee_id + '/' + this.course_id)
                     .then(response => {
                         this.classes = response.data.data.class;
                     })
@@ -157,25 +158,32 @@
             data: function() {
                 return {
                     employee_id: 1,
-                    course_id: url_course_id
+                    course_id: url_course_id,
+                    status: "pending"
                 };
             },
             methods: {
                 clicked: function(event) {
-                    axios.put('http://localhost:6900/class_enrollment/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
-                            class_id: this.class_id
+                    axios.post('http://localhost:6900/employee_course_status', {
+                            course_id: this.course_id,
+                            employee_id: this.employee_id,
+                            class_id: this.class_id,
+                            status: this.status
                         })
                         .then(response => {
-                            window.alert("You are now enrolled in this class.");
+                            window.alert("You have successfully applied to this course, please wait while an administrator approves.");
                             location.reload();
                         })
-                        .catch(error => alert("The Class is full."));
+                        .catch(error => {
+                            this.error = error.response.data.message
+                            window.alert("There is an error with applying for this course. Error: " + this.error)
+                        });
                 }
             }
         })
 
         Vue.component("course-name", {
-            template: "<span>{{name}}</span>",
+            template: "<span><strong>{{name}}</strong></span>",
             data: function() {
                 return {
                     name: '',

@@ -154,23 +154,20 @@
             props: ["class_id"],
             data: function() {
                 return {
-                    employee_id: 1
+                    employee_id: 1,
+                    course_id: url_course_id
                 };
             },
             methods: {
                 clicked: function(event) {
-                    axios.post('http://localhost:6900/class_enrollment', {
-                            class_id: this.class_id,
-                            employee_id: this.employee_id
+                    axios.put('http://localhost:6900/class_enrollment/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
+                            class_id: this.class_id
                         })
                         .then(response => {
                             window.alert("You are now enrolled in this class.");
                             location.reload();
                         })
-                        .catch(error => {
-                            this.error = error.response.data.message
-                            window.alert("There is an error with applying for this class. Error: " + this.error)
-                        });
+                        .catch(error => alert("The Class is full."));
                 }
             }
         })

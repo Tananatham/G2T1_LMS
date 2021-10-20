@@ -167,11 +167,13 @@ class Course_check(db.Model):
 
     employee_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, primary_key=True)
+    class_id = db.Column(db.String(50), nullable=True)
     status = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, employee_id, course_id, status):
+    def __init__(self, employee_id, course_id, class_id, status):
         self.employee_id = employee_id
         self.course_id = course_id
+        self.class_id = class_id
         self.status = status
     
     def to_dict(self):
@@ -186,7 +188,7 @@ class Course_check(db.Model):
         return result
 
     def json(self):
-        return {"employee_id": self.employee_id, "course_id": self.course_id, "status": self.status}
+        return {"employee_id": self.employee_id, "course_id": self.course_id, "class_id": self.class_id, "status": self.status}
 
 
 class PrerequisiteCheck(db.Model):
@@ -506,6 +508,48 @@ def update_status():
         }
     ), 404
 
+#Update a course status
+@app.route("/class_enrollment/", methods=['PUT'])
+def update_class_enrollment():
+    employee_id = request.args.get('employee_id',1,type=int)
+    course_id = request.args.get('course_id',1,type=int)
+
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+
+    if status_data:
+        data = request.get_json()
+        if data['class_id']:
+            status_data.class_id = data['class_id']
+            class_data = Class.query.filter_by(class_id=data['class_id']).first()
+            class_data.class_enroll()
+        try:
+            db.session.commit()
+        except:
+            return jsonify(
+            {
+                "code": 500,
+                "data": {
+                },
+                "message": "An error occurred creating the course."
+            }
+        ), 500
+        return jsonify(
+            {
+                "code": 200,
+                "data": status_data.json()
+            }
+        )
+    
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "employee_id": employee_id
+            },
+            "message": "An error occured, the class might be full."
+        }
+    ), 404
+
 @app.route("/employee_course_status/", methods=['DELETE'])
 def delete_status():
     employee_id = request.args.get('employee_id',1,type=int)
@@ -699,15 +743,10 @@ def create():
     try:
         db.session.add(course)
         db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                },
-                "message": "An error occurred creating the course."
-            }
-        ), 500
+    except Exception:
+        return jsonify({
+            "message": "The Class is probably full."
+        }), 500
 
     return jsonify(
         {

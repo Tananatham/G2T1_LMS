@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 20, 2021 at 05:00 AM
+-- Generation Time: Oct 20, 2021 at 08:55 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -45,16 +45,19 @@ CREATE TABLE IF NOT EXISTS `class` (
   `employee_id` int(11) NOT NULL,
   `duration_of_class` int(11) NOT NULL,
   PRIMARY KEY (`class_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `class`
 --
 
 INSERT INTO `class` (`class_id`, `course_id`, `lesson_id`, `course_name`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `current_class_size`, `employee_id`, `duration_of_class`) VALUES
-(1, 0, 1, 'PlaceHolder', 'Start', 'Ebd', 'Start', 'End', 23, 4, 5, 5),
-(2, 4, 3, 'Civil Engineer course', '16 July 2021', '22 July 2021', '14:00', '16:00', 10, 0, 1, 2),
-(3, 4, 3, 'Civil Engineer course', '25 October 2021', '25 October 2022', '14:00', '16:00', 10, 10, 1, 2);
+(2, 4, 3, 'Civil Engineer course', '1 September 2021', '1 December 2021', '14:00', '16:00', 10, 4, 1, 2),
+(3, 4, 3, 'Civil Engineer course', '1 January 2021', '25 October 2022', '14:00', '16:00', 10, 10, 1, 2),
+(4, 6, 4, 'Computer Engineering Class', '25 October 2021', '25 October 2022', '14:00', '16:00', 10, 0, 1, 2),
+(5, 6, 4, 'Computer Engineering Class', '1 January 2020', '20 January 2020', '14:00', '16:00', 10, 0, 1, 2),
+(6, 1, 5, 'Chemical engineering', '1 January 2020', '20 January 2020', '14:00', '16:00', 10, 10, 1, 2),
+(7, 4, 3, 'Civil Engineer course', '1 January 2021', '10 February 2021', '14:00', '16:00', 10, 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -174,11 +177,7 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
 --
 
 INSERT INTO `employee_enrolled` (`employee_id`, `course_id`, `class_id`, `status`) VALUES
-(1, 1, NULL, 'completed'),
-(1, 4, 2, 'in-progress'),
-(1, 6, NULL, 'pending'),
-(2, 5, NULL, 'completed'),
-(2, 6, NULL, 'completed');
+(1, 4, 2, 'in-progress');
 
 -- --------------------------------------------------------
 

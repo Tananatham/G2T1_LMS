@@ -69,6 +69,41 @@
         </table>
     </div>
 
+
+    <div id="main-container-2" class="container">
+
+        <h1>View My Classes</h1>
+
+        <table id="consultationsTable" class='table'>
+            <thead class='thead-dark'>
+                <tr>
+                    <th>Class ID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Current Class Size</th>
+                    <th>Max Class Size</th>
+                    <th>Go to Lessons</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="record in classes">
+                    <td>{{ record.class_id }}</td>
+                    <td>{{ record.start_date }}</td>
+                    <td>{{ record.end_date }}</td>
+                    <td>{{ record.start_time }}</td>
+                    <td>{{ record.end_time }}</td>
+                    <td>{{ record.current_class_size }}</td>
+                    <td>{{ record.class_size }}</td>
+                    <td>
+                        <lesson-button :lesson_id=record.lesson_id></lesson-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
         function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
@@ -80,9 +115,27 @@
         }
 
         var url_course_id = getParameterByName('course_id');
+        if (url_course_id == null) {
+            window.location.replace("course-list.html")
+        }
 
         const vm = new Vue({
             el: '#main-container',
+            data: {
+                classes: [],
+                course_id: url_course_id
+            },
+            mounted: function() {
+                axios.get('http://localhost:6900/class_by_course_id/' + this.course_id)
+                    .then(response => {
+                        this.classes = response.data.data.class;
+                    })
+                    .catch(error => alert(error));
+            }
+        });
+
+        const vm2 = new Vue({
+            el: '#main-container-2',
             data: {
                 classes: [],
                 course_id: url_course_id
@@ -106,19 +159,34 @@
             },
             methods: {
                 clicked: function(event) {
-                    axios.post('http://localhost:6900/employee_course_status', {
-                            course_id: this.course_id,
-                            employee_id: this.employee_id,
-                            status: this.status
+                    axios.post('http://localhost:6900/class_enrollment', {
+                            class_id: this.class_id,
+                            employee_id: this.employee_id
                         })
                         .then(response => {
-                            window.alert("You have successfully applied to this course, please wait while an administrator approves.");
+                            window.alert("You are now enrolled in this class.");
                             location.reload();
                         })
                         .catch(error => {
                             this.error = error.response.data.message
-                            window.alert("There is an error with applying for this course. Error: " + this.error)
+                            window.alert("There is an error with applying for this class. Error: " + this.error)
                         });
+                }
+            }
+        })
+
+
+        Vue.component("lesson-button", {
+            template: "<button @click='clicked' class='btn btn-success'>Lessons</button>",
+            props: ["lesson_id"],
+            data: function() {
+                return {
+                    employee_id: 1
+                };
+            },
+            methods: {
+                clicked: function(event) {
+                    window.location.replace("class-lesson.html?class_id=" + this.lesson_id)
                 }
             }
         })

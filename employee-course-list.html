@@ -67,15 +67,11 @@
                 </tr>
             </tbody>
         </table>
-        <!-- 
-        <p>
-            <em><strong>Pages:</strong> <a href="create-course.html">Create a Course</a></em>
-        </p> -->
     </div>
 
     <script>
         Vue.component("check-class-button", {
-            template: "<button @click='clicked' class='btn btn-success'>See Classes</button>",
+            template: "<button @click='clicked' class='btn btn-outline-info'>See Classes</button>",
             props: ["course_id"],
             data: function() {
                 return {

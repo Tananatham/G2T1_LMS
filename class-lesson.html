@@ -43,7 +43,7 @@
             <thead class='thead-dark'>
                 <tr>
                     <th>Lesson ID</th>
-                    <th>Lesson Description</th>
+                    <th>Lesson</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,6 +66,9 @@
         }
 
         var url_class_id = getParameterByName('class_id');
+        if (url_class_id == null) {
+            window.location.replace("course-list.html")
+        }
         //console.log(url_class_id)
 
         const vm = new Vue({

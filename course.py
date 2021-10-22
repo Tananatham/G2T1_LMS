@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 from flask_cors import CORS
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
@@ -83,6 +84,7 @@ class Course(db.Model):
         for column in columns:
             result[column] = getattr(self, column)
         return result
+    
 
     def json(self):
         return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "course_prerequisite": self.course_prerequisite, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded}
@@ -92,6 +94,7 @@ class Class(db.Model):
     __tablename__ = 'class'
 
     class_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, nullable=False)
     lesson_id = db.Column(db.Integer, nullable=False)
     course_name = db.Column(db.String(50), nullable=False)
     start_date = db.Column(db.String(50), nullable=False)
@@ -103,8 +106,9 @@ class Class(db.Model):
     employee_id = db.Column(db.Integer, nullable=False)
     duration_of_class = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, class_id, lesson_id, course_name, start_date, end_date, start_time, end_time, class_size, current_class_size, employee_id, duration_of_class):
+    def __init__(self, class_id, course_id, lesson_id, course_name, start_date, end_date, start_time, end_time, class_size, current_class_size, employee_id, duration_of_class):
         self.class_id = class_id
+        self.course_id = course_id
         self.lesson_id = lesson_id
         self.course_name = course_name
         self.start_date = start_date
@@ -133,9 +137,35 @@ class Class(db.Model):
             self.current_class_size -= 1
         else:
             raise Exception("Class size cannot be less than zero.")
+    
+    
+    def get_start_datetime(self):
+        """
+        Get the starting datetime
+        """
+        start_year = self.start_date.split()[2]
+        start_month = datetime.strptime(self.start_date.split()[1], "%B")
+        start_day = self.start_date.split()[0]
+        start_hour = self.start_time.split(":")[0]
+        start_minute = self.start_time.split(":")[1]
+
+        return datetime(int(start_year), start_month.month, int(start_day), int(start_hour), int(start_minute))
+    
+    
+    def get_end_datetime(self):
+        """
+        Get the starting datetime
+        """
+        end_year = self.end_date.split()[2]
+        end_month = datetime.strptime(self.end_date.split()[1], "%B")
+        end_day = self.end_date.split()[0]
+        end_hour = self.end_time.split(":")[0]
+        end_minute = self.end_time.split(":")[1]
+
+        return datetime(int(end_year), end_month.month, int(end_day), int(end_hour), int(end_minute))
 
     def json(self):
-        return {"class_id": self.class_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
+        return {"class_id": self.class_id, "course_id": self.course_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
 
 # Lesson Class
 
@@ -165,11 +195,13 @@ class Course_check(db.Model):
 
     employee_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, primary_key=True)
+    class_id = db.Column(db.String(50), nullable=True)
     status = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, employee_id, course_id, status):
+    def __init__(self, employee_id, course_id, class_id, status):
         self.employee_id = employee_id
         self.course_id = course_id
+        self.class_id = class_id
         self.status = status
     
     def to_dict(self):
@@ -184,7 +216,7 @@ class Course_check(db.Model):
         return result
 
     def json(self):
-        return {"employee_id": self.employee_id, "course_id": self.course_id, "status": self.status}
+        return {"employee_id": self.employee_id, "course_id": self.course_id, "class_id": self.class_id, "status": self.status}
 
 
 class PrerequisiteCheck(db.Model):
@@ -304,39 +336,70 @@ def name_lookup_employee():
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
-
+    current_time = datetime.now()
     employee_id = data["employee_id"]
     course_id = data["course_id"]
-    if employee_course_prerequisite_check(employee_id, course_id):
-        new_status = Course_check(**data)
-        try:
-            db.session.add(new_status)
-            db.session.commit()
-        except:
-            return jsonify(
+    class_id = data['class_id']
+    status = data["status"]
+    class_data = Class.query.filter_by(class_id=class_id).first()
+
+    if class_data.get_start_datetime() <= datetime.now() <= class_data.get_end_datetime():
+        pass
+    else:
+        return jsonify(
                 {
                     "code": 500,
                     "data": {
                     },
-                    "message": "An error occurred with enrollment. Please select an employee or course. The employee may have already been enrolled."
+                    "message": "The class has not started or is already over."
                 }
             ), 500
-
-        return jsonify(
-            {
-                "code": 201,
-                "data": new_status.json()
-            }
-        ), 201
-
+    
+    if employee_course_prerequisite_check(employee_id, course_id):
+        pass
     else:
+        return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                    },
+                    "message": "The employee applying do not meet all the prerequisite for this course."
+                }
+            ), 500
+    
+    new_status = Course_check(**data)
+    class_data = Class.query.filter_by(class_id=class_id).first()
+    try:
+        class_data.class_enroll()
+    except:
+        return jsonify(
+        {
+            "code": 500,
+            "data": {
+            },
+            "message": "The class is full."
+        }
+    ), 500
+    try:
+        db.session.add(new_status)
+        db.session.commit()
+    except:
         return jsonify(
             {
                 "code": 500,
-                "data": {},
-                "message": "This ID has not completed all of the prerequisite courses!"
+                "data": {
+                },
+                "message": "This employee might already be taking this class."
             }
         ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": new_status.json()
+        }
+    ), 201
+
 
     
 @app.route("/set_course_prerequisite", methods=['POST'])
@@ -392,6 +455,36 @@ def find_status_by_id(employee_id):
                 "code": 201,
                 "data": {
                     "course": completed_course_id
+                }
+                    
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Data not found."
+        }
+    ), 404
+
+#Find the course IDs that a student completed
+@app.route("/class_by_engineer_in_progress/<string:employee_id>/<string:course_id>")
+def find_inprogress_class_id(employee_id, course_id):
+    in_progress_list = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(status="in-progress")
+
+    output_data = []
+    for each_status in in_progress_list:
+        status_json = each_status.json()
+        class_id = status_json["class_id"]
+
+        class_detail = Class.query.filter_by(class_id=class_id).first()
+        output_data.append(class_detail.json())
+
+    if in_progress_list:
+        return jsonify(
+            {
+                "code": 201,
+                "data": {
+                    "class": output_data
                 }
                     
             }
@@ -479,12 +572,21 @@ def find_course_name_by_id(course_id):
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)
+    class_id = request.args.get('class_id',1,type=int)
 
-    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
 
     if status_data:
         data = request.get_json()
-        if data['status']:
+        if data['status'] == 'in-progress':
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_enroll()
+            status_data.status = data['status']
+        elif data['status'] == 'completed':
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_withdraw()
+            status_data.status = data['status']
+        else:
             status_data.status = data['status']
 
         db.session.commit()
@@ -504,13 +606,59 @@ def update_status():
         }
     ), 404
 
-@app.route("/employee_course_status/", methods=['DELETE'])
-def delete_status():
+#Update a course status
+@app.route("/class_enrollment/", methods=['PUT'])
+def update_class_enrollment():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)
 
     status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
+
     if status_data:
+        data = request.get_json()
+        if data['class_id']:
+            status_data.class_id = data['class_id']
+            class_data = Class.query.filter_by(class_id=data['class_id']).first()
+            class_data.class_enroll()
+        try:
+            db.session.commit()
+        except:
+            return jsonify(
+            {
+                "code": 500,
+                "data": {
+                },
+                "message": "An error occurred creating the course."
+            }
+        ), 500
+        return jsonify(
+            {
+                "code": 200,
+                "data": status_data.json()
+            }
+        )
+    
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "employee_id": employee_id
+            },
+            "message": "An error occured, the class might be full."
+        }
+    ), 404
+
+@app.route("/employee_course_status/", methods=['DELETE'])
+def delete_status():
+    employee_id = request.args.get('employee_id',1,type=int)
+    course_id = request.args.get('course_id',1,type=int)
+    class_id = request.args.get('class_id',1,type=int)
+
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
+    if status_data:
+        if status_data.status == "in-progress":
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_withdraw()
         db.session.delete(status_data)
         db.session.commit()
         return jsonify(
@@ -667,6 +815,26 @@ def find_lesson_by_class_id(class_id):
         }
     ), 404
 
+#find classes by course ID
+@app.route("/class_by_course_id/<string:course_id>")
+def find_classes_by_course_id(course_id):
+    classlist = Class.query.filter_by(course_id=course_id)
+    if classlist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "class": [classes.json() for classes in classlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Classes not found for this course ID."
+        }
+    ), 404
+
 #  POST Insert a new course
 @app.route("/course", methods=['POST'])
 def create():
@@ -677,15 +845,10 @@ def create():
     try:
         db.session.add(course)
         db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                },
-                "message": "An error occurred creating the course."
-            }
-        ), 500
+    except Exception:
+        return jsonify({
+            "message": "The Class is probably full."
+        }), 500
 
     return jsonify(
         {
@@ -907,7 +1070,8 @@ def get_all_classes():
             {
                 "code": 200,
                 "data": {
-                    "course": [classes.json() for classes in classlist]
+                    "course": [classes.json() for classes in classlist],
+                    "date": [classes.get_start_datetime() for classes in classlist]
                 }
             }
         )

@@ -34,19 +34,19 @@
 </head>
 
 <body>
-<!-- Top bar -->
+    <!-- Top bar -->
     <div class="bg-secondary p-2 text-dark bg-opacity-10">
         <a href="HR_homepage.html">
             <h4 style="color: black;">LMS - Admin</h4>
         </a>
     </div>
 
-<!-- link to course page -->
-    <div class="container p-3 my-3" >
+    <!-- link to course page -->
+    <div class="container p-3 my-3">
         <a href="HR_courses.html">
             <input class="btn btn-primary" type="button" value="Courses">
         </a>
-    
+
         <input class="btn btn-primary" type="button" value="Learners' profile">
         <input class="btn btn-primary" type="button" value="Withdrawal request">
 
@@ -67,6 +67,7 @@
                     <th>Employee Name</th>
                     <th></th>
                     <th>Course ID</th>
+                    <th>Class ID</th>
                     <th>Course Name</th>
                     <th>Action</th>
                 </tr>
@@ -79,12 +80,13 @@
                     </td>
                     <td>has applied for...</td>
                     <td>{{ record.course_id }}</td>
+                    <td>{{ record.class_id }}</td>
                     <td>
                         <course-namer :course_id=record.course_id></course-namer>
                     </td>
                     <td>
-                        <approve-button :course_id=record.course_id :employee_id=record.employee_id></approve-button>
-                        <deny-button :course_id=record.course_id :employee_id=record.employee_id></deny-button>
+                        <approve-button :course_id=record.course_id :employee_id=record.employee_id :class_id=record.class_id></approve-button>
+                        <deny-button :course_id=record.course_id :employee_id=record.employee_id :class_id=record.class_id></deny-button>
                     </td>
                 </tr>
             </tbody>
@@ -119,7 +121,7 @@
                         <course-namer :course_id=record.course_id></course-namer>
                     </td>
                     <td>
-                        <withdraw-button :course_id=record.course_id :employee_id=record.employee_id></withdraw-button>
+                        <withdraw-button :course_id=record.course_id :employee_id=record.employee_id :class_id=record.class_id></withdraw-button>
                     </td>
                 </tr>
             </tbody>
@@ -129,7 +131,7 @@
     <script>
         Vue.component('employee-namer', {
             props: ['employee_id'],
-            template: '<span><strong>{{name}}</strong></span>',
+            template: '<span>{{name}}</span>',
             data: function() {
                 return {
                     name: 'Unknown'
@@ -165,7 +167,7 @@
     <script>
         Vue.component("approve-button", {
             template: "<button @click='clicked' class='btn btn-success'>Approve</button>",
-            props: ["course_id", "employee_id"],
+            props: ["course_id", "employee_id", "class_id"],
             data: function() {
                 return {
                     status: "in-progress"
@@ -173,11 +175,11 @@
             },
             methods: {
                 clicked: function(event) {
-                    axios.put('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
+                    axios.put('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id + "&class_id=" + this.class_id, {
                             status: this.status,
                         })
                         .then(response => {
-                            window.alert("The course has been approved.");
+                            window.alert("The class has been approved.");
                             location.reload();
                         })
                         .catch(error => alert(error));
@@ -187,14 +189,12 @@
 
         Vue.component("deny-button", {
             template: "<button @click='clicked' class='btn btn-danger'>Deny</button>",
-            props: ["course_id", "employee_id"],
+            props: ["course_id", "employee_id", "class_id"],
             methods: {
                 clicked: function(event) {
-                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
-                            status: this.status,
-                        })
+                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id + "&class_id=" + this.class_id)
                         .then(response => {
-                            window.alert("The course has been denied and removed.");
+                            window.alert("The application is denied.");
                             location.reload();
                         })
                         .catch(error => alert(error));
@@ -204,12 +204,10 @@
 
         Vue.component("withdraw-button", {
             template: "<button @click='clicked' class='btn btn-danger'>Withdraw</button>",
-            props: ["course_id", "employee_id"],
+            props: ["course_id", "employee_id", "class_id"],
             methods: {
                 clicked: function(event) {
-                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id, {
-                            status: this.status,
-                        })
+                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id + "&class_id=" + this.class_id)
                         .then(response => {
                             window.alert("The student has been withdrawn from this course.");
                             location.reload();

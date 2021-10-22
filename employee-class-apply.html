@@ -75,6 +75,7 @@
     <div id="main-container-2" class="container">
 
         <h1>Classes I am enrolled in</h1>
+        <div class="alert alert-warning" role="alert" v-if="!classes.length">You are not enrolled in any class in this course</div>
 
         <table id="consultationsTable" class='table'>
             <thead class='thead-dark'>
@@ -87,6 +88,7 @@
                     <th>Current Class Size</th>
                     <th>Max Class Size</th>
                     <th>Go to Lessons</th>
+                    <!-- <th>Withdraw from class</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -101,10 +103,16 @@
                     <td>
                         <lesson-button :lesson_id=record.lesson_id></lesson-button>
                     </td>
+                    <!-- <td>
+                        <withdraw-button :class_id=record.class_id></withdraw-button>
+                    </td> -->
                 </tr>
             </tbody>
         </table>
+
+        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='employee-course-list.html'">Back to all courses</button>
     </div>
+
 
     <script>
         function getParameterByName(name, url = window.location.href) {
@@ -153,7 +161,7 @@
         });
 
         Vue.component("apply-button", {
-            template: "<button @click='clicked' class='btn btn-success'>Apply</button>",
+            template: "<button @click='clicked' class='btn btn-outline-primary btn-sm'>Apply</button>",
             props: ["class_id"],
             data: function() {
                 return {
@@ -176,7 +184,7 @@
                         })
                         .catch(error => {
                             this.error = error.response.data.message
-                            window.alert("There is an error with applying for this course. Error: " + this.error)
+                            window.alert("Error: " + this.error)
                         });
                 }
             }
@@ -200,7 +208,7 @@
 
 
         Vue.component("lesson-button", {
-            template: "<button @click='clicked' class='btn btn-success'>Lessons</button>",
+            template: "<button @click='clicked' class='btn btn-outline-info btn-sm'>Lessons</button>",
             props: ["lesson_id"],
             data: function() {
                 return {
@@ -210,6 +218,30 @@
             methods: {
                 clicked: function(event) {
                     window.location.replace("class-lesson.html?class_id=" + this.lesson_id)
+                }
+            }
+        })
+
+        Vue.component("withdraw-button", {
+            template: "<button @click='clicked' class='btn btn-outline-danger btn-sm'>Withdraw</button>",
+            props: ["class_id"],
+            data: function() {
+                return {
+                    employee_id: 1,
+                    course_id: url_course_id
+                };
+            },
+            methods: {
+                clicked: function(event) {
+                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id + "&class_id=" + this.class_id)
+                        .then(response => {
+                            window.alert("You have withdrawn from the course.");
+                            location.reload();
+                        })
+                        .catch(error => {
+                            this.error = error.response.data.message
+                            window.alert("Error: " + this.error)
+                        });
                 }
             }
         })

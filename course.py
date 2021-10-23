@@ -244,6 +244,25 @@ class PrerequisiteCheck(db.Model):
         return {"course_id": self.course_id, "prerequisite_course_id": self.prerequisite_course_id}
 
 
+class CourseMaterial(db.Model):
+    __tablename__ = 'course_material'
+
+    coursem_id = db.Column(db.Integer, primary_key=True)
+    coursem_description = db.Column(db.String(50), nullable=True)
+    course_id = db.Column(db.Integer, nullable=False)
+    lesson_id = db.Column(db.Integer, nullable=False)
+    datetime_uploaded = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, coursem_id, coursem_description, course_id, lesson_id, datetime_uploaded):
+        self.coursem_id = coursem_id
+        self.coursem_description = coursem_description
+        self.course_id = course_id
+        self.lesson_id = lesson_id
+        self.datetime_uploaded = datetime_uploaded
+   
+    def json(self):
+        return {"coursem_id": self.coursem_id, "coursem_description": self.coursem_description, "course_id": self.course_id, "lesson_id": self.lesson_id, "datetime_uploaded": self.datetime_uploaded}
+
 #Create Quiz
 class Quiz(db.Model):
     __tablename__ = 'quiz'
@@ -332,11 +351,10 @@ def name_lookup_employee():
     ), 200
 
 
-#Create a course status
+#Enroll a student in a course/class, the first core feature, now with datetime check and prerequisite check
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
-    current_time = datetime.now()
     employee_id = data["employee_id"]
     course_id = data["course_id"]
     class_id = data['class_id']
@@ -369,6 +387,7 @@ def create_status():
     
     new_status = Course_check(**data)
     class_data = Class.query.filter_by(class_id=class_id).first()
+    
     try:
         class_data.class_enroll()
     except:
@@ -380,6 +399,7 @@ def create_status():
             "message": "The class is full."
         }
     ), 500
+
     try:
         db.session.add(new_status)
         db.session.commit()
@@ -401,7 +421,45 @@ def create_status():
     ), 201
 
 
-    
+
+#Update a course status
+@app.route("/employee_course_status/", methods=['PUT'])
+def update_status():
+    employee_id = request.args.get('employee_id',1,type=int)
+    course_id = request.args.get('course_id',1,type=int)
+    class_id = request.args.get('class_id',1,type=int)
+
+    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
+
+    if status_data:
+        data = request.get_json()
+        if data['status'] == 'in-progress':
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            status_data.status = data['status']
+        elif data['status'] == 'completed':
+            class_data = Class.query.filter_by(class_id=class_id).first()
+            class_data.class_withdraw()
+            status_data.status = data['status']
+        else:
+            status_data.status = data['status']
+
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": status_data.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "employee_id": employee_id
+            },
+            "message": "Data is not found."
+        }
+    ), 404
+
 @app.route("/set_course_prerequisite", methods=['POST'])
 def set_course_prereq():
     data = request.get_json()
@@ -566,87 +624,6 @@ def find_course_name_by_id(course_id):
         }
     ), 404
 
-
-#Update a course status
-@app.route("/employee_course_status/", methods=['PUT'])
-def update_status():
-    employee_id = request.args.get('employee_id',1,type=int)
-    course_id = request.args.get('course_id',1,type=int)
-    class_id = request.args.get('class_id',1,type=int)
-
-    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
-
-    if status_data:
-        data = request.get_json()
-        if data['status'] == 'in-progress':
-            class_data = Class.query.filter_by(class_id=class_id).first()
-            class_data.class_enroll()
-            status_data.status = data['status']
-        elif data['status'] == 'completed':
-            class_data = Class.query.filter_by(class_id=class_id).first()
-            class_data.class_withdraw()
-            status_data.status = data['status']
-        else:
-            status_data.status = data['status']
-
-        db.session.commit()
-        return jsonify(
-            {
-                "code": 200,
-                "data": status_data.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "employee_id": employee_id
-            },
-            "message": "Data is not found."
-        }
-    ), 404
-
-#Update a course status
-@app.route("/class_enrollment/", methods=['PUT'])
-def update_class_enrollment():
-    employee_id = request.args.get('employee_id',1,type=int)
-    course_id = request.args.get('course_id',1,type=int)
-
-    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).first()
-
-    if status_data:
-        data = request.get_json()
-        if data['class_id']:
-            status_data.class_id = data['class_id']
-            class_data = Class.query.filter_by(class_id=data['class_id']).first()
-            class_data.class_enroll()
-        try:
-            db.session.commit()
-        except:
-            return jsonify(
-            {
-                "code": 500,
-                "data": {
-                },
-                "message": "An error occurred creating the course."
-            }
-        ), 500
-        return jsonify(
-            {
-                "code": 200,
-                "data": status_data.json()
-            }
-        )
-    
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "employee_id": employee_id
-            },
-            "message": "An error occured, the class might be full."
-        }
-    ), 404
 
 @app.route("/employee_course_status/", methods=['DELETE'])
 def delete_status():
@@ -815,6 +792,25 @@ def find_lesson_by_class_id(class_id):
         }
     ), 404
 
+@app.route("/quiz_by_lesson_id/<string:lesson_id>")
+def find_quiz_by_lesson_id(lesson_id):
+    list_of = Lesson.query.filter_by(lesson_id=lesson_id)
+    if list_of:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "quiz": [quiz.json() for quiz in list_of]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Quiz not found for this Lesson ID."
+        }
+    ), 404
+
 #find classes by course ID
 @app.route("/class_by_course_id/<string:course_id>")
 def find_classes_by_course_id(course_id):
@@ -949,6 +945,27 @@ def get_all_quiz():
         }
     ), 404
 
+# Get quiz by lesson ID
+@app.route("/quiz_by_lesson_id/<string:lesson_id>")
+def get_quiz_by_lesson_id(lesson_id):
+    quizlist = Quiz.query.filter_by(lesson_id=lesson_id)
+    if quizlist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "quiz": [quiz.json() for quiz in quizlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no quiz."
+        }
+    ), 404 
+
+    
 #  Get details of one quiz in JSON form
 @app.route("/quiz/<string:lesson_id>")
 def find_by_lessonid(lesson_id):

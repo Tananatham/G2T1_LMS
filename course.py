@@ -244,6 +244,25 @@ class PrerequisiteCheck(db.Model):
         return {"course_id": self.course_id, "prerequisite_course_id": self.prerequisite_course_id}
 
 
+class CourseMaterial(db.Model):
+    __tablename__ = 'course_material'
+
+    coursem_id = db.Column(db.Integer, primary_key=True)
+    coursem_description = db.Column(db.String(50), nullable=True)
+    course_id = db.Column(db.Integer, nullable=False)
+    lesson_id = db.Column(db.Integer, nullable=False)
+    datetime_uploaded = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, coursem_id, coursem_description, course_id, lesson_id, datetime_uploaded):
+        self.coursem_id = coursem_id
+        self.coursem_description = coursem_description
+        self.course_id = course_id
+        self.lesson_id = lesson_id
+        self.datetime_uploaded = datetime_uploaded
+   
+    def json(self):
+        return {"coursem_id": self.coursem_id, "coursem_description": self.coursem_description, "course_id": self.course_id, "lesson_id": self.lesson_id, "datetime_uploaded": self.datetime_uploaded}
+
 #Create Quiz
 class Quiz(db.Model):
     __tablename__ = 'quiz'
@@ -926,6 +945,27 @@ def get_all_quiz():
         }
     ), 404
 
+# Get quiz by lesson ID
+@app.route("/quiz_by_lesson_id/<string:lesson_id>")
+def get_quiz_by_lesson_id(lesson_id):
+    quizlist = Quiz.query.filter_by(lesson_id=lesson_id)
+    if quizlist:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "quiz": [quiz.json() for quiz in quizlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no quiz."
+        }
+    ), 404 
+
+    
 #  Get details of one quiz in JSON form
 @app.route("/quiz/<string:lesson_id>")
 def find_by_lessonid(lesson_id):

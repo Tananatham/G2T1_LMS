@@ -73,27 +73,11 @@ class TestCourse(unittest.TestCase):
 
     def test_find_prerequisites_by_id(self):
         courselist = PrerequisiteCheck(course_id='2',prerequisite_course_id='5')
-        self.assertEqual(courselist.to_dict(),{
-            'course_id': '2',
-            'prerequisite_course_id': '5'}
-        )
+        self.assertEqual(courselist.prerequisite_course_id,'5')
 
     def test_find_course_name_by_id(self):
         c1 = Course(course_id = '1', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '1', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '1', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00')
-        self.assertEqual(c1.to_dict(), {
-            'course_id': '1',
-            'course_name': 'PlaceHolder',
-            'total_no_of_class' : '5',
-            'total_no_of_lesson' : '2',
-            'class_id': '1',
-            'course_description': 'Fix',
-            'course_prerequisite': '2',
-            'coursem_id': '2',
-            'employee_id': '1',
-            'start_time': 'Now',
-            'end_time': 'Later',
-            'datetime_uploaded': '2021-09-14 00:00:00'}
-        )
+        self.assertEqual(c1.course_name ,'PlaceHolder')
 
 class TestClass(unittest.TestCase):
     def test_class_enrol(self):

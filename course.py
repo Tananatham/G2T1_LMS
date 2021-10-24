@@ -169,26 +169,35 @@ class Class(db.Model):
 
 # Lesson Class
 
+# Lessons
 class Lesson(db.Model):
     __tablename__ = 'lesson'
 
     lesson_id = db.Column(db.Integer, primary_key=True)
-    class_id = db.Column(db.Integer, nullable=False)
-    course_id = db.Column(db.Integer, nullable=False)
-    quiz_id = db.Column(db.Integer, nullable=False)
-    coursem_id = db.Column(db.Integer, nullable=False)
+    class_id = db.Column(db.Integer, nullable=True)
+    course_id = db.Column(db.Integer, nullable=True)
+    quiz_id = db.Column(db.Integer, nullable=True)
+    coursem_id = db.Column(db.Integer, nullable=True)
     lesson_descriptions = db.Column(db.String(50), nullable=False)
+    lesson_name = db.Column(db.String(50), nullable=False)
+    quiz_type = db.Column(db.String(50), nullable=False)
+    lesson_material = db.Column(db.String(200), nullable=True)
+    created_on = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, lesson_id, class_id, course_id, quiz_id, coursem_id, lesson_descriptions):
+    def __init__(self, lesson_id, class_id, course_id, quiz_id, coursem_id, lesson_descriptions,lesson_name,quiz_type,lesson_material,created_on):
         self.lesson_id = lesson_id
         self.class_id = class_id
         self.course_id = course_id
         self.quiz_id = quiz_id
         self.coursem_id = coursem_id
         self.lesson_descriptions = lesson_descriptions
+        self.lesson_name = lesson_name
+        self.quiz_type = quiz_type
+        self.lesson_material = lesson_material
+        self.created_on = created_on
 
     def json(self):
-        return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "coursem_id": self.coursem_id, "lesson_descriptions": self.lesson_descriptions}
+        return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "coursem_id": self.coursem_id, "lesson_descriptions": self.lesson_descriptions, "lesson_name": self.lesson_name, "quiz_type": self.quiz_type, "lesson_material": self.lesson_material, "created_on": self.created_on}
 
 class Course_check(db.Model):
     __tablename__ = 'employee_enrolled'
@@ -264,6 +273,7 @@ class CourseMaterial(db.Model):
         return {"coursem_id": self.coursem_id, "coursem_description": self.coursem_description, "course_id": self.course_id, "lesson_id": self.lesson_id, "datetime_uploaded": self.datetime_uploaded}
 
 #Create Quiz
+#Create Quiz
 class Quiz(db.Model):
     __tablename__ = 'quiz'
 
@@ -272,7 +282,7 @@ class Quiz(db.Model):
     quiz_type = db.Column(db.String(10), nullable=False)
     quizq_id = db.Column(db.Integer, nullable=False)
     lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'), nullable=False)
-    quiz_descriptions = db.Column(db.String(50), nullable=False)
+    quiz_description = db.Column(db.String(50), nullable=False)
     datetime_created = db.Column(db.DateTime, nullable=False)
     passing_score = db.Column(db.Integer, nullable=False)
     start_time = db.Column(db.String(10), nullable=False)
@@ -280,13 +290,12 @@ class Quiz(db.Model):
     quiz_details = db.Column(db.String(100), nullable=False)
     correct_answer = db.Column(db.String(100), nullable=False)
    
-    def __init__(self, quiz_id, quiz_name, quiz_type, quizq_id, lesson_id, quiz_descriptions, datetime_created, passing_score, start_time, end_time, quiz_details, correct_answer):
+    def __init__(self, quiz_id, quiz_name, quiz_type, lesson_id, quiz_description, datetime_created, passing_score, start_time, end_time, quiz_details, correct_answer):
         self.quiz_id = quiz_id
         self.quiz_name = quiz_name
         self.quiz_type = quiz_type
-        self.quizq_id = quizq_id
         self.lesson_id =  lesson_id
-        self.quiz_descriptions = quiz_descriptions
+        self.quiz_description = quiz_description
         self.datetime_created = datetime_created
         self.passing_score = passing_score
         self.start_time = start_time
@@ -295,8 +304,7 @@ class Quiz(db.Model):
         self.correct_answer = correct_answer
 
     def json(self):
-        return {"quiz_id": self.quiz_id, "quiz_name": self.quiz_name, "quizq_id": self.quizq_id, "lesson_id": self.lesson_id, "quiz_descriptions": self.quiz_descriptions, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "start_time":self.start_time, "end_time":self.end_time, "quiz_details":self.quiz_details, "correct_answer":self.correct_answer}
-
+        return {"quiz_id": self.quiz_id, "quiz_name": self.quiz_name, "lesson_id": self.lesson_id, "quiz_description": self.quiz_description, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "start_time":self.start_time, "end_time":self.end_time, "quiz_details":self.quiz_detailse, "correct_answer":self.correct_answer}
 
 def employee_course_prerequisite_check(employee_id, course_id):
     employee_completed_course = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="completed")
@@ -810,6 +818,28 @@ def find_quiz_by_lesson_id(lesson_id):
             "message": "Quiz not found for this Lesson ID."
         }
     ), 404
+
+
+
+@app.route("/course_material_by_lesson_id/<string:lesson_id>")
+def find_course_material_by_lesson_id(lesson_id):
+    list_of = CourseMaterial.query.filter_by(lesson_id=lesson_id)
+    if list_of:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "Course Material": [data.json() for data in list_of]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Data not found for this Lesson ID."
+        }
+    ), 404
+
 
 #find classes by course ID
 @app.route("/class_by_course_id/<string:course_id>")

@@ -40,11 +40,12 @@
                 var url = window.location.href;
                 var queryparams = url.split('?')[1];
                 var params = queryparams.split('&');
-                console.log(params);
                 id= params[0].split("=")
                 name= params[1].split("=")
                 document.getElementById("classname").textContent = name.split(',')[1];
                 var serviceURL ="http://localhost:5000/lessonclass/"+ id[1];
+                var x = document.getElementById("checkout");
+                x.href = "http://localhost/SPM/templates/create_lesson.html?classid=" + id[1];
 
             try {
                 const response =
@@ -54,15 +55,16 @@
                 const result = await response.json();
                 if (response.status === 200) {
                     // success case
-                    var lessons = result.data; 
-                    console.log(result)
-                    eachRow ="<tbody><tr>" +
-                                "<td>" + lessons.lesson_name + "</td>" +
-                                "<td>" + lessons.quiz_type + "</td>" +
-                                "<td>" + lessons.created_on + "</td>" +
-                                "<td> <a class='btn btn-primary' href='http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lessons.lesson_name + "&quiztype="+ lessons.quiz_type + "' role='button'>View</a> </td>" + 
-                            "</tr></tbody>";
-                    $('#classTable').append(eachRow);
+                    var lessons = result.data.lessons; 
+                    var rows = "";
+                    for (const lessonn of lessons) {
+                    eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
+                                "<td>" + lessonn.quiz_type + "</td>" +
+                                "<td>" + lessonn.created_on + "</td>" +
+                                "<td> <a class='btn btn-primary' href='http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lessonn.lesson_name + "&quiztype="+ lessonn.quiz_type + "&lessonid="+ lessonn.lesson_id + "' role='button'>View</a> </td>";
+                    rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+                    }
+                    $('#classTable').append(rows);
                 } else if (response.status == 404) {
                     showError(result.message);
                 } else {
@@ -99,7 +101,7 @@
                     </thead>
                 </table>
                 <div class="col-4">
-                    <a type="button" class="btn btn-success w-100 mt-4" href="http://localhost/SPM/templates/create_lesson.html" id="checkout">Create Lesson</a>
+                    <a type="button" class="btn btn-success w-100 mt-4" href="" id="checkout">Create Lesson</a>
                 </div>
     </div>
 </div>

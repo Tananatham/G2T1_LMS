@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 26, 2021 at 08:47 AM
+-- Generation Time: Oct 26, 2021 at 10:18 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `lesson_name` varchar(50) NOT NULL,
   `quiz_type` varchar(50) NOT NULL,
   `lesson_material` varchar(100) DEFAULT NULL,
-  `created_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_on` varchar(100) NOT NULL,
   PRIMARY KEY (`lesson_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 26, 2021 at 10:18 AM
+-- Generation Time: Oct 26, 2021 at 10:20 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `quiz_type` varchar(10) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `datetime_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datetime_created` varchar(100) NOT NULL,
   `passing_score` int(3) DEFAULT NULL,
   `correct_answer` varchar(100) NOT NULL,
   `question_type` varchar(50) NOT NULL,

@@ -20,7 +20,7 @@ class Quiz(db.Model):
     quiz_type = db.Column(db.String(10), nullable=False)
     lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'), nullable=False)
     quiz_question = db.Column(db.String(50), nullable=False)
-    datetime_created = db.Column(db.DateTime, nullable=False)
+    datetime_created = db.Column(db.String(100), nullable=False)
     passing_score = db.Column(db.Integer, nullable=True)
     question_type = db.Column(db.String(100), nullable=False)
     correct_answer = db.Column(db.String(100), nullable=False)
@@ -183,7 +183,7 @@ class Lesson(db.Model):
     lesson_name = db.Column(db.String(50), nullable=False)
     quiz_type = db.Column(db.String(50), nullable=False)
     lesson_material = db.Column(db.String(100), nullable=True)
-    created_on = db.Column(db.DateTime, nullable=False)
+    created_on = db.Column(db.String(100), nullable=False)
 
     def __init__(self, lesson_id, class_id, course_id, quiz_id, lesson_descriptions,lesson_name,quiz_type,lesson_material,created_on):
         self.lesson_id = lesson_id

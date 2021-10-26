@@ -84,13 +84,14 @@
                             <ul id="mySelect">
                             </ul>
                     </div>
-
                     <div class="col-4">
                           <div class="form-group">
-                            <div class="col-12">
                                 <label for="time_limit">Time Limit</label>
                                     <input type="text" class="form-control" name="time_limit" value="" id="time_limit">
-                            </div>
+                                <select id="time" class="form-control">
+                                    <option value="hours" selected>Hours</option>
+                                    <option value="minutes">Minutes</option>
+                                </select>
                           </div>
                     </div>
                 </div>
@@ -100,14 +101,20 @@
                             <input type="text" class="form-control" name="correct_answer" value="" id="correct_answer"> <p></p>
                     </div>
                     <div class="col-4">
-                          <div class="form-group">
-                                <label name="created">Created On:</label>
-                                <br>
-                                <label for="created" id= "created"></label>
-                                <input type="hidden" id="datetime_created" name="datetime_created" value="">
-                                <input type="hidden" id="lesson_id" name="lesson_id" value="">
-                                <input type="hidden" id="passing_score" name="passing_score" value="">
-                          </div>
+                        <label for="passing_score">Passing Score (For Final Quiz)</label>
+                            <input type="text" class="form-control" name="passing_score" value="" id="passing_score">
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label name="created">Created On:</label>
+                            <br>
+                            <label for="created" id= "created"></label>
+                            <input type="hidden" id="datetime_created" name="datetime_created" value="">
+                            <input type="hidden" id="lesson_id" name="lesson_id" value="">
+                            <input type="hidden" id="passing_score" name="passing_score" value="">
+                        </div>
                     </div>
                 </div>
             </form>
@@ -143,24 +150,15 @@
 </div>
     <script>
 
-                var currentdate = new Date(); 
-                var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-
-                document.getElementById("created").textContent = currentdate
+                var date = new Date();
+                document.getElementById("created").textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+                document.getElementById("datetime_created").value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
 
             function myFunction() {
                 var input = document.getElementById("quiz_selection").value;
                 var x = document.getElementById("mySelect");
                 const para = document.createElement("li");
                 var text = document.createTextNode(input);
-                var att = document.createAttribute("value"); 
-                att.value = input
-                para.setAttributeNode(att);
                 para.appendChild(text);
                 x.appendChild(para);
             }
@@ -176,20 +174,20 @@
                 var cell7 = row.insertCell(6);
                 var cell8 = row.insertCell(7);
 
-                selection = document.getElementById("mySelect").innerHTML;
-                console.log(document.getElementById("mySelect").value)
-                new_selection = selection.split(" ").join(",");
-                console.log(new_selection);
+                selection = document.getElementById("mySelect").innerText;
+                new_selection = selection.split("\n").join(",");
+                time = document.getElementById("time_limit").value + " " + document.getElementById("time").value;
                 cell1.innerHTML = document.getElementById("lesson").textContent;
                 cell2.innerHTML = document.getElementById("quiztype").textContent;
                 cell3.innerHTML = document.getElementById("question_type").value;
                 cell4.innerHTML = document.getElementById("quiz_question").value;
                 cell5.innerHTML = new_selection;
-            //    cell6.innerHTML = document.getElementById("time_limit").value + document.getElementById("time_limit").value;
+                cell6.innerHTML = document.getElementById("time_limit").value + document.getElementById("time").value;
                 cell7.innerHTML = document.getElementById("correct_answer").value;
-                cell8.innerHTML = document.getElementById("datetime_created").textContent;
+                cell8.innerHTML = document.getElementById("datetime_created").value;
 
-                document.getElementById("quiz_selection").value = selection             
+                document.getElementById("quiz_selection").value = new_selection 
+                document.getElementById("time_limit").value = time             
 
                 const form = document.querySelector("#createquizform")
                 var xhr = new XMLHttpRequest();
@@ -207,6 +205,13 @@
                 var json = JSON.stringify(object);
                 console.log(json)
                 xhr.send(json);
+
+                document.getElementById("quiz_selection").value = "";
+                document.getElementById("time_limit").value = "";
+                document.getElementById("correct_answer").value = "";
+                document.getElementById("quiz_question").value="";
+                document.getElementById("mySelect").innerHTML="";
+
             }
                 var url = window.location.href;
                 var queryparams = url.split('?')[1];

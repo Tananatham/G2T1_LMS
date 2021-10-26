@@ -113,15 +113,9 @@
                 class_id= queryparams.split("=")
                 document.getElementById("class_id").value = class_id[1]
 
-                var currentdate = new Date(); 
-                var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-
-                document.getElementById("created").textContent = currentdate
+                var date = new Date(); 
+                document.getElementById("created").textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+                document.getElementById("created_on").value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
 
                 const form = document.querySelector("#createlessonform")
                 form.addEventListener("submit", (event) => {

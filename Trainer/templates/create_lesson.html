@@ -39,7 +39,7 @@
     <div style="padding-top:20px;">
     <div class="container p-5">
         <div id="main-container" class="container">
-            <form action="/lessons" method="POST" autocomplete="off">
+            <form id="createlessonform" method="POST" autocomplete="off">
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <div class="form-check text-center">
@@ -53,13 +53,13 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="lesson">Lesson Name:</label>
-                            <input type="text" class="form-control" name="lesson_name" id="lesson_name" >
+                            <input type="text" class="form-control" name="lesson_name" id="lesson_name" value="">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label for="quiz">Quiz Type:</label>
-                            <select name="quizType" id="quizType" class="form-control">
+                            <select name="quiz_type" id="quizType" class="form-control">
                                 <option value="graded" selected>Graded</option>
                                 <option value="ungraded">Ungraded</option>
                             </select>
@@ -69,34 +69,20 @@
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="course_material">Lesson Materials</label>
-                                <input id="course_material" name="course_material" type="file" class="file"  data-show-upload="false" data-show-caption="true">
-                                    <a href=""><button for= "link" class="btn btn-primary">Add</button></a>
-                                    <br/><p></p>
-                                    <ul id="cmaterial">
-                                    </ul>
+                            <label for="course_material">Lesson Materials Link (Googledocs)</label>
+                                <br/>
+                                <input type="text" class="form-control" name="lesson_material" id="lesson_material" value="">
                         </div>
-                        <p>
-                            <div class="form-group">
-                                <label for="link">Links</label>
-                                <input type="text" class="form-control" name="link" id="link" >
-                            </div>
-                        </p>  
-                        <p>
-                            <div>
-                                <button class="btn btn-primary" onclick="myFunction()" type="button" >Add Link</button>
-                            </div>
-                        </p>
-                            <div class="col-4">
-                                <ul id="linkdisplay">
-                                </ul>
-                            </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="created">Created On:</label>
+                            <label name="created">Created On:</label>
                                 <br>
-                                <label for="created">26/9/2021</label>
+                                <label for="created" id= "created"></label>
+                                 <input type="hidden" id="created_on" name="created_on" value="">
+                                 <input type="hidden" id="class_id" name="class_id" value="">
+                                  <input type="hidden" id="course_id" name="course_id" value="4">
+                                   <input type="hidden" id="quiz_id" name="quiz_id" value="">
                         </div>
                     </div>
                 </div>
@@ -104,35 +90,66 @@
                     <div class="col-8">
                         <div class="form-group">
                             <label for="desc">Description:</label>
-                            <textarea type="text" class="form-control" name="desc" id="desc" ></textarea>
+                            <textarea type="text" class="form-control" value="" name="lesson_descriptions" id="lesson_descriptions" ></textarea>
                         </div>
                     </div>
                 </div>
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <a class='btn btn-secondary w-100 mt-4' href='http://localhost/SPM/templates/homepage.html' role='button'>Back</a>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
+                    </div>
+                </div>  
             </form>
-            <div class="row justify-content-center">
-                <div class="col-4">
-                    <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
-                 </div>
-                <div class="col-4">
-                    <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
-                </div>
-               
-            </div>
-           
     </div>
 </div>
 </div>
     <script>
 
-        function myFunction() {
-        var input = document.getElementById("link").value;
-        var x = document.getElementById("linkdisplay");
-        const para = document.createElement("li");
-        var text = document.createTextNode(input);
-        para.appendChild(text);
-        x.appendChild(para);
-        }
+                var url = window.location.href;
+                var queryparams = url.split('?')[1];
+                class_id= queryparams.split("=")
+                document.getElementById("class_id").value = class_id[1]
 
+                var currentdate = new Date(); 
+                var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+
+                document.getElementById("created").textContent = currentdate
+
+                const form = document.querySelector("#createlessonform")
+                form.addEventListener("submit", (event) => {
+
+                event.preventDefault();
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://localhost:5000/lessons");
+
+                xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xhr.withCredentials = false;
+
+                const formData = new FormData(form);
+                var object = {};
+                formData.forEach(function(value,key){
+                    object[key] = value;
+                });
+                var json = JSON.stringify(object);
+                console.log(json)
+                xhr.send(json);
+                console.log(json);
+                xhr.onload = () => {
+                    console.log(xhr.responseText);
+                    window.location.href = "create_lesson.html";
+                }
+
+        });
 
     </script>
     <script src="https://js.stripe.com/v3/"></script>

@@ -32,7 +32,7 @@
     <div style="padding-top:20px;">
     <div class="container p-5">
         <div id="main-container" class="container">
-            <form method="POST" autocomplete="off"  novalidate>
+            <form method="POST" autocomplete="off" id="createquizform">
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <div class="form-check text-center">
@@ -51,61 +51,62 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="quiz">Quiz Type:</label>
-                            <label for="quiz" id="quiz">Ungraded</label>
+                            <label for="quiztype">Quiz Type:</label>
+                            <label for="quiztype" id="quiztype"></label>
+                            <input type="hidden" id="quiz_type" name="quiz_type" value="">
                         </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="quiz">Question Type:</label>
-                            <select name="qnsType" id="qnsType" class="form-control">
+                            <label for="question_type">Question Type:</label>
+                            <select name="question_type" id="question_type" class="form-control">
                                 <option value="MCQ" selected>MCQ</option>
                                 <option value="True/False">True/False</option>
                             </select>
                         <p></p>
                         <button class="btn btn-primary" onclick="table()" type="button">Add</button>
-                        <button class="btn btn-primary" type="submit">Delete</button>
                         </div>
                     </div>
                     <div class="col-4">
                           <div class="form-group">
-                                <label for="course_material">Quiz Question</label>
-                                    <textarea type="text" class="form-control" name="quiz_qns" id="quiz_qns" ></textarea>
+                                <label for="quiz_question">Quiz Question</label>
+                                    <textarea type="text" class="form-control" name="quiz_question" id="quiz_question" ></textarea>
                           </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
-                        <label for="quiz">Answer Selection:</label>
-                            <input type="text" class="form-control" name="ans" value="" id="answers"> <p></p>
+                        <label for="quiz_selection">Answer Selection:</label>
+                            <input type="text" class="form-control" name="quiz_selection" value="" id="quiz_selection"> <p></p>
                             <button class="btn btn-primary" onclick="myFunction()" type="button" >Insert selection</button>
                             <ul id="mySelect">
                             </ul>
                     </div>
+
                     <div class="col-4">
                           <div class="form-group">
                             <div class="col-12">
-                                <label for="timelimit">Time Limit</label>
-                                    <input type="text" class="form-control" name="timelimit" value="" id="timelimit">
-                                <select name="time" id="time" class="form-control">
-                                    <option value="hours" selected>Hours</option>
-                                    <option value="minute">Minutes</option>
-                                </select>
+                                <label for="time_limit">Time Limit</label>
+                                    <input type="text" class="form-control" name="time_limit" value="" id="time_limit">
                             </div>
                           </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-2">
                     <div class="col-4">
-                        <label for="answer">Answer</label>
-                            <input type="text" class="form-control" name="answer" value="" id="answer"> <p></p>
+                        <label for="correct_answer">Answer</label>
+                            <input type="text" class="form-control" name="correct_answer" value="" id="correct_answer"> <p></p>
                     </div>
                     <div class="col-4">
                           <div class="form-group">
-                                <label for="created">Created On</label>
-                                    <label for="created" id="created">25/10/2021</label>
+                                <label name="created">Created On:</label>
+                                <br>
+                                <label for="created" id= "created"></label>
+                                <input type="hidden" id="datetime_created" name="datetime_created" value="">
+                                <input type="hidden" id="lesson_id" name="lesson_id" value="">
+                                <input type="hidden" id="passing_score" name="passing_score" value="">
                           </div>
                     </div>
                 </div>
@@ -115,7 +116,7 @@
                     <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
                  </div>
                 <div class="col-4">
-                    <button class="btn btn-success w-100 mt-4" id="checkout">Create</button>
+                    <button class="btn btn-success w-100 mt-4" id="checkout">Done</button>
                 </div>
             </div>
             <p></p>
@@ -142,11 +143,24 @@
 </div>
     <script>
 
+                var currentdate = new Date(); 
+                var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+
+                document.getElementById("created").textContent = currentdate
+
             function myFunction() {
-                var input = document.getElementById("answers").value;
+                var input = document.getElementById("quiz_selection").value;
                 var x = document.getElementById("mySelect");
                 const para = document.createElement("li");
                 var text = document.createTextNode(input);
+                var att = document.createAttribute("value"); 
+                att.value = input
+                para.setAttributeNode(att);
                 para.appendChild(text);
                 x.appendChild(para);
             }
@@ -162,20 +176,38 @@
                 var cell7 = row.insertCell(6);
                 var cell8 = row.insertCell(7);
 
-                selection = document.getElementById("mySelect").innerText;
+                selection = document.getElementById("mySelect").innerHTML;
+                console.log(document.getElementById("mySelect").value)
                 new_selection = selection.split(" ").join(",");
                 console.log(new_selection);
                 cell1.innerHTML = document.getElementById("lesson").textContent;
-                cell2.innerHTML = document.getElementById("quiz").textContent;
-                cell3.innerHTML = document.getElementById("qnsType").value;
-                cell4.innerHTML = document.getElementById("quiz_qns").value;
+                cell2.innerHTML = document.getElementById("quiztype").textContent;
+                cell3.innerHTML = document.getElementById("question_type").value;
+                cell4.innerHTML = document.getElementById("quiz_question").value;
                 cell5.innerHTML = new_selection;
-                cell6.innerHTML = document.getElementById("timelimit").value + document.getElementById("time").value;
-                cell7.innerHTML = document.getElementById("answer").value;
-                cell8.innerHTML = document.getElementById("created").textContent;
+            //    cell6.innerHTML = document.getElementById("time_limit").value + document.getElementById("time_limit").value;
+                cell7.innerHTML = document.getElementById("correct_answer").value;
+                cell8.innerHTML = document.getElementById("datetime_created").textContent;
+
+                document.getElementById("quiz_selection").value = selection             
+
+                const form = document.querySelector("#createquizform")
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://localhost:5000/quiz");
+                xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xhr.withCredentials = false;
+
+                const formData = new FormData(form);
+                var object = {};
+                formData.forEach(function(value,key){
+                    object[key] = value;
+                });
+                var json = JSON.stringify(object);
+                console.log(json)
+                xhr.send(json);
             }
-
-
                 var url = window.location.href;
                 var queryparams = url.split('?')[1];
                 var params = queryparams.split('&');
@@ -183,7 +215,12 @@
                 ln= params[0].split("=")
                 document.getElementById("lesson").textContent = ln[1];
                 qtype= params[1].split("=")
-                document.getElementById("quiz").textContent = qtype[1];
+                document.getElementById("quiztype").textContent = qtype[1]; 
+                document.getElementById("quiz_type").value = qtype[1]; 
+                ltype= params[2].split("=")
+                document.getElementById("lesson_id").value = ltype[1]; 
+                document.getElementById("lesson_id").textContent = ltype[1]; 
+                
                
     </script>
     <script src="https://js.stripe.com/v3/"></script>

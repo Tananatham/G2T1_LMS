@@ -709,10 +709,15 @@ def get_in_progress_enrollment():
 def get_in_progress_enrollment_by_class(class_id):
     courselist = Course_check.query.filter_by(status="in-progress").filter_by(class_id=class_id)
     if courselist:
+        id_array = []
         data_array = []
         for course in courselist:
             course_json = course.json()
-            data_array.append(course_json['employee_id'])
+            id_array.append(course_json['employee_id'])
+        for each_id in id_array:
+            emp_data = Employee.query.filter_by(employee_id=each_id).first()
+            emp_json = emp_data.json()
+            data_array.append(emp_json['employee_name'])
         return jsonify(
             {
                 "code": 200,

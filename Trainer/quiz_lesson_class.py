@@ -62,8 +62,27 @@ def get_all_quiz():
         }
     ), 404
 
-#  Get details of one quiz in JSON form
-@app.route("/quiz/<string:lesson_id>")
+#  Get details of all quiz in JSON form
+@app.route("/quiz/<int:lesson_id>")
+def find_by_id_quizs(lesson_id):
+    quiz = Quiz.query.filter_by(lesson_id=lesson_id).all()
+    if quiz:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "quiz": [quizs.json() for quizs in quiz]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Course not found."
+        }
+    ), 404
+
+@app.route("/quizz/<int:lesson_id>")
 def find_by_id_quiz(lesson_id):
     quiz = Quiz.query.filter_by(lesson_id=lesson_id).first()
     if quiz:
@@ -316,6 +335,32 @@ def update_lesson(lesson_id):
         }
     ), 404
 
+#Update a lesson_quiz
+@app.route("/lesson_quiz/<int:lesson_id>", methods=['PUT'])
+def update_lesson_quiz(lesson_id):
+    lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
+    if lesson:
+        data = request.get_json()
+        if data['quiz_id']:
+            lesson.quiz_id = data['quiz_id']
+        
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": lesson.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "lesson_id": lesson_id
+            },
+            "message": "Lesson is not found."
+        }
+    ), 404
+
 #Delete a lesson 
 @app.route("/lesson/<int:lesson_id>", methods=['DELETE'])
 def delete_lesson(lesson_id):
@@ -410,6 +455,7 @@ def find_by_classid(class_id):
             "message": "Class not found."
         }
     ), 404
+
 
 #  POST > Insert a new class
 @app.route("/class", methods=['POST'])

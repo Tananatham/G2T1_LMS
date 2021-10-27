@@ -60,8 +60,8 @@
                         <div class="form-group">
                             <label for="quiz">Quiz Type:</label>
                             <select name="quiz_type" id="quizType" class="form-control">
-                                <option value="graded" selected>Graded</option>
-                                <option value="ungraded">Ungraded</option>
+                                <option value="graded">Graded</option>
+                                <option value="ungraded" selected>Ungraded</option>
                             </select>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-4">
-                        <a class='btn btn-secondary w-100 mt-4' href='http://localhost/SPM/templates/homepage.html' role='button'>Back</a>
+                        <a class='btn btn-secondary w-100 mt-4' href="http://localhost/SPM/templates/homepage.html" id="back" role='button'>Back</a>
                     </div>
                     <div class="col-4">
                         <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
@@ -113,15 +113,9 @@
                 class_id= queryparams.split("=")
                 document.getElementById("class_id").value = class_id[1]
 
-                var currentdate = new Date(); 
-                var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-
-                document.getElementById("created").textContent = currentdate
+                var date = new Date(); 
+                document.getElementById("created").textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+                document.getElementById("created_on").value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
 
                 const form = document.querySelector("#createlessonform")
                 form.addEventListener("submit", (event) => {
@@ -144,11 +138,8 @@
                 console.log(json)
                 xhr.send(json);
                 console.log(json);
-                xhr.onload = () => {
-                    console.log(xhr.responseText);
-                    window.location.href = "create_lesson.html";
-                }
-
+                alert("Lesson Created!")
+                window.location.href = "http://localhost/SPM/templates/create_lesson.html?classid="+class_id[1];
         });
 
     </script>

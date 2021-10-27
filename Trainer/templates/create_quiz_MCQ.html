@@ -114,6 +114,7 @@
                             <input type="hidden" id="datetime_created" name="datetime_created" value="">
                             <input type="hidden" id="lesson_id" name="lesson_id" value="">
                             <input type="hidden" id="passing_score" name="passing_score" value="">
+                            <input type="hidden" id="quizid" value="">
                         </div>
                     </div>
                 </div>
@@ -123,7 +124,7 @@
                     <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
                  </div>
                 <div class="col-4">
-                    <button class="btn btn-success w-100 mt-4" id="checkout">Done</button>
+                    <button class="btn btn-success w-100 mt-4" onclick="myFunctions()" type="button" id="checkout">Done</button>
                 </div>
             </div>
             <p></p>
@@ -154,6 +155,22 @@
                 document.getElementById("created").textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString();
                 document.getElementById("datetime_created").value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
 
+                var url = window.location.href;
+                var queryparams = url.split('?')[1];
+                var params = queryparams.split('&');
+                console.log(params);
+                ln= params[0].split("=")
+                document.getElementById("lesson").textContent = ln[1];
+                qtype= params[1].split("=")
+                document.getElementById("quiztype").textContent = qtype[1]; 
+                document.getElementById("quiz_type").value = qtype[1]; 
+                ltype= params[2].split("=")
+                document.getElementById("lesson_id").value = ltype[1]; 
+                document.getElementById("lesson_id").textContent = ltype[1]; 
+
+                lesson_id = document.getElementById("lesson_id").value
+                console.log(lesson_id)
+
             function myFunction() {
                 var input = document.getElementById("quiz_selection").value;
                 var x = document.getElementById("mySelect");
@@ -162,6 +179,26 @@
                 para.appendChild(text);
                 x.appendChild(para);
             }
+
+            function myFunctions() {
+            
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", "http://localhost:5000/lesson_quiz/"+ lesson_id);
+                xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xhr.withCredentials = false;
+                console.log(document.getElementById("quizid").value);
+                var object = {"quiz_id":document.getElementById("quizid").value};
+                console.log(object)
+                var json = JSON.stringify(object);
+                console.log(json)
+                xhr.send(json);
+
+                alert("Successfully created quiz!")
+                window.location.href="http://localhost/SPM/templates/homepage.html";
+            }
+
             function table() {
                 var table = document.getElementById("myTable");
                 var row = table.insertRow(0);
@@ -202,6 +239,7 @@
                 formData.forEach(function(value,key){
                     object[key] = value;
                 });
+                console.log(object)
                 var json = JSON.stringify(object);
                 console.log(json)
                 xhr.send(json);
@@ -212,19 +250,33 @@
                 document.getElementById("quiz_question").value="";
                 document.getElementById("mySelect").innerHTML="";
 
+                $(async()=>{
+                var serviceURL ="http://localhost:5000/quizz/"+ lesson_id;
+                try {
+                const response =
+                await fetch(
+                serviceURL, { method: 'GET' }
+                );
+                const result = await response.json();
+                if (response.status === 200) {
+                    // success case
+                    var quiz = result.data;
+                    console.log(quiz.quiz_id);
+                    document.getElementById("quizid").value = quiz.quiz_id;
+                } else if (response.status == 404) {
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                ('There is a problem retrieving quiz data, please try again later.<br />' + error);
+            }}); // error
             }
-                var url = window.location.href;
-                var queryparams = url.split('?')[1];
-                var params = queryparams.split('&');
-                console.log(params);
-                ln= params[0].split("=")
-                document.getElementById("lesson").textContent = ln[1];
-                qtype= params[1].split("=")
-                document.getElementById("quiztype").textContent = qtype[1]; 
-                document.getElementById("quiz_type").value = qtype[1]; 
-                ltype= params[2].split("=")
-                document.getElementById("lesson_id").value = ltype[1]; 
-                document.getElementById("lesson_id").textContent = ltype[1]; 
+
                 
                
     </script>

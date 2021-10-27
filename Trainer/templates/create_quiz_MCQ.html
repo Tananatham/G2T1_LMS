@@ -120,10 +120,10 @@
             </form>
             <div class="row justify-content-center">
                 <div class="col-4">
-                    <a href="http://localhost/SPM/templates/homepage.html"><button class="btn btn-secondary w-100 mt-4">Back</button></a>
+                    <a href=""><button class="btn btn-secondary w-100 mt-4">Back</button></a>
                  </div>
                 <div class="col-4">
-                    <button class="btn btn-success w-100 mt-4" onclick="myFunctions()" type="button" id="checkout">Create</button>
+                    <button class="btn btn-success w-100 mt-4" onclick="myFunctions()" type="button" id="checkout">Done</button>
                 </div>
             </div>
             <p></p>
@@ -149,6 +149,7 @@
 </div>
 </div>
     <script>
+
                 var date = new Date();
                 document.getElementById("created").textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString();
                 document.getElementById("datetime_created").value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
@@ -169,19 +170,30 @@
                 lesson_id = document.getElementById("lesson_id").value
                 console.log(lesson_id)
 
-                console.log(qtype[1]);
                 if(qtype[1] == "ungraded"){
                     document.getElementById("passing_score_label").style.display = 'none';
                     document.getElementById("passing_score").style.display = 'none';
-                }
+                    }
 
             function myFunction() {
                 var input = document.getElementById("quiz_selection").value;
                 var x = document.getElementById("mySelect");
                 const para = document.createElement("li");
+                para.setAttribute("id", input);
                 var text = document.createTextNode(input);
                 para.appendChild(text);
                 x.appendChild(para);
+                const para1 = document.createElement("img");
+                para1.setAttribute("src", "image1.png");
+                para1.setAttribute("onclick", "deletefunction("+input+")");
+                para.appendChild(para1);
+                console.log(document.getElementById("mySelect").innerHTML);
+            }
+
+            function deletefunction(inputs){
+                    console.log(inputs.id);
+                    var x = document.getElementById(inputs.id);
+                    x.remove();
             }
 
             function myFunctions() {

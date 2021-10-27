@@ -160,9 +160,15 @@
                     for (selection of questionselection){
                         var x = document.getElementById("mySelect");
                         const para = document.createElement("li");
+                        para.setAttribute("id", selection);
                         var text = document.createTextNode(selection);
                         para.appendChild(text);
                         x.appendChild(para);
+                        const para1 = document.createElement("img");
+                        para1.setAttribute("src", "image1.png");
+                        para1.setAttribute("onclick", "deletefunction("+selection+")");
+                        para.appendChild(para1);
+                        console.log(document.getElementById("mySelect").innerHTML);
                     }
 
                     if(quiz.quiz_type == "ungraded"){
@@ -186,9 +192,21 @@
                 var input = document.getElementById("quiz_selection").value;
                 var x = document.getElementById("mySelect");
                 const para = document.createElement("li");
+                para.setAttribute("id", input.toString());
                 var text = document.createTextNode(input);
                 para.appendChild(text);
                 x.appendChild(para);
+                const para1 = document.createElement("img");
+                para1.setAttribute("src", "image1.png");
+                para1.setAttribute("onclick", "deletefunction("+input+")");
+                para.appendChild(para1);
+                console.log(document.getElementById("mySelect").innerHTML);
+            }
+
+            function deletefunction(inputs){
+                    console.log(inputs.id);
+                    var x = document.getElementById(inputs.id);
+                    x.remove();
             }
 
             function backfunction(){

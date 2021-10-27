@@ -62,12 +62,14 @@
                     eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
                                 "<td>" + lessonn.quiz_type + "</td>" +
                                 "<td>" + lessonn.created_on + "</td>" +
+                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
                                 "<td> <a class='btn btn-success' href='http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lessonn.lesson_name + "&quiztype="+ lessonn.quiz_type + "&lessonid="+ lessonn.lesson_id + "' role='button'>Create Quiz</a> </td>";
                     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";}
                         else{
                     eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
                                 "<td>" + lessonn.quiz_type + "</td>" +
                                 "<td>" + lessonn.created_on + "</td>" +
+                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
                                 "<td> <a class='btn btn-info' href='http://localhost/SPM/templates/view_quiz.html?lesson_id=" + lessonn.lesson_id + "' role='button'>View Quiz</a> </td>";
                     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";}
                     }
@@ -103,6 +105,7 @@
                         <th scope="col">Lessons Name</th>
                         <th scope="col">Quiz Type</th>
                         <th scope="col">Created On</th>
+                        <th></th>
                         <th></th>
                         </tr>
                     </thead>

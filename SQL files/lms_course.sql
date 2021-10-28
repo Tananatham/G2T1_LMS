@@ -21,11 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
-<<<<<<< Updated upstream
-=======
 CREATE DATABASE IF NOT EXISTS `lms_course` ;
 USE `lms_course`;
->>>>>>> Stashed changes
 
 -- --------------------------------------------------------
 
@@ -47,13 +44,10 @@ CREATE TABLE IF NOT EXISTS `class` (
   `employee_id` int(11) NOT NULL,
   `duration_of_class` int(11) NOT NULL,
   PRIMARY KEY (`class_id`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-=======
-) 
+
 
 --ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
->>>>>>> Stashed changes
 
 --
 -- Dumping data for table `class`
@@ -83,11 +77,8 @@ CREATE TABLE IF NOT EXISTS `course` (
   `end_time` varchar(50) NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
   PRIMARY KEY (`course_id`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-=======
-) 
->>>>>>> Stashed changes
+
 
 --ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 --
@@ -175,13 +166,10 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
   `course_id` int(11) NOT NULL,
   `status` varchar(50) NOT NULL,
   PRIMARY KEY (`employee_id`,`course_id`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-=======
 ) 
 
 --ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
->>>>>>> Stashed changes
 
 --
 -- Dumping data for table `employee_enrolled`
@@ -211,13 +199,10 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `coursem_id` int(11) NOT NULL,
   `lesson_descriptions` varchar(50) NOT NULL,
   PRIMARY KEY (`lesson_id`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-=======
 ) 
 
 --ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
->>>>>>> Stashed changes
 
 --
 -- Dumping data for table `lesson`
@@ -248,9 +233,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `correct_answer` varchar(100) NOT NULL,
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
-<<<<<<< Updated upstream
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-=======
 ) 
 
 --ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -261,7 +244,6 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 
 INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `quiz_type`, `quizq_id`, `lesson_id`, `quiz_descriptions`, `datetime_created`, `passing_score`, `start_time`, `end_time`, `quiz_details`, `correct_answer`) VALUES
 (1, 'E01Quiz1', 'MCQ', 1, 1, 'abc', '2021-09-30 04:00:00', 0, 'Now', 'Later', 'abc', 'abc');
->>>>>>> Stashed changes
 
 --
 -- Constraints for dumped tables

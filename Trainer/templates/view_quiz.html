@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>View Lessons</title>
+    <title>View Quiz</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -36,16 +36,11 @@
 <body>
     <script>
         $(async()=>{
-            
-                var url = window.location.href;
-                var queryparams = url.split('?')[1];
-                var params = queryparams.split('&');
-                id= params[0].split("=")
-                name= params[1].split("=")
-                document.getElementById("classname").textContent = name.split(',')[1];
-                var serviceURL ="http://localhost:5000/lessonclass/"+ id[1];
-                var x = document.getElementById("checkout");
-                x.href = "http://localhost/SPM/templates/create_lesson.html?classid=" + id[1];
+
+            var url = window.location.href;
+            var queryparams = url.split('?')[1];
+            lesson_id= queryparams.split("=")
+            var serviceURL ="http://localhost:5000/quiz/"+ lesson_id[1];
 
             try {
                 const response =
@@ -55,24 +50,20 @@
                 const result = await response.json();
                 if (response.status === 200) {
                     // success case
-                    var lessons = result.data.lessons; 
+                    var quizs = result.data.quiz; 
+                    console.log(result)
                     var rows = "";
-                    for (const lessonn of lessons) {
-                        if (lessonn.quiz_id == 0){
-                    eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
-                                "<td>" + lessonn.quiz_type + "</td>" +
-                                "<td>" + lessonn.created_on + "</td>" +
-                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
-                                "<td> <a class='btn btn-success' href='http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lessonn.lesson_name + "&quiztype="+ lessonn.quiz_type + "&lessonid="+ lessonn.lesson_id + "' role='button'>Create Quiz</a> </td>";
-                    rows += "<tbody><tr>" + eachRow + "</tr></tbody>";}
-                        else{
-                    eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
-                                "<td>" + lessonn.quiz_type + "</td>" +
-                                "<td>" + lessonn.created_on + "</td>" +
-                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
-                                "<td> <a class='btn btn-info' href='http://localhost/SPM/templates/view_quiz.html?lesson_id=" + lessonn.lesson_id + "' role='button'>View Quiz</a> </td>";
-                    rows += "<tbody><tr>" + eachRow + "</tr></tbody>";}
+                    for (const quiz of quizs) {
+                    eachRow ="<td>" + quiz.quiz_type + "</td>" +
+                                "<td>" + quiz.question_type + "</td>" +
+                                "<td>" + quiz.quiz_question + "</td>" +
+                                "<td>" + quiz.quiz_selection + "</td>" +
+                                "<td>" + quiz.correct_answer + "</td>" +
+                                "<td>" + quiz.datetime_created + "</td>" +
+                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>";
+                    rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                     }
+                    // add all the rows to the table
                     $('#classTable').append(rows);
                 } else if (response.status == 404) {
                     showError(result.message);
@@ -84,7 +75,7 @@
                 // Errors when calling the service; such as network error, 
                 // service offline, etc
                 showError
-                ('There is a problem retrieving class data, please try again later.<br />' + error);
+                ('There is a problem retrieving quiz data, please try again later.<br />' + error);
             } // error
     });
 
@@ -92,27 +83,30 @@
     <div id="main-container"  style="padding-top:20px;">
     <div class="container p-5">
         <div class="container">
+                <!-- <input type="hidden" name="teleID" id="teleID" value="{{ teleID }}" >
+                <input type="hidden" name="custID" id="custID" value="{{ custID }}" > -->
                 <div class="row justify-content-center">
-                    <div class="col-12">
+                    <div class="col-11">
                         <div class="form-check text-center">
-                            <h1>List of Lessons For </h1><h1 id="classname"></h1>
+                            <h1>My Quiz Questions</h1>
                         </div>
                     </div>
                     
                 <table class="table" id ="classTable">
                     <thead>
                         <tr>
-                        <th scope="col">Lessons Name</th>
                         <th scope="col">Quiz Type</th>
+                        <th scope="col">Question Type</th>
+                        <th scope="col">Quiz Question</th>
+                        <th scope="col">Quiz Selections</th>
+                        <th scope="col">Correct Answer</th>
                         <th scope="col">Created On</th>
-                        <th></th>
+                        <th scope="col"></th>
                         <th></th>
                         </tr>
                     </thead>
                 </table>
-                <div class="col-4">
-                    <a type="button" class="btn btn-success w-100 mt-4" href="" id="checkout">Create Lesson</a>
-                </div>
+           
     </div>
 </div>
 </div>

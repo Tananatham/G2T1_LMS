@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <![endif]-->
 <html>
 
 <head>
@@ -47,71 +47,61 @@
     </div>
 
     <div id= "main-container" class="container">
-        <h4 style= "padding: 20px; font-weight: bold;">List of Courses</h4>
+        <h4 style= "padding: 20px; font-weight: bold;">List of learners</h4>
 
-        <table id="courses" class="table">
+        <table id="class_list" class="table">
                 <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Class ID</th>
-                    <th>Current capacity</th>
-                    <th>Max capacity</th>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>See class list</th>
-                    <th>Enrolment Dates</th>
+                    <!-- <th>Employee ID</th> -->
+                    <th>Name</th>
+                    <!-- <th>Role</th> -->
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record in classes">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.course_name }}</td>
-                    <td>{{ record.class_id }}</td>
-                    <td>{{ record.current_class_size }}</td>
-                    <td>{{ record.class_size }}</td>
-                    <td>{{ record.start_date }}</td>
-                    <td>{{ record.end_date }}</td>
-                    <td>
-                        <see-class-button :class_id=record.class_id></see-class-button>
-                    </td>
+                <tr v-for="record in employees">
+                    <!-- <td>{{ record.employee_id }}</td> -->
+                    <td>{{ record }}</td>
+                    <!-- <td>{{ record.employee_role }}</td> -->
                 </tr>
             </tbody>
         </table>
 
+        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='HR_courses.html'">Back to courses</button>
+
     </div>
     <script>
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        
+        var url_class_id = getParameterByName('class_id');
+        if (url_class_id == null) {
+            window.location.replace("HR_courses.html")
+        }
+
         const vm = new Vue({
             el: '#main-container',
             data: {
-                classes: []
+                employees: [],
+                class_id: url_class_id
             },
             mounted: function() {
-                axios.get('http://localhost:6900/class')
+                axios.get('http://localhost:6900/enrollment_in_progress_by_class/' + this.class_id)
                     .then(response => {
-                        this.classes = response.data.data.course;
+                        this.employees = response.data.data.employee;
                     })
                     .catch(error => alert(error));
             }
         })
 
-        Vue.component("see-class-button", {
-            template: "<button @click='clicked' class='btn btn-outline-info'>See Class list</button>",
-            props: ["class_id"],
-            data: function() {
-                return {
-                    employee_id: 1
-                };
-            
-            },
-            
-            methods: {
-                clicked: function(event) {
-                    window.location.replace("HR_class-list.html?class_id=" + this.class_id)
-                }
-            }
-        });
-
     </script>
+
+
+
 
 </body>
 </html>

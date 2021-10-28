@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 20, 2021 at 08:55 AM
+-- Generation Time: Oct 26, 2021 at 10:20 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -52,9 +52,9 @@ CREATE TABLE IF NOT EXISTS `class` (
 --
 
 INSERT INTO `class` (`class_id`, `course_id`, `lesson_id`, `course_name`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `current_class_size`, `employee_id`, `duration_of_class`) VALUES
-(2, 4, 3, 'Civil Engineer course', '1 September 2021', '1 December 2021', '14:00', '16:00', 10, 4, 1, 2),
+(2, 4, 3, 'Civil Engineer course', '1 September 2021', '1 December 2021', '14:00', '16:00', 10, 5, 1, 2),
 (3, 4, 3, 'Civil Engineer course', '1 January 2021', '25 October 2022', '14:00', '16:00', 10, 10, 1, 2),
-(4, 6, 4, 'Computer Engineering Class', '25 October 2021', '25 October 2022', '14:00', '16:00', 10, 0, 1, 2),
+(4, 6, 4, 'Computer Engineering Class', '1 October 2021', '25 October 2022', '14:00', '16:00', 10, 0, 1, 2),
 (5, 6, 4, 'Computer Engineering Class', '1 January 2020', '20 January 2020', '14:00', '16:00', 10, 0, 1, 2),
 (6, 1, 5, 'Chemical engineering', '1 January 2020', '20 January 2020', '14:00', '16:00', 10, 10, 1, 2),
 (7, 4, 3, 'Civil Engineer course', '1 January 2021', '10 February 2021', '14:00', '16:00', 10, 0, 1, 2);
@@ -88,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `course` (
 
 INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no_of_lesson`, `class_id`, `course_description`, `course_prerequisite`, `coursem_id`, `employee_id`, `start_time`, `end_time`, `datetime_uploaded`) VALUES
 (1, 'Chemical engineering', 1, 1, 1, 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', 0, 1, 2, '1 July 2021', '1 December 2021', '2021-06-23 00:00:00'),
-(4, 'Civil Engineer', 1, 1, 1, 'Civil engineering is the professional practice of designing and developing infrastructure projects. This can be on a huge scale, such as the development of nationwide transport systems or water supply networks, or on a smaller scale, such as the development of single roads or buildings.', 0, 1, 2, '5 August 2021', '1 December 2021', '2021-08-17 00:00:00'),
+(4, 'Civil Engineer', 3, 2, 1, 'Civil engineering is the professional practice of designing and developing infrastructure projects. This can be on a huge scale, such as the development of nationwide transport systems or water supply networks, or on a smaller scale, such as the development of single roads or buildings.', 0, 1, 2, '5 August 2021', '1 December 2021', '2021-08-17 00:00:00'),
 (5, 'Electrical/electronic engineering', 1, 2, 5, 'Electrical and electronics engineering both focus on applications of electrical power. The two fields differ in that electrical engineers chiefly focus on the large-scale production and supply of electrical power, while electronics engineers focus on much smaller electronic circuits, such as those used in computers.', 0, 1, 1, '5 July 2021', '1 December 2021', '2021-09-14 00:00:00'),
-(6, 'Computer Engineering', 1, 1, 5, '*This course has a prerequisite of Electrical Engineering*\r\nComputer engineering concerns the design and prototyping of computing hardware and software. This subject merges electrical engineering with computer science, and you may prefer to study computer engineering alongside one of these similar subjects.', 0, 1, 1, '8 September 2021', '18 September 2021', '2021-07-13 00:00:00');
+(6, 'Computer Engineering', 2, 1, 5, '*This course has a prerequisite of Electrical Engineering*\r\nComputer engineering concerns the design and prototyping of computing hardware and software. This subject merges electrical engineering with computer science, and you may prefer to study computer engineering alongside one of these similar subjects.', 0, 1, 1, '8 September 2021', '18 September 2021', '2021-07-13 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -191,20 +191,27 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `class_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   `quiz_id` int(11) NOT NULL,
-  `coursem_id` int(11) NOT NULL,
-  `lesson_descriptions` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `lesson_descriptions` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `lesson_name` varchar(50) NOT NULL,
+  `quiz_type` varchar(50) NOT NULL,
+  `lesson_material` varchar(100) DEFAULT NULL,
+  `created_on` varchar(100) NOT NULL,
   PRIMARY KEY (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `lesson`
 --
 
-INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `coursem_id`, `lesson_descriptions`) VALUES
-(1, 5, 5, 6, 2, 'Korem Ipsum'),
-(2, 5, 5, 2, 2, 'Placeholder'),
-(3, 3, 4, 1, 2, 'This program prepares students for employment as a CIVIL ENGINEERING DRAFTER or DESIGNER, or in the architecture or construction fields.  Civil drafters create detailed technical drawings of buildings, structures, and various construction projects designed by architects and civil engineers.  Civil drafters must be proficient in CAD software commonly used in industry (AutoCAD, Civil 3D, REVIT) and have knowledge of current industry drafting practices.  Employment is available in private industry '),
-(4, 3, 4, 2, 2, 'A standard range of conventions and symbols are used to understand and read the engineering drawings. The engineering drawings, at first glance, look incomprehensible, they need to be comprehended by means of specific types of symbols and codes. Engineering drawings are prepared on the basis of technical standards and professional codes, in order to be read by anyone without any difficulty and misinterpretation. Following elements are required to comprehend for reading an engineering drawing. Th');
+INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `lesson_descriptions`, `lesson_name`, `quiz_type`, `lesson_material`, `created_on`) VALUES
+(1, 5, 5, 6, 'Korem Ipsum', 'apple', 'Ungraded', NULL, '2021-10-05 21:35:50'),
+(3, 0, 0, 0, '', '', '', '', '0000-00-00 00:00:00'),
+(4, 2, 3, 4, 'testing', 'testing', 'ungraded', '', '0000-00-00 00:00:00'),
+(5, 2, 3, 4, 'testing', 'testing', 'ungraded', '', '0000-00-00 00:00:00'),
+(6, 2, 3, 4, 'testing', 'testing', 'ungraded', '', '0000-00-00 00:00:00'),
+(7, 3487, 3487, 3487, 'w', 'w', 'graded', '3487', '0000-00-00 00:00:00'),
+(8, 3487, 3487, 3487, 'w', 'w', 'graded', '', '0000-00-00 00:00:00'),
+(9, 3487, 3487, 3487, 'test', 'test', 'graded', '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -215,17 +222,14 @@ INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `coursem_
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE IF NOT EXISTS `quiz` (
   `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
-  `quiz_name` varchar(50) NOT NULL,
   `quiz_type` varchar(10) NOT NULL,
-  `quizq_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
-  `quiz_descriptions` varchar(50) NOT NULL,
-  `datetime_created` datetime NOT NULL,
-  `passing_score` int(3) NOT NULL,
-  `start_time` varchar(10) NOT NULL,
-  `end_time` varchar(10) NOT NULL,
-  `quiz_details` varchar(100) NOT NULL,
+  `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `datetime_created` varchar(100) NOT NULL,
+  `passing_score` int(3) DEFAULT NULL,
   `correct_answer` varchar(100) NOT NULL,
+  `question_type` varchar(50) NOT NULL,
+  `time_limit` varchar(50) NOT NULL,
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

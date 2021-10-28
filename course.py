@@ -704,6 +704,35 @@ def get_in_progress_enrollment():
         }
     ), 404
 
+# Get All course enrollment with in-progress
+@app.route("/enrollment_in_progress_by_class/<string:class_id>")
+def get_in_progress_enrollment_by_class(class_id):
+    courselist = Course_check.query.filter_by(status="in-progress").filter_by(class_id=class_id)
+    if courselist:
+        id_array = []
+        data_array = []
+        for course in courselist:
+            course_json = course.json()
+            id_array.append(course_json['employee_id'])
+        for each_id in id_array:
+            emp_data = Employee.query.filter_by(employee_id=each_id).first()
+            emp_json = emp_data.json()
+            data_array.append(emp_json['employee_name'])
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "employee": data_array
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no employees."
+        }
+    ), 404
+
 #  Get All employee/learners 
 @app.route("/employee")
 def get_all_employees():

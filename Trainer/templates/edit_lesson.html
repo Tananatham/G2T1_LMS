@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Lessons</title>
+    <title>Edit Lessons</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <div class="form-check text-center">
-                            <h1>Create Lessons</h1>
+                            <h1>Edit Lessons</h1>
                         </div>
                     </div>
                     <div class="col-1"></div>
@@ -67,10 +67,7 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="quiz">Quiz Type:</label>
-                            <select name="quiz_type" id="quizType" class="form-control">
-                                <option value="graded">Graded</option>
-                                <option value="ungraded" selected>Ungraded</option>
-                            </select>
+                                <label for="quiz" id= "quiz"></label>
                         </div>
                     </div>
                 </div>
@@ -87,10 +84,6 @@
                             <label name="created">Created On:</label>
                                 <br>
                                 <label for="created" id= "created"></label>
-                                 <input type="hidden" id="created_on" name="created_on" value="">
-                                 <input type="hidden" id="class_id" name="class_id" value="">
-                                  <input type="hidden" id="course_id" name="course_id" value="4">
-                                   <input type="hidden" id="quiz_id" name="quiz_id" value="">
                         </div>
                     </div>
                 </div>
@@ -107,7 +100,7 @@
                         <a class='btn btn-secondary w-100 mt-4' href="http://localhost/SPM/templates/homepage.html" id="back" role='button'>Back</a>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
+                        <button class="btn btn-success w-100 mt-4" onclick="myFunctions()" type="button" id="checkout">Update</button>
                     </div>
                 </div>  
             </form>
@@ -118,37 +111,59 @@
 
                 var url = window.location.href;
                 var queryparams = url.split('?')[1];
-                class_id= queryparams.split("=")
-                document.getElementById("class_id").value = class_id[1]
+                lesson_id= queryparams.split("=")[1]
+                console.log(lesson_id)
+                $(async()=>{
+                var serviceURL ="http://localhost:5000/lesson/"+ lesson_id;
+                try {
+                const response =
+                await fetch(
+                serviceURL, { method: 'GET' }
+                );
+                const result = await response.json();
+                if (response.status === 200) {
+                    // success case
+                    var lesson = result.data;
+                    document.getElementById("lesson_name").value = lesson.lesson_name;
+                    document.getElementById("quiz").textContent = lesson.quiz_type;
+                    document.getElementById("lesson_material").value = lesson.lesson_material;
+                    document.getElementById("created").textContent = lesson.created_on;
+                    document.getElementById("lesson_descriptions").value = lesson.lesson_descriptions;
+                } else if (response.status == 404) {
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                ('There is a problem retrieving lesson data, please try again later.<br />' + error);
+            }}); // error
 
-                var date = new Date(); 
-                document.getElementById("created").textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-                document.getElementById("created_on").value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-
-                const form = document.querySelector("#createlessonform")
-                form.addEventListener("submit", (event) => {
-
-                event.preventDefault();
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "http://localhost:5000/lessons");
-
+            function myFunctions() {
+            
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", "http://localhost:5000/lesson/"+ lesson_id);
                 xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 xhr.withCredentials = false;
-
-                const formData = new FormData(form);
-                var object = {};
-                formData.forEach(function(value,key){
-                    object[key] = value;
-                });
+                var object = {
+                    "lesson_name":document.getElementById("lesson_name").value,
+                    "lesson_material":document.getElementById("lesson_material").value,
+                    "lesson_descriptions":document.getElementById("lesson_descriptions").value,
+                    };
+                console.log(object)
                 var json = JSON.stringify(object);
                 console.log(json)
                 xhr.send(json);
-                console.log(json);
-                alert("Lesson Created!")
-                window.location.href = "http://localhost/SPM/templates/create_lesson.html?classid="+class_id[1];
-        });
+
+                alert("Successfully updated lesson!")
+                window.location.href="http://localhost/SPM/templates/homepage.html";
+            }
+
 
     </script>
     <script src="https://js.stripe.com/v3/"></script>

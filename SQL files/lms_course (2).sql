@@ -21,6 +21,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
+DROP DATABASE IF EXISTS `lms_course`;
 CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `lms_course`;
 

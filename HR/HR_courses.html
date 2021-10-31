@@ -53,26 +53,25 @@
                 <tr>
                     <th>Course ID</th>
                     <th>Course Name</th>
-                    <th>Class ID</th>
-                    <th>Current capacity</th>
-                    <th>Max capacity</th>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>See class list</th>
+                    <th>Course Description</th>
+                    <th>No. of classes</th>
+                    <th>No. of lessons</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
                     <th>Enrolment Dates</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record in classes">
+                <tr v-for="record in courses">
                     <td>{{ record.course_id }}</td>
-                    <td>{{ record.course_name }}</td>
-                    <td>{{ record.class_id }}</td>
-                    <td>{{ record.current_class_size }}</td>
-                    <td>{{ record.class_size }}</td>
-                    <td>{{ record.start_date }}</td>
-                    <td>{{ record.end_date }}</td>
+                    <td><strong>{{ record.course_name }}</strong></td>
+                    <td>{{ record.course_description }}</td>
+                    <td>{{ record.total_no_of_class }}</td>
+                    <td>{{ record.total_no_of_lesson }}</td>
+                    <td>{{ record.start_time }}</td>
+                    <td>{{ record.end_time }}</td>          
                     <td>
-                        <see-class-button :class_id=record.class_id></see-class-button>
+                        <set-enrolment-button :course_id=record.course_id></set-enrolment-button>
                     </td>
                 </tr>
             </tbody>
@@ -83,30 +82,29 @@
         const vm = new Vue({
             el: '#main-container',
             data: {
-                classes: []
+                courses: []
             },
             mounted: function() {
-                axios.get('http://localhost:6900/class')
-                    .then(response => {
-                        this.classes = response.data.data.course;
-                    })
-                    .catch(error => alert(error));
+                axios.get('http://localhost:6900/course')
+                .then(response => {
+                    this.courses = response.data.data.course;
+                })
+                .catch(error => alert(error));
             }
-        })
+        });
 
-        Vue.component("see-class-button", {
-            template: "<button @click='clicked' class='btn btn-outline-info'>See Class list</button>",
-            props: ["class_id"],
+        Vue.component("set-enrolment-button", {
+            template: "<button @click='clicked' class='btn btn-success'>Set enrolment dates</button>",
+            props: ["course_id"],
             data: function() {
                 return {
                     employee_id: 1
                 };
-            
-            },
-            
+    
+            },    
             methods: {
                 clicked: function(event) {
-                    window.location.replace("HR_class-list.html?class_id=" + this.class_id)
+                    window.location.replace("HR_set-enrol.html?course_id=" + this.course_id)
                 }
             }
         });

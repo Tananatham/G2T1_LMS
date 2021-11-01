@@ -46,10 +46,10 @@
         </a>
     </div>
 
-    <div id= "main-container" class="container">
+    <div id= "main-container" class="container-fluid">
         <h4 style= "padding: 20px; font-weight: bold;">List of Courses</h4>
 
-        <table id="courses" class="table">
+        <table id="courses" class="table" style="margin-left: auto;">
                 <tr>
                     <th>Course ID</th>
                     <th>Course Name</th>
@@ -58,6 +58,8 @@
                     <th>No. of lessons</th>
                     <th>Start Time</th>
                     <th>End Time</th>
+                    <th>Enrolment start date</th>
+                    <th>Enrolment end date</th>
                     <th>Enrolment Dates</th>
                 </tr>
             </thead>
@@ -69,9 +71,11 @@
                     <td>{{ record.total_no_of_class }}</td>
                     <td>{{ record.total_no_of_lesson }}</td>
                     <td>{{ record.start_time }}</td>
-                    <td>{{ record.end_time }}</td>          
+                    <td>{{ record.end_time }}</td>
+                    <td>{{ record.start_enrol }}</td>  
+                    <td>{{ record.end_enrol }}</td>                  
                     <td>
-                        <set-enrolment-button :course_id=record.course_id></set-enrolment-button>
+                        <edit-enrolment-button :course_id=record.course_id></edit-enrolment-button>
                     </td>
                 </tr>
             </tbody>
@@ -93,8 +97,8 @@
             }
         });
 
-        Vue.component("set-enrolment-button", {
-            template: "<button @click='clicked' class='btn btn-success'>Set enrolment dates</button>",
+        Vue.component("edit-enrolment-button", {
+            template: "<button @click='clicked' class='btn btn-success'>Edit enrolment dates</button>",
             props: ["course_id"],
             data: function() {
                 return {

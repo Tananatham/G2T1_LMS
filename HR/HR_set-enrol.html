@@ -48,16 +48,17 @@
 
     <div id = "main-container" class= "container p-3">
         <h4 style= "padding: 20px; font-weight: bold;">Set the enrollment dates</h4>
+        <form method="POST" id="enrolment_dates">
+            <label for="start_enrol" style="font-weight: bold;">Start Date</label>
+            <input type="date" id="start_enrol" name="start_enrol">
 
-        <label for="start_enrol" style="font-weight: bold;">Start Date</label>
-        <input type="date" id="start_enrol" name="start_enrol">
+            <label for="end_enrol" style="font-weight: bold; padding-left: 15px;">End Date</label>
+            <input type="date" id="end_enrol" name="end_enrol">
+        </form>
 
-        <label for="end_enrol" style="font-weight: bold; padding-left: 15px;">End Date</label>
-        <input type="date" id="end_enrol" name="end_enrol">
-    </div> 
-
-    <div id = "mid-container" class="container" style="padding-top: 20px;">
-        <button class="btn btn-success btn-lg" type="button" id="save_dates">Save</button>
+    <!-- <div id = "mid-container" class="container" style="padding-top: 20px;"> -->
+        <!-- <button class="btn btn-success btn-lg" type="button" id="save_dates" onclick="save_enrolment_dates()">Save</button> -->
+        <save-button></save-button>
     </div>
 
     <div id = "footer-container" class="container" style="padding-top: 30px;">
@@ -78,6 +79,62 @@
         if (url_course_id == null) {
             window.location.replace("HR_courses.html")
         }
+
+        current_start = document.getElementById("start_enrol").value;
+        current_end = document.getElementById("end_enrol").value;
+
+        Vue.component("save-button", {
+            template: "<button @click='clicked' class='btn btn-success btn-lg'>Save</button>",
+            props: ["course_id"],
+            data: function() {
+                return {
+                    course_id: url_course_id,
+                    start_enrol: current_start,
+                    end_enrol: current_end
+                };
+            },
+            methods: {
+                clicked: function(event) {
+                    axios.post('http://localhost:6900/course', {
+                        course_id: this.course_id,
+                        start_enrol: this.start_enrol,
+                        end_enrol: this.end_enrol,
+                        status: this.status
+                    })
+                    .then(response => {
+                        window.alert("Enrolment Dates are set!");
+                        location.reload();
+                    })
+                    .catch(error => {
+                        this.error = error.response.data.message
+                        window.alert("Error: " + this.error)
+                    });
+                }
+            }
+        })
+
+        // function save_enrolment_dates() {
+            // 
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "http://localhost:6900/course/"+ url_course_id);
+            // xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
+            // xhr.setRequestHeader("Content-Type", "application/json");
+            // xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            // xhr.withCredentials = false;
+            // var start = document.getElementById("start_enrol").value;
+            // var end = document.getElementById("end_enrol").value;
+            // var object = {"start_enrol": start};
+            // var object_2 = {"end_enrol": end};
+            // console.log(object)
+            // console.log(object_2)
+            // var json = JSON.stringify(object);
+            // var json_2 = JSON.stringify(object_2);
+            // console.log(json)
+            // xhr.send(json);
+            // xhr.send(json_2);
+            // alert("Enrolment dates are set!");
+            // window.location.href="http://localhost/SPM/templates/homepage.html";
+        // }
     </script>
 
 

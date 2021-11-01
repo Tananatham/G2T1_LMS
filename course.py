@@ -59,8 +59,10 @@ class Course(db.Model):
     start_time = db.Column(db.String(50), nullable=False)
     end_time = db.Column(db.String(50), nullable=False)
     datetime_uploaded = db.Column(db.String(50), nullable=False)
+    start_enrol = db.Column(db.String(50), nullable=False)
+    end_enrol = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, course_id, course_name, total_no_of_class, total_no_of_lesson, class_id, course_description, course_prerequisite, coursem_id, employee_id, start_time, end_time, datetime_uploaded):
+    def __init__(self, course_id, course_name, total_no_of_class, total_no_of_lesson, class_id, course_description, course_prerequisite, coursem_id, employee_id, start_time, end_time, datetime_uploaded,start_enrol, end_enrol):
         self.course_id = course_id
         self.course_name = course_name
         self.total_no_of_class = total_no_of_class
@@ -73,6 +75,8 @@ class Course(db.Model):
         self.start_time = start_time
         self.end_time = end_time
         self.datetime_uploaded = datetime_uploaded
+        self.start_enrol = start_enrol
+        self.end_enrol = end_enrol
 
     def to_dict(self):
         """
@@ -87,7 +91,7 @@ class Course(db.Model):
     
 
     def json(self):
-        return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "course_prerequisite": self.course_prerequisite, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded}
+        return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "course_prerequisite": self.course_prerequisite, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded, "start_enrol": self.start_enrol, "end_enrol": self.end_enrol}
 
 # Class Class
 class Class(db.Model):

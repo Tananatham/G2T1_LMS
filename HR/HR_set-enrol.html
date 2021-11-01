@@ -33,7 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
-    <title>LMS Admin</title>
+    <title>Set enrolment dates</title>
     
 </head>
 <style>
@@ -46,28 +46,24 @@
         </a>
     </div>
 
-    <div id= "main-container" class="container">
-        <h4 style= "padding: 20px; font-weight: bold;">List of learners</h4>
+    <div id = "main-container" class= "container">
+        <h4 style= "padding: 20px; font-weight: bold;">Set the enrollment dates</h4>
 
-        <table id="class_list" class="table">
-                <tr>
-                    <!-- <th>Employee ID</th> -->
-                    <th>Name</th>
-                    <!-- <th>Role</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="record in employees">
-                    <!-- <td>{{ record.employee_id }}</td> -->
-                    <td>{{ record }}</td>
-                    <!-- <td>{{ record.employee_role }}</td> -->
-                </tr>
-            </tbody>
-        </table>
+        <label for="start_enrol" style="font-weight: bold;">Start Date</label>
+        <input type="date" id="start_enrol" name="start_enrol">
 
-        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='HR_all-classes.html'">Back to classes</button>
+        <label for="end_enrol" style="font-weight: bold; padding-left: 15px;">End Date</label>
+        <input type="date" id="end_enrol" name="end_enrol">
+    </div> 
 
+    <div id = "mid-container" class="container" style="padding-top: 20px;">
+        <button class="btn btn-success btn-lg" type="button" id="save_dates">Save</button>
     </div>
+
+    <div id = "footer-container" class="container" style="padding-top: 30px;">
+        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='HR_courses.html'">Back to courses</button>
+    </div>
+
     <script>
         function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
@@ -78,28 +74,12 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
         
-        var url_class_id = getParameterByName('class_id');
-        if (url_class_id == null) {
-            window.location.replace("HR_all-classes.html")
+        var url_course_id = getParameterByName('course_id');
+        if (url_course_id == null) {
+            window.location.replace("HR_courses.html")
         }
-
-        const vm = new Vue({
-            el: '#main-container',
-            data: {
-                employees: [],
-                class_id: url_class_id
-            },
-            mounted: function() {
-                axios.get('http://localhost:6900/enrollment_in_progress_by_class/' + this.class_id)
-                    .then(response => {
-                        this.employees = response.data.data.employee;
-                    })
-                    .catch(error => alert(error));
-            }
-        })
-
     </script>
 
 
 </body>
-</html>
+</html>    

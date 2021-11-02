@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 02, 2021 at 09:05 AM
+-- Generation Time: Nov 02, 2021 at 02:02 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -21,9 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
-DROP DATABASE IF EXISTS `lms_course`;
-CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `lms_course`;
 
 -- --------------------------------------------------------
 
@@ -36,11 +33,11 @@ CREATE TABLE IF NOT EXISTS `class` (
   `class_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
-  `course_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `start_date` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `end_date` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `start_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `end_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `course_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `start_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `end_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `start_time` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `end_time` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `class_size` int(11) NOT NULL,
   `current_class_size` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
@@ -70,7 +67,7 @@ INSERT INTO `class` (`class_id`, `course_id`, `lesson_id`, `course_name`, `start
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE IF NOT EXISTS `course` (
   `course_id` int(11) NOT NULL AUTO_INCREMENT,
-  `course_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `course_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `total_no_of_class` int(11) NOT NULL,
   `total_no_of_lesson` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
@@ -78,11 +75,11 @@ CREATE TABLE IF NOT EXISTS `course` (
   `course_prerequisite` int(11) NOT NULL,
   `coursem_id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
-  `start_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `end_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `start_time` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `end_time` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
-  `start_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `end_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL, 
+  `start_enrol` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `end_enrol` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -90,11 +87,11 @@ CREATE TABLE IF NOT EXISTS `course` (
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no_of_lesson`, `class_id`, `course_description`, `course_prerequisite`, `coursem_id`, `employee_id`, `start_time`, `end_time`, `datetime_uploaded`) VALUES
-(1, 'Chemical engineering', 1, 1, 1, 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', 0, 1, 2, '1 July 2021', '1 December 2021', '2021-06-23 00:00:00'),
-(4, 'Civil Engineer', 3, 2, 1, 'Civil engineering is the professional practice of designing and developing infrastructure projects. This can be on a huge scale, such as the development of nationwide transport systems or water supply networks, or on a smaller scale, such as the development of single roads or buildings.', 0, 1, 2, '5 August 2021', '1 December 2021', '2021-08-17 00:00:00'),
-(5, 'Electrical/electronic engineering', 1, 2, 5, 'Electrical and electronics engineering both focus on applications of electrical power. The two fields differ in that electrical engineers chiefly focus on the large-scale production and supply of electrical power, while electronics engineers focus on much smaller electronic circuits, such as those used in computers.', 0, 1, 1, '5 July 2021', '1 December 2021', '2021-09-14 00:00:00'),
-(6, 'Computer Engineering', 2, 1, 5, '*This course has a prerequisite of Electrical Engineering*\r\nComputer engineering concerns the design and prototyping of computing hardware and software. This subject merges electrical engineering with computer science, and you may prefer to study computer engineering alongside one of these similar subjects.', 0, 1, 1, '8 September 2021', '18 September 2021', '2021-07-13 00:00:00');
+INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no_of_lesson`, `class_id`, `course_description`, `course_prerequisite`, `coursem_id`, `employee_id`, `start_time`, `end_time`, `datetime_uploaded`, `start_enrol`, `end_enrol`) VALUES
+(1, 'Chemical engineering', 1, 1, 1, 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', 0, 1, 2, '1 July 2021', '1 December 2021', '2021-06-23 00:00:00', '', ''),
+(4, 'Civil Engineer', 3, 2, 1, 'Civil engineering is the professional practice of designing and developing infrastructure projects. This can be on a huge scale, such as the development of nationwide transport systems or water supply networks, or on a smaller scale, such as the development of single roads or buildings.', 0, 1, 2, '5 August 2021', '1 December 2021', '2021-08-17 00:00:00', '', ''),
+(5, 'Electrical/electronic engineering', 1, 2, 5, 'Electrical and electronics engineering both focus on applications of electrical power. The two fields differ in that electrical engineers chiefly focus on the large-scale production and supply of electrical power, while electronics engineers focus on much smaller electronic circuits, such as those used in computers.', 0, 1, 1, '5 July 2021', '1 December 2021', '2021-09-14 00:00:00', '', ''),
+(6, 'Computer Engineering', 2, 1, 5, '*This course has a prerequisite of Electrical Engineering*\r\nComputer engineering concerns the design and prototyping of computing hardware and software. This subject merges electrical engineering with computer science, and you may prefer to study computer engineering alongside one of these similar subjects.', 0, 1, 1, '8 September 2021', '18 September 2021', '2021-07-13 00:00:00', '', '');
 
 -- --------------------------------------------------------
 
@@ -105,7 +102,7 @@ INSERT INTO `course` (`course_id`, `course_name`, `total_no_of_class`, `total_no
 DROP TABLE IF EXISTS `course_material`;
 CREATE TABLE IF NOT EXISTS `course_material` (
   `coursem_id` int(11) NOT NULL,
-  `coursem_description` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `coursem_description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `course_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `datetime_uploaded` datetime NOT NULL
@@ -147,8 +144,8 @@ DROP TABLE IF EXISTS `employee`;
 CREATE TABLE IF NOT EXISTS `employee` (
   `employee_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_id` int(11) NOT NULL,
-  `employee_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `employee_role` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`employee_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -173,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
   `employee_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   `class_id` int(11) DEFAULT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`employee_id`,`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -197,26 +194,26 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `course_id` int(11) NOT NULL,
   `quiz_id` int(11) NOT NULL,
   `lesson_descriptions` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lesson_name` varchar(50) NOT NULL,
-  `quiz_type` varchar(50) NOT NULL,
-  `lesson_material` varchar(100) DEFAULT NULL,
-  `created_on` varchar(100) NOT NULL,
+  `lesson_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `quiz_type` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `lesson_material` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_on` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lesson`
 --
 
 INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `lesson_descriptions`, `lesson_name`, `quiz_type`, `lesson_material`, `created_on`) VALUES
-(1, 5, 5, 6, 'Korem Ipsum', 'apple', 'Ungraded', NULL, '2021-10-05 21:35:50'),
-(3, 0, 0, 0, '', '', '', '', '0000-00-00 00:00:00'),
-(4, 2, 3, 4, 'testing', 'testing', 'ungraded', '', '0000-00-00 00:00:00'),
-(5, 2, 3, 4, 'testing', 'testing', 'ungraded', '', '0000-00-00 00:00:00'),
-(6, 2, 3, 4, 'testing', 'testing', 'ungraded', '', '0000-00-00 00:00:00'),
-(7, 3487, 3487, 3487, 'w', 'w', 'graded', '3487', '0000-00-00 00:00:00'),
-(8, 3487, 3487, 3487, 'w', 'w', 'graded', '', '0000-00-00 00:00:00'),
-(9, 3487, 3487, 3487, 'test', 'test', 'graded', '', '0000-00-00 00:00:00');
+(10, 5, 6, 0, 'Lesson 1 Descriptions', 'Lesson1', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:14:35 PM'),
+(11, 5, 6, 0, 'Lesson 2 Descriptions', 'Lesson2', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:15:28 PM'),
+(12, 5, 6, 0, 'Lesson 3 Descriptions', 'Lesson3', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:17:10 PM'),
+(13, 5, 6, 0, 'Final Quiz Descriptions', 'FinalQuiz', 'graded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:17:21 PM'),
+(14, 2, 4, 3, 'Lesson 1 Descriptions', 'Lesson1', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:58:57 PM'),
+(15, 2, 4, 0, 'Lesson 2 Descriptions', 'Lesson2', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:59:09 PM'),
+(16, 2, 4, 0, 'Lesson 3 Descriptions\r\n', 'Lesson3', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:59:18 PM'),
+(17, 2, 4, 0, 'Final Quiz Descriptions', 'FinalQuiz', 'ungraded', 'https://drive.google.com/drive/folders/1D4aDjMm1LxaD6187eLMj70i6lG4QfAI7?usp=sharing', '11/2/2021 9:59:28 PM');
 
 -- --------------------------------------------------------
 
@@ -227,17 +224,27 @@ INSERT INTO `lesson` (`lesson_id`, `class_id`, `course_id`, `quiz_id`, `lesson_d
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE IF NOT EXISTS `quiz` (
   `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
-  `quiz_type` varchar(10) NOT NULL,
+  `quiz_type` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `datetime_created` varchar(100) NOT NULL,
+  `datetime_created` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `passing_score` int(3) DEFAULT NULL,
-  `correct_answer` varchar(100) NOT NULL,
-  `question_type` varchar(50) NOT NULL,
-  `time_limit` varchar(50) NOT NULL,
+  `correct_answer` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `question_type` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `time_limit` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `quiz_selection` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quiz`
+--
+
+INSERT INTO `quiz` (`quiz_id`, `quiz_type`, `lesson_id`, `quiz_question`, `datetime_created`, `passing_score`, `correct_answer`, `question_type`, `time_limit`, `quiz_selection`) VALUES
+(2, 'ungraded', 14, 'Electrons are larger than molecules', '11/2/2021 9:59:46 PM', 0, 'True', 'True/False', '30 minutes', 'True,False'),
+(3, 'ungraded', 14, 'What\'s the biggest animal in the world?', '11/2/2021 9:59:46 PM', 0, 'Whale', 'MCQ', '30 minutes', 'Tiger,Cow,Whale'),
+(4, 'ungraded', 14, 'Sharks are mammals', '11/2/2021 9:59:46 PM', 0, 'True', 'True/False', '30 minutes', 'True,False');
 
 --
 -- Constraints for dumped tables

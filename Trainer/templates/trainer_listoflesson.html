@@ -42,7 +42,7 @@
                 var name = queryparams[1].split("=");
                 var serviceURL ="http://localhost:5000/lessonclass/"+ name[1];
                 var x = document.getElementById("checkout");
-                x.href = "http://localhost/SPM/templates/create_lesson.html?classid=" + name[1];
+                x.href = "http://localhost/SPM/templates/trainer_create_lesson.html?classid=" + name[1];
 
             try {
                 const response =
@@ -59,15 +59,15 @@
                     eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
                                 "<td>" + lessonn.quiz_type + "</td>" +
                                 "<td>" + lessonn.created_on + "</td>" +
-                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
-                                "<td> <a class='btn btn-success' href='http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lessonn.lesson_name + "&quiztype="+ lessonn.quiz_type + "&lessonid="+ lessonn.lesson_id + "' role='button'>Create Quiz</a> </td>";
+                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/trainer_edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
+                                "<td> <a class='btn btn-success' href='http://localhost/SPM/templates/trainer_create_quiz_MCQ.html?lessonname=" + lessonn.lesson_name + "&quiztype="+ lessonn.quiz_type + "&lessonid="+ lessonn.lesson_id + "' role='button'>Create Quiz</a> </td>";
                     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";}
                         else{
                     eachRow =   "<td>" + lessonn.lesson_name + "</td>" +
                                 "<td>" + lessonn.quiz_type + "</td>" +
                                 "<td>" + lessonn.created_on + "</td>" +
-                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
-                                "<td> <a class='btn btn-info' href='http://localhost/SPM/templates/view_quiz.html?lesson_id=" + lessonn.lesson_id + "' role='button'>View Quiz</a> </td>";
+                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/trainer_edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
+                                "<td> <a class='btn btn-info' href='http://localhost/SPM/templates/trainer_view_quiz.html?lesson_id=" + lessonn.lesson_id + "' role='button'>View Quiz</a> </td>";
                     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";}
                     }
                     $('#classTable').append(rows);

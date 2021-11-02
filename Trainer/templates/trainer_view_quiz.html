@@ -67,7 +67,7 @@
                 xhr.send()
 
                 alert("Deleted quiz question!")
-                window.location.href="http://localhost/SPM/templates/view_quiz.html?lesson_id="+lessonid;
+                window.location.href="http://localhost/SPM/templates/trainer_view_quiz.html?lesson_id="+lessonid;
 
         }
 
@@ -97,7 +97,7 @@
                                 "<td>" + quiz.quiz_selection + "</td>" +
                                 "<td>" + quiz.correct_answer + "</td>" +
                                 "<td>" + quiz.datetime_created + "</td>" +
-                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>" +
+                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/trainer_edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>" +
                                 "<td> <img src='image1.png' onclick=deletefunction("+quiz.quiz_id+","+lesson_id[1]+")> </td>" ;
                     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                     }
@@ -133,7 +133,7 @@
                     var text = document.createTextNode("Create Question");
                     para1.setAttribute("role","button");
                     para1.setAttribute("class","btn btn-primary btn-sm");
-                    para1.setAttribute("href", "http://localhost/SPM/templates/create_quiz_MCQ.html?lessonname=" + lesson.lesson_name + "&quiztype="+ lesson.quiz_type + "&lessonid="+ lesson_id[1]+"");
+                    para1.setAttribute("href", "http://localhost/SPM/templates/trainer_create_quiz_MCQ.html?lessonname=" + lesson.lesson_name + "&quiztype="+ lesson.quiz_type + "&lessonid="+ lesson_id[1]+"");
                     para1.appendChild(text);
                     para.appendChild(para1);
                 } else if (response.status == 404) {

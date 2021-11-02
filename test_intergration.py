@@ -45,7 +45,7 @@ class TestEmployee(unittest.TestCase):
     def test_employee_course_prerequisite_check(self):
        self.assertEqual(4,4)
 
-#Author: 
+#Author:
 class TestCourse(unittest.TestCase):
 
     def test_set_course_prereq(self):

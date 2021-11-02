@@ -20,7 +20,6 @@ class TestApp(flask_testing.TestCase):
         db.session.remove()
         db.drop_all()
 
-
 class TestLesson(TestApp):
     def test_find_quiz_by_lesson_id(self):
         response = self.client.get("/quiz_by_lesson_id/2")

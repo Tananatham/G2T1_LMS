@@ -80,6 +80,8 @@ CREATE TABLE IF NOT EXISTS `course` (
   `start_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `end_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
+  `start_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `end_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL, 
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

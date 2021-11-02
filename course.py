@@ -59,8 +59,10 @@ class Course(db.Model):
     start_time = db.Column(db.String(50), nullable=False)
     end_time = db.Column(db.String(50), nullable=False)
     datetime_uploaded = db.Column(db.String(50), nullable=False)
+    start_enrol = db.Column(db.String(50), nullable=False)
+    end_enrol = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, course_id, course_name, total_no_of_class, total_no_of_lesson, class_id, course_description, course_prerequisite, coursem_id, employee_id, start_time, end_time, datetime_uploaded):
+    def __init__(self, course_id, course_name, total_no_of_class, total_no_of_lesson, class_id, course_description, course_prerequisite, coursem_id, employee_id, start_time, end_time, datetime_uploaded,start_enrol, end_enrol):
         self.course_id = course_id
         self.course_name = course_name
         self.total_no_of_class = total_no_of_class
@@ -73,6 +75,8 @@ class Course(db.Model):
         self.start_time = start_time
         self.end_time = end_time
         self.datetime_uploaded = datetime_uploaded
+        self.start_enrol = start_enrol
+        self.end_enrol = end_enrol
 
     def to_dict(self):
         """
@@ -87,7 +91,7 @@ class Course(db.Model):
     
 
     def json(self):
-        return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "course_prerequisite": self.course_prerequisite, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded}
+        return {"course_id": self.course_id, "course_name": self.course_name, "total_no_of_class": self.total_no_of_class, "total_no_of_lesson": self.total_no_of_lesson, "class_id": self.class_id, "course_description": self.course_description, "course_prerequisite": self.course_prerequisite, "coursem_id": self.coursem_id, "employee_id": self.employee_id, "start_time":self.start_time, "end_time":self.end_time, "datetime_uploaded":self.datetime_uploaded, "start_enrol": self.start_enrol, "end_enrol": self.end_enrol}
 
 # Class Class
 class Class(db.Model):
@@ -143,26 +147,27 @@ class Class(db.Model):
         """
         Get the starting datetime
         """
-        start_year = self.start_date.split()[2]
-        start_month = datetime.strptime(self.start_date.split()[1], "%B")
-        start_day = self.start_date.split()[0]
+        start_year = self.start_date.split('/')[2]
+        start_month = self.start_date.split('/')[1]
+        start_day = self.start_date.split('/')[0]
         start_hour = self.start_time.split(":")[0]
         start_minute = self.start_time.split(":")[1]
 
-        return datetime(int(start_year), start_month.month, int(start_day), int(start_hour), int(start_minute))
+        return datetime(int(start_year), int(start_month), int(start_day), int(start_hour), int(start_minute))
     
     
     def get_end_datetime(self):
         """
-        Get the starting datetime
+        Get the ending datetime
         """
-        end_year = self.end_date.split()[2]
-        end_month = datetime.strptime(self.end_date.split()[1], "%B")
-        end_day = self.end_date.split()[0]
+        end_year = self.end_date.split('/')[2]
+        # end_month = datetime.strptime(self.end_date.split()[1], "%B")
+        end_month = self.end_date.split('/')[1]
+        end_day = self.end_date.split('/')[0]
         end_hour = self.end_time.split(":")[0]
         end_minute = self.end_time.split(":")[1]
 
-        return datetime(int(end_year), end_month.month, int(end_day), int(end_hour), int(end_minute))
+        return datetime(int(end_year), int(end_month), int(end_day), int(end_hour), int(end_minute))
 
     def json(self):
         return {"class_id": self.class_id, "course_id": self.course_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
@@ -1207,39 +1212,68 @@ def create_class():
 @app.route("/class/<string:class_id>", methods=['PUT'])
 def update_class(class_id):
     a_class = Class.query.filter_by(class_id=class_id).first()
-    print(a_class)
-    if a_class:
-        data = request.get_json()
-        if data['class_id']:
-            a_class.class_id = data['class_id']
-        if data['lesson_id']:
-            a_class.lesson_id = data['lesson_id']
-        if data['course_name']:
-            a_class.course_namen = data['course_name']
-        if data['start_date']:
-            a_class.start_date = data['start_date']
-        if data['end_date']:
-            a_class.end_date = data['end_date']
-        if data['start_time']:
-            a_class.start_time = data['start_time']
-        if data['end_time']:
-            a_class.end_time = data['end_time']
-        if data['class_size']:
-            a_class.class_size = data['class_size']    
-        if data['current_class_size']:
-            a_class.current_class_size = data['current_class_size']   
-        if data['employee_id']:
-            a_class.employee_id = data['employee_id']   
-        if data['duration_of_class']:
-            a_class.duration_of_class = data['duration_of_class']   
+    data = request.get_json()
+    if data['class_id']:
+        a_class.class_id = data['class_id']
+    if data['course_id']:
+        a_class.course_id = data['course_id']
+    if data['lesson_id']:
+        a_class.lesson_id = data['lesson_id']
+    if data['course_name']:
+        a_class.course_name = data['course_name']
+    if data['start_date']:
+        a_class.start_date = data['start_date']
+    if data['end_date']:
+        a_class.end_date = data['end_date']
+    if data['start_time']:
+        a_class.start_time = data['start_time']
+    if data['end_time']:
+        a_class.end_time = data['end_time']
+    if data['class_size']:
+        a_class.class_size = data['class_size']    
+    if data['current_class_size']:
+        a_class.current_class_size = data['current_class_size']   
+    if data['employee_id']:
+        a_class.employee_id = data['employee_id']   
+    if data['duration_of_class']:
+        a_class.duration_of_class = data['duration_of_class']   
         
-        db.session.commit()
-        return jsonify(
+    db.session.commit()
+    return jsonify(
             {
                 "code": 200,
                 "data": a_class.json()
             }
         )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "class_id": class_id
+            },
+            "message": "Class is not found."
+        }
+    ), 404
+
+
+# Update a class start and end date
+@app.route("/class_date/<string:class_id>", methods=['PUT'])
+def update_class_date(class_id):
+    a_class = Class.query.filter_by(class_id=class_id).first()
+    data = request.get_json()
+    if a_class:
+        if data['start_date']:
+            a_class.start_date = data['start_date']
+        if data['end_date']:
+            a_class.end_date = data['end_date']
+        
+        db.session.commit()
+        return jsonify(
+                {
+                    "code": 200,
+                    "data": a_class.json()
+                }
+            )
     return jsonify(
         {
             "code": 404,

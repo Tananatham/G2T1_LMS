@@ -110,21 +110,21 @@
             }
         });
 
-        Vue.component("set-enrolment-button", {
-            template: "<button @click='clicked' class='btn btn-success'>Set enrolment dates</button>",
-            props: ["course_id"],
-            data: function() {
-                return {
-                    employee_id: 1
-                };
+        // Vue.component("set-enrolment-button", {
+            // template: "<button @click='clicked' class='btn btn-success'>Set enrolment dates</button>",
+            // props: ["course_id"],
+            // data: function() {
+                // return {
+                    // employee_id: 1
+                // };
     
-            },    
-            methods: {
-                clicked: function(event) {
-                    window.location.replace("HR_set-enrol.html?course_id=" + this.course_id)
-                }
-            }
-        });
+            // },    
+            // methods: {
+                // clicked: function(event) {
+                    // window.location.replace("HR_set-enrol.html?course_id=" + this.course_id)
+                // }
+            // }
+        // });
 
     </script>
 

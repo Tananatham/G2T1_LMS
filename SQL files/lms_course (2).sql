@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 28, 2021 at 12:45 PM
+-- Generation Time: Nov 02, 2021 at 09:05 AM
 -- Server version: 8.0.18
 -- PHP Version: 7.4.0
 
@@ -21,8 +21,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
-DROP DATABASE IF EXISTS `lms_course`;
-CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `lms_course`;
 
 -- --------------------------------------------------------
@@ -46,19 +45,20 @@ CREATE TABLE IF NOT EXISTS `class` (
   `employee_id` int(11) NOT NULL,
   `duration_of_class` int(11) NOT NULL,
   PRIMARY KEY (`class_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `class`
 --
 
 INSERT INTO `class` (`class_id`, `course_id`, `lesson_id`, `course_name`, `start_date`, `end_date`, `start_time`, `end_time`, `class_size`, `current_class_size`, `employee_id`, `duration_of_class`) VALUES
-(2, 4, 3, 'Civil Engineer course', '1 September 2021', '1 December 2021', '14:00', '16:00', 10, 5, 1, 2),
-(3, 4, 3, 'Civil Engineer course', '1 January 2021', '25 October 2022', '14:00', '16:00', 10, 10, 1, 2),
-(4, 6, 4, 'Computer Engineering Class', '1 October 2021', '25 October 2022', '14:00', '16:00', 10, 0, 1, 2),
-(5, 6, 4, 'Computer Engineering Class', '1 January 2020', '20 January 2020', '14:00', '16:00', 10, 0, 1, 2),
-(6, 1, 5, 'Chemical engineering', '1 January 2020', '20 January 2020', '14:00', '16:00', 10, 10, 1, 2),
-(7, 4, 3, 'Civil Engineer course', '1 January 2021', '10 February 2021', '14:00', '16:00', 10, 0, 1, 2);
+(2, 4, 3, 'Civil Engineer course', '01/09/2021', '01/12/2021', '14:00', '16:00', 10, 5, 1, 2),
+(3, 4, 3, 'Civil Engineer course', '01/01/2021', '12/12/2021', '14:00', '16:00', 10, 10, 1, 2),
+(4, 6, 4, 'Computer Engineering Class', '09/09/2022', '25/10/2022', '14:00', '16:00', 10, 0, 1, 2),
+(5, 6, 4, 'Computer Engineering Class', '10/01/2020', '15/01/2020', '14:00', '16:00', 10, 0, 1, 2),
+(6, 1, 5, 'Chemical engineering', '16/01/2020', '20/02/2020', '14:00', '16:00', 10, 10, 1, 2),
+(7, 4, 3, 'Civil Engineer course', '01/02/2021', '10/02/2021', '14:00', '16:00', 10, 0, 1, 2),
+(12, 4, 3, 'Civil Engineer course', '4/4/694', '4/20/69', '14:00', '16:00', 10, 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -80,8 +80,6 @@ CREATE TABLE IF NOT EXISTS `course` (
   `start_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `end_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
-  `start_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `end_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL, 
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -128,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `course_prerequisite` (
 --
 
 INSERT INTO `course_prerequisite` (`course_id`, `prerequisite_course_id`) VALUES
+(1, 5),
 (2, 5),
 (2, 6),
 (3, 7),
@@ -194,13 +193,13 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `class_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   `quiz_id` int(11) NOT NULL,
-  `lesson_descriptions` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lesson_descriptions` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `lesson_name` varchar(50) NOT NULL,
   `quiz_type` varchar(50) NOT NULL,
   `lesson_material` varchar(100) DEFAULT NULL,
   `created_on` varchar(100) NOT NULL,
   PRIMARY KEY (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `lesson`
@@ -227,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_type` varchar(10) NOT NULL,
   `lesson_id` int(11) NOT NULL,
-  `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `datetime_created` varchar(100) NOT NULL,
   `passing_score` int(3) DEFAULT NULL,
   `correct_answer` varchar(100) NOT NULL,
@@ -235,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `time_limit` varchar(50) NOT NULL,
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Constraints for dumped tables
@@ -244,12 +243,9 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 --
 -- Constraints for table `quiz`
 --
-
 ALTER TABLE `quiz`
   ADD CONSTRAINT `quiz_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`lesson_id`);
 COMMIT;
-
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

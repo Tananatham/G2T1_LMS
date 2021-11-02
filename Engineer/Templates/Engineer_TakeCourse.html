@@ -47,43 +47,35 @@
 </nav>
 
 
-<!-- Viewing Buttons
-<br>
-<div class="container-fluid">
-    <button type="button" class="btn btn-primary">View Courses</button>
-    <button type="button" class="btn btn-secondary">Completed Courses</button>
-    <button type="button" class="btn btn-secondary">My badges</button>
-</div> -->
-
 
 <!-- User's Courses -->
 <br>
 <div id="main-container" class="container">
 
-<h3 id="courseName" class="container" v-for="record in classes">Classs Name: {{ record.course_name }}</h3>
+<!-- <h3 id="courseName" class="container" v-for="record in classes">Classs Name: {{ record.course_name }}</h3>
 <div id="courseID" class="container"></div>
-<br>
+<br> -->
 
 
 <!-- Lesson Display -->
 
-<div class="accordion" id="accordionExample">
+<div class="accordion" id="accordionExample" v-for="item in lesson">
     <div class="card">
       <div class="card-header" id="headingOne">
         <h2 class="mb-0">
           <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Lesson 1
+            Lesson {{ item.lesson_name }}
           </button>
         </h2>
       </div>
       <!-- Display Lesson Content -->
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body">
-          Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
-        </div>
+          {{ item.lesson_descriptions }}
+      </div>
         <!-- Display Downloadable Materials -->
         <div class="card-body">
-            <a href=#>Lesson1.docx</a><br>
+            <a href= "{{ item.lesson_material }}"> Lesson1.2.docx</a><br>
             <a href=#>Lesson1.2.docx</a><br>
             <a href=#>Lesson1.3.docx</a><br>    
         </div>
@@ -127,7 +119,7 @@
           </tr>
       </tbody>
   </table>
-  <!-- 
+
   <p>
       <em><strong>Pages:</strong> <a href="create-course.html">Create a Course</a></em>
   </p> -->
@@ -135,44 +127,19 @@
 
 
 <script>
-Vue.component("apply-button_1", {
-    template: "<button @click='clicked' class='btn btn-primary'>Enrol</button>",
-    props: ["course_id"],
-    data: function() {
-        return {
-            employee_id: 1,
-            status: "pending"
-        };
-    },
-    methods: {
-        clicked: function(event) {
-            axios.post('http://localhost:6900/employee_course_status', {
-                    course_id: this.course_id,
-                    employee_id: this.employee_id,
-                    status: this.status
-                })
-                .then(response => {
-                    window.alert("You have successfully applied to this course, please wait while an administrator approves.");
-                    location.reload();
-                })
-                .catch(error => {
-                    this.error = error.response.data.message
-                    window.alert("There is an error with applying for this course. Error: " + this.error)
-                });
-        }
-    }
-}) 
+
 
   //displaying all classes
   const vm = new Vue({
       el: '#main-container',
       data: {
-          classes: []
+          lesson: []
       },
       mounted: function() {
-          axios.get('http://localhost:6900/class')
+          axios.get('http://localhost:6900/lesson/1')
               .then(response => {
-                  this.classes = response.data.data.course;
+                  this.lesson = response.data.data.course;
+                  console.log(lesson);
               })
               .catch(error => alert(error));
       }

@@ -38,14 +38,11 @@
         $(async()=>{
             
                 var url = window.location.href;
-                var queryparams = url.split('?')[1];
-                var params = queryparams.split('&');
-                id= params[0].split("=")
-                name= params[1].split("=")
-                document.getElementById("classname").textContent = name.split(',')[1];
-                var serviceURL ="http://localhost:5000/lessonclass/"+ id[1];
+                var queryparams = url.split('?');
+                var name = queryparams[1].split("=");
+                var serviceURL ="http://localhost:5000/lessonclass/"+ name[1];
                 var x = document.getElementById("checkout");
-                x.href = "http://localhost/SPM/templates/create_lesson.html?classid=" + id[1];
+                x.href = "http://localhost/SPM/templates/create_lesson.html?classid=" + name[1];
 
             try {
                 const response =
@@ -95,7 +92,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="form-check text-center">
-                            <h1>List of Lessons For </h1><h1 id="classname"></h1>
+                            <h1>List of Lessons</h1>
                         </div>
                     </div>
                     

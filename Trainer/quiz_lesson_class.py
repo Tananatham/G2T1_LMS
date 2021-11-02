@@ -99,6 +99,23 @@ def find_by_id_quiz(lesson_id):
         }
     ), 404
 
+@app.route("/quizid/<int:quiz_id>")
+def find_by_quizid(quiz_id):
+    quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
+    if quiz:
+        return jsonify(
+            {
+                "code": 200,
+                "data": quiz.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Quiz not found."
+        }
+    ), 404
+
 #  POST > Insert a new quiz
 @app.route("/quiz", methods=['POST'])
 def create_quiz():
@@ -133,8 +150,6 @@ def update_quiz(quiz_id):
     print(quiz)
     if quiz:
         data = request.get_json()
-        if data['quiz_type']:
-            quiz.quiz_type = data['quiz_type']
         if data['quiz_question']:
             quiz.quiz_question = data['quiz_question']
         if data['passing_score']:
@@ -313,8 +328,6 @@ def update_lesson(lesson_id):
             lesson.lesson_name = data['lesson_name']
         if data['lesson_descriptions']:
             lesson.lesson_descriptions = data['lesson_descriptions']
-        if data['quiz_type']:
-            lesson.quiz_type = data['quiz_type']
         if data['lesson_material']:
             lesson.lesson_material = data['lesson_material'] 
         

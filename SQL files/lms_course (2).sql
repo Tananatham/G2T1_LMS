@@ -21,7 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
-CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+DROP DATABASE IF EXISTS `lms_course`;
+CREATE DATABASE IF NOT EXISTS `lms_course` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `lms_course`;
 
 -- --------------------------------------------------------
@@ -80,6 +81,8 @@ CREATE TABLE IF NOT EXISTS `course` (
   `start_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `end_time` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `datetime_uploaded` datetime NOT NULL,
+  `start_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `end_enrol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL, 
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -193,13 +196,13 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `class_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   `quiz_id` int(11) NOT NULL,
-  `lesson_descriptions` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `lesson_descriptions` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `lesson_name` varchar(50) NOT NULL,
   `quiz_type` varchar(50) NOT NULL,
   `lesson_material` varchar(100) DEFAULT NULL,
   `created_on` varchar(100) NOT NULL,
   PRIMARY KEY (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lesson`
@@ -226,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_type` varchar(10) NOT NULL,
   `lesson_id` int(11) NOT NULL,
-  `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `quiz_question` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `datetime_created` varchar(100) NOT NULL,
   `passing_score` int(3) DEFAULT NULL,
   `correct_answer` varchar(100) NOT NULL,
@@ -234,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `time_limit` varchar(50) NOT NULL,
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Constraints for dumped tables

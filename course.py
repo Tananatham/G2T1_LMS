@@ -938,6 +938,10 @@ def update(course_id):
             course.end_time = data['end_time']
         if data['datetime_uploaded']:
             course.datetime_uploaded = data['datetime_uploaded']
+        if data['start_enrol']:
+            course.start_enrol = data['start_enrol']
+        if data['end_enrol']:
+            course.end_enrol = data['end_enrol']
 
         db.session.commit()
         return jsonify(

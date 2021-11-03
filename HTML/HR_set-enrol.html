@@ -49,15 +49,15 @@
     <div id = "main-container" class= "container p-3">
         <h4 style= "padding: 20px; font-weight: bold;">Set the enrollment dates</h4>
         <form method="POST" id="enrolment_dates">
-            <label for="start_enrol" style="font-weight: bold;">Start Date</label>
+            <label style="font-weight: bold;">Start Date</label>
             <input type="date" id="start_enrol" name="start_enrol">
 
-            <label for="end_enrol" style="font-weight: bold; padding-left: 15px;">End Date</label>
+            <label style="font-weight: bold; padding-left: 15px;">End Date</label>
             <input type="date" id="end_enrol" name="end_enrol">
         </form>
 
     <!-- <div id = "mid-container" class="container" style="padding-top: 20px;"> -->
-        <button class="btn btn-success btn-lg" type="button" id="save_dates" onclick="save_enrolment_dates()">Save</button>
+        <button class="btn btn-success btn-lg" @click="save_enrolment_dates">Save</button>
         <!-- <save-button></save-button> -->
     </div>
 
@@ -79,9 +79,43 @@
         if (url_course_id == null) {
             window.location.replace("HR_courses.html")
         }
+        var start = document.getElementById("start_enrol").value;
+        var end = document.getElementById("end_enrol").value;
+        new XMLHttpRequest().setRequestHeader('Access-Control-Allow-Origin', "*");
 
-        current_start = document.getElementById("start_enrol").value;
-        current_end = document.getElementById("end_enrol").value;
+        var vm = new Vue({
+            el: '#main-container',
+            data: function() {
+                return {
+                    start_enrol: start,
+                    end_enrol: end,
+                    course_id: url_course_id,
+                    error: ''
+                }
+            },  
+            methods: {
+                save_enrolment_dates: function(event) {
+                    axios.put('http://localhost:6900/course/' + this.course_id, {
+                        start_enrol: this.start_enrol,
+                        end_enrol: this.end_enrol
+                    })
+                    .then(response => {
+                        window.alert("The enrolment dates for course ID" + this.course_id + " has been set from " + this.start_enrol + " to " + this.end_enrol);
+                        location.reload();
+                    })
+                    .catch(error => {
+                        this.error = error.response.data.message
+                    });
+                }
+            },
+            // mounted: function() {
+                // axios.get('http://localhost:6900/course')
+                    // .then(response => {
+                        // this.enrolment = response.data.data.course;
+                    // })
+                    // .catch(error => alert(error));
+            // }
+        });
 
         // Vue.component("save-button", {
             // template: "<button @click='clicked' class='btn btn-success btn-lg'>Save</button>",
@@ -113,28 +147,53 @@
             // }
         // })
 
-        function save_enrolment_dates() {
-            
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:6900/course/"+ url_course_id);
-            xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.withCredentials = false;
-            var start = document.getElementById("start_enrol").value;
-            var end = document.getElementById("end_enrol").value;
-            var object = {"start_enrol": start};
-            var object_2 = {"end_enrol": end};
-            console.log(object)
-            console.log(object_2)
-            var json = JSON.stringify(object);
-            var json_2 = JSON.stringify(object_2);
-            console.log(json)
-            xhr.send(json);
-            xhr.send(json_2);
-            alert("Enrolment dates are set!");
-            window.location.href="http://localhost/SPM/templates/homepage.html";
-        }
+        // function save_enrolment_dates() {
+            // $(async()=>{
+            // var serviceURL ="http://localhost:6900/course/"+ course_id;
+            // try {
+            // const response =
+            // await fetch(
+            // serviceURL, { method: 'GET' }
+            // );
+            // const result = await response.json();
+            // if (response.status === 200) {
+                // success case
+                // var quiz = result.data;
+                // console.log(quiz.quiz_id);
+                // document.getElementById("quizid").value = quiz.quiz_id;
+            // } else if (response.status == 404) {
+                // showError(result.message);
+            // } else {
+                // unexpected outcome, throw the error
+                // throw response.status;
+            // }
+        // } catch (error) {
+            // Errors when calling the service; such as network error, 
+            // service offline, etc
+            // showError
+            // ('There is a problem retrieving quiz data, please try again later.<br />' + error);
+        // }}); // error
+            // 
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("PUT", "http://localhost:6900/course/"+ url_course_id);
+            // xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
+            // xhr.setRequestHeader("Content-Type", "application/json");
+            // xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            // xhr.withCredentials = false;
+            // var start = document.getElementById("start_enrol").value;
+            // var end = document.getElementById("end_enrol").value;
+            // var object = {"start_enrol": start};
+            // var object_2 = {"end_enrol": end};
+            // console.log(object)
+            // console.log(object_2)
+            // var json = JSON.stringify(object);
+            // var json_2 = JSON.stringify(object_2);
+            // console.log(json)
+            // xhr.send(json);
+            // xhr.send(json_2);
+            // alert("Enrolment dates are set!");
+            // window.location.href="HR_courses.html";
+        // }
     </script>
 
 

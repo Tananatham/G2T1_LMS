@@ -17,7 +17,7 @@ class TestEmployee(unittest.TestCase):
 #Author: Tantham 
 class TestCourse(unittest.TestCase):
     def test_to_dict(self):
-        c1 = Course(course_id = '1', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '1', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '1', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00')
+        c1 = Course(course_id = '1', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '1', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '1', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00', start_enrol= '', end_enrol= '')
         self.assertEqual(c1.to_dict(), {
             'course_id': '1',
             'course_name': 'PlaceHolder',
@@ -30,7 +30,9 @@ class TestCourse(unittest.TestCase):
             'employee_id': '1',
             'start_time': 'Now',
             'end_time': 'Later',
-            'datetime_uploaded': '2021-09-14 00:00:00'}
+            'datetime_uploaded': '2021-09-14 00:00:00',
+            'start_enroll' : '',
+            'end_enrol': ''}
         )
 
 #Author: Alina Tan 

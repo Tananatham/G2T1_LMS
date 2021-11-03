@@ -29,7 +29,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   
-    <title>Engineer View Class</title>
+    <title>Engineer Take Course</title>
 </head>
 
 
@@ -47,22 +47,48 @@
 </nav>
 
 
-<!-- Viewing Buttons
-<br>
-<div class="container-fluid">
-    <button type="button" class="btn btn-primary">View Courses</button>
-    <button type="button" class="btn btn-secondary">Completed Courses</button>
-    <button type="button" class="btn btn-secondary">My badges</button>
-</div> -->
-
 
 <!-- User's Courses -->
+<br>
 <div id="main-container" class="container">
 
-  <div id="courseName" class="container"></div>
-  <div id="courseID" class="container"></div>
+<!-- <h3 id="courseName" class="container" v-for="record in classes">Classs Name: {{ record.course_name }}</h3>
+<div id="courseID" class="container"></div>
+<br> -->
 
-  <table id="consultationsTable" class='table'>
+
+<!-- Lesson Display -->
+
+<div class="accordion" id="accordionExample" v-for="item in lesson">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Lesson {{ item.lesson_name }}
+          </button>
+        </h2>
+      </div>
+      <!-- Display Lesson Content -->
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          {{ item.lesson_descriptions }}
+      </div>
+        <!-- Display Downloadable Materials -->
+        <div class="card-body">
+            <a href= "{{ item.lesson_material }}"> Lesson1.2.docx</a><br>
+            <a href=#>Lesson1.2.docx</a><br>
+            <a href=#>Lesson1.3.docx</a><br>    
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-success">Quiz 1</button>  
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- <table id="consultationsTable" class='table'>
       <thead class='thead-dark'>
           <tr>
               <th>Class ID</th>
@@ -76,10 +102,11 @@
               <th>Enrol</th>
           </tr>
       </thead>
+      
       <tbody>
           <tr v-for="record in classes">
               <td>{{ record.class_id }}</td>
-              <td><strong>{{ record.employee_id }}</td>
+              <td>{{ record.employee_id }}</td>
               <td>{{ record.start_date }}</td>
               <td>{{ record.end_date }}</td>
               <td>{{ record.start_time }}</td>
@@ -92,54 +119,27 @@
           </tr>
       </tbody>
   </table>
-  <!-- 
+
   <p>
       <em><strong>Pages:</strong> <a href="create-course.html">Create a Course</a></em>
   </p> -->
 </div>
 
 
-  
-
 <script>
-Vue.component("apply-button_1", {
-    template: "<button @click='clicked' class='btn btn-primary'>Available Classes</button>",
-    props: ["course_id"],
-    data: function() {
-        return {
-            employee_id: 1,
-            status: "pending"
-        };
-    },
-    methods: {
-        clicked: function(event) {
-            axios.post('http://localhost:6900/employee_course_status', {
-                    course_id: this.course_id,
-                    employee_id: this.employee_id,
-                    status: this.status
-                })
-                .then(response => {
-                    window.alert("You have successfully applied to this course, please wait while an administrator approves.");
-                    location.reload();
-                })
-                .catch(error => {
-                    this.error = error.response.data.message
-                    window.alert("There is an error with applying for this course. Error: " + this.error)
-                });
-        }
-    }
-}) 
+
 
   //displaying all classes
   const vm = new Vue({
       el: '#main-container',
       data: {
-          classes: []
+          lesson: []
       },
       mounted: function() {
-          axios.get('http://localhost:6900/class')
+          axios.get('http://localhost:6900/lesson/1')
               .then(response => {
-                  this.classes = response.data.data.class;
+                  this.lesson = response.data.data.course;
+                  console.log(lesson);
               })
               .catch(error => alert(error));
       }

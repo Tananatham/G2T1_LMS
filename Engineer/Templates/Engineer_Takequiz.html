@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
 <head>
@@ -10,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
 
-    <title>View my courses</title>
+    <title>View Classes</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -37,54 +32,63 @@
 
     <div id="main-container" class="container">
 
-        <h1>View Lessons</h1>
+        <h1>Quiz for Lesson
+            <!-- <course-name></course-name> -->
+        </h1>
 
-        <table id="consultationsTable" class='table'>
-            <thead class='thead-dark'>
-                <tr>
-                    <th>Lesson ID</th>
-                    <th>Lesson</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="record in lessons">
-                    <td>{{ record.lesson_id }}</td>
-                    <td>{{ record.lesson_descriptions }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div>
+            Quiz Description
+        </div>
+
+        <div v-for="item in quiz">
+            <h4>{{ item.quiz_question }}</h4>
+            <input type="radio" value="HTML">
+            <label for="html"> {{ item.cortrect_answer }}</label><br>
+        </div>
+        
     </div>
 
-    <script>
-        function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
 
-        var url_class_id = getParameterByName('class_id');
-        if (url_class_id == null) {
-            window.location.replace("employee-course-list.html")
-        }
-        //console.log(url_class_id)
+    
+
+    <script>
+        
 
         const vm = new Vue({
             el: '#main-container',
             data: {
-                lessons: [],
-                class_id: url_class_id
+                quiz: [],
+                course_id: url_course_id
             },
             mounted: function() {
-                axios.get('http://localhost:6900/lesson_by_class_id/' + this.class_id)
+                axios.get('http://localhost:6900/quiz/1')
                     .then(response => {
-                        this.lessons = response.data.data.lesson;
+                        this.quiz = response.data.data.class;
                     })
                     .catch(error => alert(error));
             }
         });
+
+        
+        Vue.component("course-name", {
+            template: "<span><strong>{{name}}</strong></span>",
+            data: function() {
+                return {
+                    name: '',
+                    course_id: url_course_id
+                };
+            },
+            created: function() {
+                axios.get('http://localhost:6900/course/' + this.course_id)
+                    .then(response => {
+                        this.name = response.data.data.course_name;
+                    })
+            }
+        })
+
+
+        
+        
     </script>
 </body>
 

@@ -88,7 +88,7 @@
                     <th>Current Class Size</th>
                     <th>Max Class Size</th>
                     <th>Go to Lessons</th>
-                    <!-- <th>Withdraw from class</th> -->
+                    <th>Withdraw from class</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,14 +103,14 @@
                     <td>
                         <lesson-button :lesson_id=record.lesson_id></lesson-button>
                     </td>
-                    <!-- <td>
+                    <td>
                         <withdraw-button :class_id=record.class_id></withdraw-button>
-                    </td> -->
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='employee-course-list.html'">Back to all courses</button>
+        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='engineer-course-list.html'">Back to all courses</button>
     </div>
 
 
@@ -126,7 +126,7 @@
 
         var url_course_id = getParameterByName('course_id');
         if (url_course_id == null) {
-            window.location.replace("employee-course-list.html")
+            window.location.replace("engineer-course-list.html")
         }
 
         const vm = new Vue({

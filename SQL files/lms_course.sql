@@ -21,10 +21,12 @@ SET time_zone = "+00:00";
 --
 -- Database: `lms_course`
 --
+CREATE DATABASE IF NOT EXISTS `lms_course` ;
+USE `lms_course`;
 
 -- --------------------------------------------------------
 
---
+-- DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 -- Table structure for table `class`
 --
 
@@ -43,6 +45,9 @@ CREATE TABLE IF NOT EXISTS `class` (
   `duration_of_class` int(11) NOT NULL,
   PRIMARY KEY (`class_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `class`
@@ -74,6 +79,8 @@ CREATE TABLE IF NOT EXISTS `course` (
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 --
 -- Dumping data for table `course`
 --
@@ -161,6 +168,9 @@ CREATE TABLE IF NOT EXISTS `employee_enrolled` (
   PRIMARY KEY (`employee_id`,`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
 -- Dumping data for table `employee_enrolled`
 --
@@ -190,6 +200,9 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `lesson_descriptions` varchar(50) NOT NULL,
   PRIMARY KEY (`lesson_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) 
+
+-- ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `lesson`
@@ -221,6 +234,16 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   PRIMARY KEY (`quiz_id`),
   KEY `lesson_id` (`lesson_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) 
+
+-- ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `quiz`
+--
+
+INSERT INTO `quiz` (`quiz_id`, `quiz_name`, `quiz_type`, `quizq_id`, `lesson_id`, `quiz_descriptions`, `datetime_created`, `passing_score`, `start_time`, `end_time`, `quiz_details`, `correct_answer`) VALUES
+(1, 'E01Quiz1', 'MCQ', 1, 1, 'abc', '2021-09-30 04:00:00', 0, 'Now', 'Later', 'abc', 'abc');
 
 --
 -- Constraints for dumped tables

@@ -139,6 +139,7 @@
                         <th scope="col">Time Limit</th>
                         <th scope="col">Answer</th>
                         <th scope="col">Created On</th>
+                        <th></th>
                         </tr>
                     </thead>
                     <tbody id="myTable">
@@ -197,6 +198,31 @@
             }
 
             function myFunctions() {
+                $(async()=>{
+                var serviceURL ="http://localhost:5000/lesson/"+ lesson_id;
+                try {
+                const response =
+                await fetch(
+                serviceURL, { method: 'GET' }
+                );
+                const result = await response.json();
+                if (response.status === 200) {
+                    // success case
+                    var quiz = result.data;
+                    console.log(quiz.quiz_id);
+                    document.getElementById("quizid").value = quiz.quiz_id;
+                } else if (response.status == 404) {
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                ('There is a problem retrieving quiz data, please try again later.<br />' + error);
+            }}); // error
             
                 var xhr = new XMLHttpRequest();
                 xhr.open("PUT", "http://localhost:5000/lesson_quiz/"+ lesson_id);
@@ -204,15 +230,17 @@
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 xhr.withCredentials = false;
-                console.log(document.getElementById("quizid").value);
-                var object = {"quiz_id":document.getElementById("quizid").value};
+                amount = document.getElementById("myTable").rows.length;
+                retrieve = document.getElementById("quizid").value;
+                incremental = parseInt(retrieve) + parseInt(amount);
+                var object = {"quiz_id":incremental};
                 console.log(object)
                 var json = JSON.stringify(object);
                 console.log(json)
                 xhr.send(json);
 
                 alert("Successfully created quiz!")
-                window.location.href="http://localhost/SPM/templates/homepage.html";
+                window.location.href="http://localhost/SPM/templates/trainer_homepage.html";
             }
 
             function table() {
@@ -267,7 +295,7 @@
                 document.getElementById("mySelect").innerHTML="";
 
                 $(async()=>{
-                var serviceURL ="http://localhost:5000/quizz/"+ lesson_id;
+                var serviceURL ="http://localhost:5000/lesson/"+ lesson_id;
                 try {
                 const response =
                 await fetch(

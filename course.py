@@ -172,29 +172,25 @@ class Class(db.Model):
     def json(self):
         return {"class_id": self.class_id, "course_id": self.course_id, "lesson_id": self.lesson_id, "course_name": self.course_name, "start_date": self.start_date, "end_date": self.end_date, "start_time": self.start_time, "end_time": self.end_time, "class_size": self.class_size, "current_class_size": self.current_class_size, "employee_id": self.employee_id, "duration_of_class": self.duration_of_class}
 
-# Lesson Class
 
-# Lessons
 class Lesson(db.Model):
     __tablename__ = 'lesson'
 
     lesson_id = db.Column(db.Integer, primary_key=True)
-    class_id = db.Column(db.Integer, nullable=True)
-    course_id = db.Column(db.Integer, nullable=True)
-    quiz_id = db.Column(db.Integer, nullable=True)
-    coursem_id = db.Column(db.Integer, nullable=True)
+    class_id = db.Column(db.Integer, nullable=False)
+    course_id = db.Column(db.Integer, nullable=False)
+    quiz_id = db.Column(db.Integer, nullable=False)
     lesson_descriptions = db.Column(db.String(50), nullable=False)
     lesson_name = db.Column(db.String(50), nullable=False)
     quiz_type = db.Column(db.String(50), nullable=False)
-    lesson_material = db.Column(db.String(200), nullable=True)
-    created_on = db.Column(db.DateTime, nullable=False)
+    lesson_material = db.Column(db.String(100), nullable=True)
+    created_on = db.Column(db.String(100), nullable=False)
 
-    def __init__(self, lesson_id, class_id, course_id, quiz_id, coursem_id, lesson_descriptions,lesson_name,quiz_type,lesson_material,created_on):
+    def __init__(self, lesson_id, class_id, course_id, quiz_id, lesson_descriptions,lesson_name,quiz_type,lesson_material,created_on):
         self.lesson_id = lesson_id
         self.class_id = class_id
         self.course_id = course_id
         self.quiz_id = quiz_id
-        self.coursem_id = coursem_id
         self.lesson_descriptions = lesson_descriptions
         self.lesson_name = lesson_name
         self.quiz_type = quiz_type
@@ -202,7 +198,8 @@ class Lesson(db.Model):
         self.created_on = created_on
 
     def json(self):
-        return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "coursem_id": self.coursem_id, "lesson_descriptions": self.lesson_descriptions, "lesson_name": self.lesson_name, "quiz_type": self.quiz_type, "lesson_material": self.lesson_material, "created_on": self.created_on}
+        return {"lesson_id": self.lesson_id, "class_id": self.class_id, "course_id": self.course_id, "quiz_id": self.quiz_id, "lesson_descriptions": self.lesson_descriptions, "lesson_name": self.lesson_name, "quiz_type": self.quiz_type, "lesson_material": self.lesson_material, "created_on": self.created_on}
+
 
 class Course_check(db.Model):
     __tablename__ = 'employee_enrolled'
@@ -277,39 +274,34 @@ class CourseMaterial(db.Model):
     def json(self):
         return {"coursem_id": self.coursem_id, "coursem_description": self.coursem_description, "course_id": self.course_id, "lesson_id": self.lesson_id, "datetime_uploaded": self.datetime_uploaded}
 
-#Create Quiz
-#Create Quiz
 class Quiz(db.Model):
     __tablename__ = 'quiz'
 
     quiz_id = db.Column(db.Integer, primary_key=True)
-    quiz_name = db.Column(db.String(50), nullable=False)
     quiz_type = db.Column(db.String(10), nullable=False)
-    quizq_id = db.Column(db.Integer, nullable=False)
     lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'), nullable=False)
-    quiz_description = db.Column(db.String(50), nullable=False)
-    datetime_created = db.Column(db.DateTime, nullable=False)
-    passing_score = db.Column(db.Integer, nullable=False)
-    start_time = db.Column(db.String(10), nullable=False)
-    end_time = db.Column(db.String(10), nullable=False)
-    quiz_details = db.Column(db.String(100), nullable=False)
+    quiz_question = db.Column(db.String(50), nullable=False)
+    datetime_created = db.Column(db.String(100), nullable=False)
+    passing_score = db.Column(db.Integer, nullable=True)
+    question_type = db.Column(db.String(100), nullable=False)
     correct_answer = db.Column(db.String(100), nullable=False)
+    time_limit = db.Column(db.String(50), nullable=False)
+    quiz_selection = db.Column(db.String(500), nullable=False)
    
-    def __init__(self, quiz_id, quiz_name, quiz_type, lesson_id, quiz_description, datetime_created, passing_score, start_time, end_time, quiz_details, correct_answer):
+    def __init__(self, quiz_id, quiz_type, lesson_id, quiz_question, datetime_created, passing_score, question_type, correct_answer,time_limit,quiz_selection):
         self.quiz_id = quiz_id
-        self.quiz_name = quiz_name
         self.quiz_type = quiz_type
         self.lesson_id =  lesson_id
-        self.quiz_description = quiz_description
+        self.quiz_question = quiz_question
         self.datetime_created = datetime_created
         self.passing_score = passing_score
-        self.start_time = start_time
-        self.end_time = end_time
-        self.quiz_details = quiz_details
+        self.question_type = question_type
         self.correct_answer = correct_answer
+        self.time_limit = time_limit
+        self.quiz_selection = quiz_selection
 
     def json(self):
-        return {"quiz_id": self.quiz_id, "quiz_name": self.quiz_name, "lesson_id": self.lesson_id, "quiz_description": self.quiz_description, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "start_time":self.start_time, "end_time":self.end_time, "quiz_details":self.quiz_detailse, "correct_answer":self.correct_answer}
+        return {"quiz_id": self.quiz_id, "quiz_type": self.quiz_type, "lesson_id": self.lesson_id, "quiz_question": self.quiz_question, "datetime_created": self.datetime_created, "passing_score": self.passing_score, "question_type":self.question_type, "correct_answer":self.correct_answer, "time_limit":self.time_limit, "quiz_selection":self.quiz_selection}
 
 def employee_course_prerequisite_check(employee_id, course_id):
     employee_completed_course = Course_check.query.filter_by(employee_id=employee_id).filter_by(status="completed")
@@ -371,7 +363,7 @@ def create_status():
     employee_id = data["employee_id"]
     course_id = data["course_id"]
     class_id = data['class_id']
-    status = data["status"]
+    #status = data["status"]
     class_data = Class.query.filter_by(class_id=class_id).first()
 
     if class_data.get_start_datetime() <= datetime.now() <= class_data.get_end_datetime():
@@ -946,6 +938,10 @@ def update(course_id):
             course.end_time = data['end_time']
         if data['datetime_uploaded']:
             course.datetime_uploaded = data['datetime_uploaded']
+        if data['start_enrol']:
+            course.start_enrol = data['start_enrol']
+        if data['end_enrol']:
+            course.end_enrol = data['end_enrol']
 
         db.session.commit()
         return jsonify(
@@ -954,6 +950,35 @@ def update(course_id):
                 "data": course.json()
             }
         )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "course_id": course_id
+            },
+            "message": "Course is not found."
+        }
+    ), 404
+
+
+# Update a course start and end date
+@app.route("/course_date_update/<string:course_id>", methods=['PUT'])
+def update_course_date(course_id):
+    course_one = Course.query.filter_by(course_id=course_id).first()
+    data = request.get_json()
+    if course_one:
+        if data['start_enrol']:
+            course_one.start_enrol = data['start_enrol']
+        if data['end_enrol']:
+            course_one.end_enrol = data['end_enrol']
+        
+        db.session.commit()
+        return jsonify(
+                {
+                    "code": 200,
+                    "data": course_one.json()
+                }
+            )
     return jsonify(
         {
             "code": 404,
@@ -1009,6 +1034,45 @@ def get_all_quiz():
         }
     ), 404
 
+
+#  Get details of all quiz in JSON form
+@app.route("/quiz/<int:lesson_id>")
+def find_by_id_quizs(lesson_id):
+    quiz = Quiz.query.filter_by(lesson_id=lesson_id).all()
+    if quiz:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "quiz": [quizs.json() for quizs in quiz]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Course not found."
+        }
+    ), 404
+
+
+@app.route("/quizid/<int:quiz_id>")
+def find_by_quizid(quiz_id):
+    quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
+    if quiz:
+        return jsonify(
+            {
+                "code": 200,
+                "data": quiz.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Quiz not found."
+        }
+    ), 404
+
 # Get quiz by lesson ID
 @app.route("/quiz_by_lesson_id/<string:lesson_id>")
 def get_quiz_by_lesson_id(lesson_id):
@@ -1032,7 +1096,7 @@ def get_quiz_by_lesson_id(lesson_id):
     
 #  Get details of one quiz in JSON form
 @app.route("/quiz/<string:lesson_id>")
-def find_by_lessonid(lesson_id):
+def find_quiz_by_lessonid(lesson_id):
     quiz = Quiz.query.filter_by(lesson_id=lesson_id).first()
     if quiz:
         return jsonify(
@@ -1075,29 +1139,25 @@ def create_quiz():
         }
     ), 201
 
-# Update a quiz
+#Update a quiz
 @app.route("/quiz/<string:quiz_id>", methods=['PUT'])
 def update_quiz(quiz_id):
     quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
     print(quiz)
     if quiz:
         data = request.get_json()
-        if data['quiz_name']:
-            quiz.quiz_name = data['quiz_name']
-        if data['quiz_type']:
-            quiz.quiz_type = data['quiz_type']
-        if data['quiz_description']:
-            quiz.quiz_description = data['quiz_description']
+        if data['quiz_question']:
+            quiz.quiz_question = data['quiz_question']
         if data['passing_score']:
             quiz.passing_score = data['passing_score']
-        if data['start_time']:
-            quiz.start_time = data['start_time']
-        if data['end_time']:
-            quiz.end_time = data['end_time']
-        if data['quiz_details']:
-            quiz.quiz_details = data['quiz_details']
+        if data['question_type']:
+            quiz.question_type = data['question_type']
         if data['correct_answer']:
             quiz.correct_answer = data['correct_answer']    
+        if data['time_limit']:
+            quiz.time_limit = data['time_limit']
+        if data['quiz_selection']:
+            quiz.quiz_selection = data['quiz_selection']
         
         db.session.commit()
         return jsonify(
@@ -1112,11 +1172,11 @@ def update_quiz(quiz_id):
             "data": {
                 "quiz_id": quiz_id
             },
-            "message": "Quiz is not found."
+            "message": "Course is not found."
         }
     ), 404
 
-# Delete a quiz 
+#Delete a quiz 
 @app.route("/quiz/<string:quiz_id>", methods=['DELETE'])
 def delete_quiz(quiz_id):
     quiz = Quiz.query.filter_by(quiz_id=quiz_id).first()
@@ -1137,7 +1197,7 @@ def delete_quiz(quiz_id):
             "data": {
                 "quiz_id": quiz_id
             },
-            "message": "Quiz not found."
+            "message": "Course not found."
         }
     ), 404
 
@@ -1309,7 +1369,8 @@ def delete_class(class_id):
         }
     ), 404
 
-# Get All lessons
+
+# Get All Classes
 @app.route("/lesson")
 def get_all_lessons():
     lessonlist = Lesson.query.all()
@@ -1329,9 +1390,8 @@ def get_all_lessons():
         }
     ), 404
 
-#  Get details of one lesson in JSON form
-@app.route("/lesson/<string:lesson_id>")
-def find_by_lessonid2(lesson_id):
+@app.route("/lesson/<int:lesson_id>")
+def find_by_lessonid(lesson_id):
     lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
     if lesson:
         return jsonify(
@@ -1347,12 +1407,32 @@ def find_by_lessonid2(lesson_id):
         }
     ), 404
 
-#  POST > Insert a new lesson
-@app.route("/lesson", methods=['POST'])
+@app.route("/lessonclass/<int:class_id>")
+def find_by_class_id_lessons(class_id):
+    lesson = Lesson.query.filter_by(class_id=class_id).all()
+    if len(lesson):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "lessons": [lessons.json() for lessons in lesson]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Lesson not found."
+        }
+    ), 404
+
+
+@app.route("/lessons", methods=['POST'])
 def create_lesson():
 
     data = request.get_json()
-    lesson = Lesson(None, **data)
+    print(data)
+    lesson = Lesson(None,**data)
 
     try:
         db.session.add(lesson)
@@ -1363,7 +1443,7 @@ def create_lesson():
                 "code": 500,
                 "data": {
                 },
-                "message": "An error occurred creating the lesson."
+                "message": "An error occurred creating the book."
             }
         ), 500
 
@@ -1374,25 +1454,19 @@ def create_lesson():
         }
     ), 201
 
-# Update a lesson
-@app.route("/lesson/<string:lesson_id>", methods=['PUT'])
+
+#Update a lesson
+@app.route("/lesson/<int:lesson_id>", methods=['PUT'])
 def update_lesson(lesson_id):
     lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
-    print(lesson)
     if lesson:
         data = request.get_json()
-        if data['lesson_id']:
-            lesson.lesson_id = data['lesson_id']
-        if data['class_id']:
-            lesson.class_id = data['class_id']
-        if data['course_id']:
-            lesson.course_id = data['course_id']
-        if data['quiz_id']:
-            lesson.quiz_id = data['quiz_id']
-        if data['coursem_id']:
-            lesson.coursem_id = data['coursem_id']
+        if data['lesson_name']:
+            lesson.lesson_name = data['lesson_name']
         if data['lesson_descriptions']:
             lesson.lesson_descriptions = data['lesson_descriptions']
+        if data['lesson_material']:
+            lesson.lesson_material = data['lesson_material'] 
         
         db.session.commit()
         return jsonify(
@@ -1411,8 +1485,34 @@ def update_lesson(lesson_id):
         }
     ), 404
 
-# Delete a lesson
-@app.route("/lesson/<string:lesson_id>", methods=['DELETE'])
+#Update a lesson_quiz
+@app.route("/lesson_quiz/<int:lesson_id>", methods=['PUT'])
+def update_lesson_quiz(lesson_id):
+    lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
+    if lesson:
+        data = request.get_json()
+        if data['quiz_id']:
+            lesson.quiz_id = data['quiz_id']
+        
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": lesson.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "lesson_id": lesson_id
+            },
+            "message": "Lesson is not found."
+        }
+    ), 404
+
+#Delete a lesson 
+@app.route("/lesson/<int:lesson_id>", methods=['DELETE'])
 def delete_lesson(lesson_id):
     lesson = Lesson.query.filter_by(lesson_id=lesson_id).first()
     if lesson:

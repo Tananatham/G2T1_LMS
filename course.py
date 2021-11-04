@@ -363,7 +363,7 @@ def create_status():
     employee_id = data["employee_id"]
     course_id = data["course_id"]
     class_id = data['class_id']
-    status = data["status"]
+    #status = data["status"]
     class_data = Class.query.filter_by(class_id=class_id).first()
 
     if class_data.get_start_datetime() <= datetime.now() <= class_data.get_end_datetime():
@@ -938,6 +938,10 @@ def update(course_id):
             course.end_time = data['end_time']
         if data['datetime_uploaded']:
             course.datetime_uploaded = data['datetime_uploaded']
+        if data['start_enrol']:
+            course.start_enrol = data['start_enrol']
+        if data['end_enrol']:
+            course.end_enrol = data['end_enrol']
 
         db.session.commit()
         return jsonify(

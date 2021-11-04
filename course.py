@@ -957,6 +957,35 @@ def update(course_id):
     ), 404
 
 
+# Update a course start and end date
+@app.route("/course_date_update/<string:course_id>", methods=['PUT'])
+def update_course_date(course_id):
+    course_one = Course.query.filter_by(course_id=course_id).first()
+    data = request.get_json()
+    if course_one:
+        if data['start_enrol']:
+            course_one.start_enrol = data['start_enrol']
+        if data['end_enrol']:
+            course_one.end_enrol = data['end_enrol']
+        
+        db.session.commit()
+        return jsonify(
+                {
+                    "code": 200,
+                    "data": course_one.json()
+                }
+            )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "course_id": course_id
+            },
+            "message": "Course is not found."
+        }
+    ), 404
+
+
 @app.route("/course/<string:course_id>", methods=['DELETE'])
 def delete(course_id):
     course = Course.query.filter_by(course_id=course_id).first()

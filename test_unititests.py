@@ -1,6 +1,6 @@
 from datetime import datetime 
 import unittest   
-
+from freezegun import freeze_time
 from course import Employee, Course, Class, Lesson, Course_check, PrerequisiteCheck, Quiz
 
 #Author: Chelsea
@@ -64,6 +64,37 @@ class TestClass(unittest.TestCase):
         except Exception as e:
             self.assertEqual(str(e), 'Class size cannot be less than zero.')
             self.assertEqual(class1.current_class_size, 1)
+
+    # def get_start_datetime(self):
+    #     """
+    #     Get the starting datetime
+    #     """
+    #     start_year = self.start_date.split('/')[2]
+    #     start_month = self.start_date.split('/')[1]
+    #     start_day = self.start_date.split('/')[0]
+    #     start_hour = self.start_time.split(":")[0]
+    #     start_minute = self.start_time.split(":")[1]
+
+    #     return datetime(int(start_year), int(start_month), int(start_day), int(start_hour), int(start_minute))
+
+    @freeze_time("11/10/2021 00:00")
+    def test_get_start_datetime(self):
+        self.assertEqual('''
+            start_year: 2021
+            start_month: 10
+            start_year: 11
+            start_year: 00
+            start_year: 00''')
+
+    @freeze_time("11/11/2021 00:00")
+    def test_get_end_datetime(self):
+        self.assertEqual('''
+            start_year: 2021
+            start_month: 11
+            start_year: 11
+            start_year: 00
+            start_year: 00''')
+
 
 #Author: Brenda
 class TestCourseCheck(unittest.TestCase):

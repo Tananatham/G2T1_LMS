@@ -119,6 +119,13 @@ class TestQuiz(TestApp):
         self.assertEqual(4, 4)
     
     def test_find_quiz_by_lesson_id(self):
+        response = self.client.get("/quiz_by_lesson_id/2")
+        self.assertEqual(response.json['data']['quiz'], [])
+
+    def test_find_by_quizs(self):
+        self.assertEqual(4, 4)
+
+    def test_find_by_quizid(self):
         self.assertEqual(4, 4)
 
     def test_create_quiz(self):
@@ -126,11 +133,24 @@ class TestQuiz(TestApp):
 
 #Author: Frank
 class TestLesson(TestApp):
+    #seems to be brenda's part sorry about it 
     def test_find_quiz_by_lesson_id(self):
         response = self.client.get("/quiz_by_lesson_id/2")
         self.assertEqual(response.json['data']['quiz'], [])
 
     def test_find_course_material_by_lesson_id(self):
+        self.assertEqual(4, 4)
+
+    def test_find_lesson_by_class_id(self):
+        self.assertEqual(4, 4)
+    
+    def test_get_all_lessons(self):
+        self.assertEqual(4, 4)
+
+    def test_find_by_lessonid(self):
+        self.assertEqual(4, 4)
+    
+    def test_create_lesson(self):
         self.assertEqual(4, 4)
 
 if __name__ == '__main__':

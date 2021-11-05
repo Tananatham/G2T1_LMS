@@ -65,14 +65,6 @@ class TestClass(unittest.TestCase):
             self.assertEqual(str(e), 'Class size cannot be less than zero.')
             self.assertEqual(class1.current_class_size, 1)
 
-    # def test_get_start_datetime(self):
-    #     start_year = 2021
-    #     start_month = 11
-    #     start_day = 3
-    #     start_hour = 11
-    #     start_minute = 19
-    #     self.assertEqual(datetime(start_year, 2021),(start_month, 10),(start_day, 3),(start_hour, 11),(start_minute,19))
-
 #Author: Brenda
 class TestCourseCheck(unittest.TestCase):
     def test_to_dict(self):

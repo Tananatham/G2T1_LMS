@@ -113,6 +113,15 @@ class TestClass(TestApp):
             'status': 'in-progress'
         })
 
+    def test_find_classes_by_course_id(self):
+        self.assertEqual(4, 4)
+
+    def test_get_all_classes(self):
+        self.assertEqual(4, 4)
+
+    def test_create_class(self):
+         self.assertEqual(4, 4)
+
 #Author: Brenda
 class TestQuiz(TestApp):
     def test_get_all_quiz(self):

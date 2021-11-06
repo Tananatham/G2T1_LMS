@@ -42,7 +42,7 @@
 
             
                 var xhr1 = new XMLHttpRequest();
-                xhr1.open("PUT", "http://localhost:5000/lesson_quiz/"+ lessonid);
+                xhr1.open("PUT", "http://localhost:6900/lesson_quiz/"+ lessonid);
                 xhr1.setRequestHeader('Access-Control-Allow-Origin', "*");
                 xhr1.setRequestHeader("Content-Type", "application/json");
                 xhr1.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -59,7 +59,7 @@
                 xhr1.send(json);
             
                 var xhr = new XMLHttpRequest();
-                xhr.open("DELETE", "http://localhost:5000/quiz/"+ quizid);
+                xhr.open("DELETE", "http://localhost:6900/quiz/"+ quizid);
                 xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -67,7 +67,7 @@
                 xhr.send()
 
                 alert("Deleted quiz question!")
-                window.location.href="http://localhost/SPM/templates/trainer_view_quiz.html?lesson_id="+lessonid;
+                window.location.href="trainer_view_quiz.html?lesson_id="+lessonid;
 
         }
 
@@ -76,8 +76,8 @@
             var url = window.location.href;
             var queryparams = url.split('?')[1];
             lesson_id= queryparams.split("=")
-            var serviceURL ="http://localhost:5000/quiz/"+ lesson_id[1];
-            var serviceURL1 ="http://localhost:5000/lesson/"+ lesson_id[1];
+            var serviceURL ="http://localhost:6900/quiz/"+ lesson_id[1];
+            var serviceURL1 ="http://localhost:6900/lesson/"+ lesson_id[1];
 
             try {
                 const response =
@@ -97,7 +97,7 @@
                                 "<td>" + quiz.quiz_selection + "</td>" +
                                 "<td>" + quiz.correct_answer + "</td>" +
                                 "<td>" + quiz.datetime_created + "</td>" +
-                                "<td> <a class='btn btn-secondary' href='http://localhost/SPM/templates/trainer_edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>" +
+                                "<td> <a class='btn btn-secondary' href='trainer_edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>" +
                                 "<td> <img src='image1.png' onclick=deletefunction("+quiz.quiz_id+","+lesson_id[1]+")> </td>" ;
                     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                     }
@@ -133,7 +133,7 @@
                     var text = document.createTextNode("Create Question");
                     para1.setAttribute("role","button");
                     para1.setAttribute("class","btn btn-primary btn-sm");
-                    para1.setAttribute("href", "http://localhost/SPM/templates/trainer_create_quiz_MCQ.html?lessonname=" + lesson.lesson_name + "&quiztype="+ lesson.quiz_type + "&lessonid="+ lesson_id[1]+"");
+                    para1.setAttribute("href", "trainer_create_quiz_MCQ.html?lessonname=" + lesson.lesson_name + "&quiztype="+ lesson.quiz_type + "&lessonid="+ lesson_id[1]+"");
                     para1.appendChild(text);
                     para.appendChild(para1);
                 } else if (response.status == 404) {

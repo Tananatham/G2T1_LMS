@@ -97,7 +97,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-4">
-                        <a class='btn btn-secondary w-100 mt-4' href="http://localhost/SPM/templates/trainer_homepage.html" id="back" role='button'>Back</a>
+                        <a class='btn btn-secondary w-100 mt-4' href="trainer_homepage.html" id="back" role='button'>Back</a>
                     </div>
                     <div class="col-4">
                         <button class="btn btn-success w-100 mt-4" onclick="myFunctions()" type="button" id="checkout">Update</button>
@@ -114,7 +114,7 @@
                 lesson_id= queryparams.split("=")[1]
                 console.log(lesson_id)
                 $(async()=>{
-                var serviceURL ="http://localhost:5000/lesson/"+ lesson_id;
+                var serviceURL ="http://localhost:6900/lesson/"+ lesson_id;
                 try {
                 const response =
                 await fetch(
@@ -145,7 +145,7 @@
             function myFunctions() {
             
                 var xhr = new XMLHttpRequest();
-                xhr.open("PUT", "http://localhost:5000/lesson/"+ lesson_id);
+                xhr.open("PUT", "http://localhost:6900/lesson/"+ lesson_id);
                 xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -161,7 +161,7 @@
                 xhr.send(json);
 
                 alert("Successfully updated lesson!")
-                window.location.href="http://localhost/SPM/templates/trainer_homepage.html";
+                window.location.href="trainer_homepage.html";
             }
 
 

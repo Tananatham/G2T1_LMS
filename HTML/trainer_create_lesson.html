@@ -104,7 +104,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-4">
-                        <a class='btn btn-secondary w-100 mt-4' href="http://localhost/SPM/templates/trainer_homepage.html" id="back" role='button'>Back</a>
+                        <a class='btn btn-secondary w-100 mt-4' href="trainer_homepage.html" id="back" role='button'>Back</a>
                     </div>
                     <div class="col-4">
                         <button class="btn btn-success w-100 mt-4" id="checkout" type="submit">Create</button>
@@ -130,7 +130,7 @@
 
                 event.preventDefault();
                 const xhr = new XMLHttpRequest();
-                xhr.open("POST", "http://localhost:5000/lessons");
+                xhr.open("POST", "http://localhost:6900/lessons");
 
                 xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -147,7 +147,7 @@
                 xhr.send(json);
                 console.log(json);
                 alert("Lesson Created!")
-                window.location.href = "http://localhost/SPM/templates/trainer_create_lesson.html?classid="+class_id[1];
+                window.location.href = "trainer_create_lesson.html?classid="+class_id[1];
         });
 
     </script>

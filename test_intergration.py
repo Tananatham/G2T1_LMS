@@ -67,14 +67,14 @@ class TestCourse(TestApp):
 class TestClass(TestApp):
     @freeze_time("2021-11-05")
     def test_create_status(self):
-        e1 = Employee(employee_id = '1', course_id = '1', employee_name='James', employee_role='Engineer')
-        c1 = Course(course_id = '1', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '1', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '1', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00', start_enrol= '', end_enrol= '')
-        class1 = Class(class_id = '1', course_id='1', lesson_id = '1', course_name = 'PlaceHolder', start_date = 'Start', end_date = 'End', start_time = 'Start', end_time = 'End', class_size = 23, current_class_size = 4, employee_id = '5', duration_of_class ='5')
+        e1 = Employee(employee_id = '10', course_id = '4', employee_name='James', employee_role='Engineer')
+        c1 = Course(course_id = '4', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '1', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '10', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00', start_enrol= '', end_enrol= '')
+        class1 = Class(class_id = '2', course_id='4', lesson_id = '1', course_name = 'PlaceHolder', start_date = '05/11/2021', end_date = '05/11/2021', start_time = '10:00', end_time = '11:00', class_size = 23, current_class_size = 4, employee_id = '5', duration_of_class ='5')
         db.session.add(e1)
         db.session.add(c1)
         db.session.add(class1)
         db.session.commit()
-        start_date = Class.get_start_datetime("2021-11-05")
+        start_date = Class.get_start_datetime(class1)
 
         request_body = {
             'employee_id': e1.employee_id,
@@ -86,7 +86,7 @@ class TestClass(TestApp):
                                     data=json.dumps(request_body),
                                     content_type='application/json')
 
-        new_status =  Course_check(employee_id = '1', course_id = '1', class_id = '1', status= 'in-progress')                            
+        new_status =  Course_check(employee_id = '10', course_id = '4', class_id = '2', status= 'in-progress')                            
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json, {
             'status': 'in-progress'

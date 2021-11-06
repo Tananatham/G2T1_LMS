@@ -134,7 +134,7 @@
                 document.getElementById("quiz").textContent = ln;
 
                 $(async()=>{
-                var serviceURL ="http://localhost:5000/quizid/"+ ln;
+                var serviceURL ="http://localhost:6900/quizid/"+ ln;
                 try {
                 const response =
                 await fetch(
@@ -210,7 +210,7 @@
             }
 
             function backfunction(){
-                window.location.href = "http://localhost/SPM/templates/trainer_view_quiz.html?lesson_id="+document.getElementById("lessonid").value;
+                window.location.href = "trainer_view_quiz.html?lesson_id="+document.getElementById("lessonid").value;
             }
 
             function myFunctions() {
@@ -218,7 +218,7 @@
                 selection = document.getElementById("mySelect").innerText;
                 new_selection = selection.split("\n").join(",");
                 var xhr = new XMLHttpRequest();
-                xhr.open("PUT", "http://localhost:5000/quiz/"+ ln);
+                xhr.open("PUT", "http://localhost:6900/quiz/"+ ln);
                 xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -237,7 +237,7 @@
                 xhr.send(json);
 
                 alert("Successfully updated quiz question!")
-                window.location.href="http://localhost/SPM/templates/trainer_homepage.html";
+                window.location.href="trainer_homepage.html";
             }
 
                         

@@ -29,7 +29,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   
-    <title>Engineer Take Course</title>
+    <title>Take Course</title>
 </head>
 
 
@@ -88,8 +88,8 @@
       </div>
         <!-- Display Downloadable Materials -->
         <div class="card-body">
-            <a href= "{{ item.lesson_material }}" target="_blank"> Lesson {{ item.lesson_id }} Materials </a><br>
-            <p> {{ item.lesson_material}} </p>
+            <a v-bind:href="item.lesson_material" target="_blank"> Lesson {{ item.lesson_id }} Materials </a><br>
+            <i> *Click on link to download lesson materials </i>
         </div>
         <div class="card-body">
             <button type="button" class="btn btn-success">Quiz 1</button>  

@@ -110,7 +110,7 @@ class TestClass(TestApp):
                                     content_type='application/json')                         
         self.assertEqual(response.json, {
             'code' : '200',
-            'status': 'in-progress'
+            'status': 'completed'
         })
 
     def test_find_classes_by_course_id(self):

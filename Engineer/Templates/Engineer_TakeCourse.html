@@ -46,7 +46,12 @@
   </div>
 </nav>
 
+<!-- Navigation Buttons -->
+<br>
+<div class="container-fluid">
+    <button id ="viewcourses" type="button" class="btn btn-primary" onclick = "openHome()">Back To Home</button>
 
+</div>
 
 <!-- User's Courses -->
 <br>
@@ -59,25 +64,32 @@
 
 <!-- Lesson Display -->
 
+<!-- Class Details -->
+<div>
+
+  
+</div>
+
+<!-- Displaying Lessons in Accordion -->
 <div class="accordion" id="accordionExample" v-for="item in lesson">
     <div class="card">
       <div class="card-header" id="headingOne">
         <h2 class="mb-0">
+        <!-- Display Lesson Header -->
           <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Lesson {{ item.lesson_name }}
+            {{ item.lesson_name }}
           </button>
         </h2>
       </div>
-      <!-- Display Lesson Content -->
+      <!-- Display Lesson Description -->
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body">
           {{ item.lesson_descriptions }}
       </div>
         <!-- Display Downloadable Materials -->
         <div class="card-body">
-            <a href= "{{ item.lesson_material }}"> Lesson1.2.docx</a><br>
-            <a href=#>Lesson1.2.docx</a><br>
-            <a href=#>Lesson1.3.docx</a><br>    
+            <a href= "{{ item.lesson_material }}" target="_blank"> Lesson {{ item.lesson_id }} Materials </a><br>
+            <p> {{ item.lesson_material}} </p>
         </div>
         <div class="card-body">
             <button type="button" class="btn btn-success">Quiz 1</button>  
@@ -88,41 +100,7 @@
 
 
 
-  <!-- <table id="consultationsTable" class='table'>
-      <thead class='thead-dark'>
-          <tr>
-              <th>Class ID</th>
-              <th>Employee Name</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Current Class Size</th>
-              <th>Class Capacity</th>
-              <th>Enrol</th>
-          </tr>
-      </thead>
-      
-      <tbody>
-          <tr v-for="record in classes">
-              <td>{{ record.class_id }}</td>
-              <td>{{ record.employee_id }}</td>
-              <td>{{ record.start_date }}</td>
-              <td>{{ record.end_date }}</td>
-              <td>{{ record.start_time }}</td>
-              <td>{{ record.end_time }}</td>
-              <td>{{ record.current_class_size }}</td>
-              <td>{{ record.class_size }}</td>
-              <td>
-                  <apply-button_1 :course_id=record.course_id></apply-button_1>
-              </td>
-          </tr>
-      </tbody>
-  </table>
-
-  <p>
-      <em><strong>Pages:</strong> <a href="create-course.html">Create a Course</a></em>
-  </p> -->
+ 
 </div>
 
 
@@ -136,14 +114,19 @@
           lesson: []
       },
       mounted: function() {
-          axios.get('http://localhost:6900/lesson/1')
+          axios.get('http://localhost:6900/lessonclass/5')
               .then(response => {
-                  this.lesson = response.data.data.course;
+                  this.lesson = response.data.data.lessons;
                   console.log(lesson);
               })
               .catch(error => alert(error));
       }
   });
+
+  function openHome() {
+    window.location.assign("Engineer_Home.html")
+  }
+
 
 </script>
 

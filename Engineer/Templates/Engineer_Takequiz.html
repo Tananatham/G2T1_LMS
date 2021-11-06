@@ -32,24 +32,52 @@
 
     <div id="main-container" class="container">
 
-        <h1>Quiz for Lesson
+        <h1>Lesson Quiz
             <!-- <course-name></course-name> -->
         </h1>
 
         <div>
-            Quiz Description
+            <span>{{ answer_arr }}</span>
         </div>
 
+
+        <!-- Displaying Quiz Questions -->
+        <!-- <div v-for="item in quiz">
+            <div v-if="{{ item.question_type }} === 'True/False'">
+                <h5>{{ item.quiz_question }}</h5>
+                <div v-for=""> 
+                    <input type="radio" value="HTML">
+                    <label for="html"> {{ item.correct_answer }}</label><br>
+                </div>
+            </div>
+
+            <div v-else-if= "{{ item.question_type }}  === 'MCQ'">
+                <h5>{{ item.quiz_question }}</h5>
+                <div v-for=""> 
+                    <input type="radio" value="HTML">
+                    <label for="html"> {{ item.correct_answer }}</label><br>
+                </div>
+            </div>
+        </div> -->
+        
+
+
         <div v-for="item in quiz">
-            <h4>{{ item.quiz_question }}</h4>
-            <input type="radio" value="HTML">
-            <label for="html"> {{ item.cortrect_answer }}</label><br>
+                <h5>Q. {{ item.quiz_question }}</h5>
+                <h5>{{ item.quiz_question }}</h5>
+                <div v-for=""> 
+                    <input type="radio" value="HTML">
+                    <label for="html"> {{ item.correct_answer }}</label><br>
+                </div>
         </div>
         
+
     </div>
 
 
-    
+    <!-- Submit Button -->
+    <button id ="viewcourses" type="button" class="btn btn-primary" onclick = "">Submit</button>
+
 
     <script>
         
@@ -58,12 +86,14 @@
             el: '#main-container',
             data: {
                 quiz: [],
-                course_id: url_course_id
+                answer_arr: []
             },
             mounted: function() {
-                axios.get('http://localhost:6900/quiz/1')
+                axios.get('http://localhost:6900/quiz/14')
                     .then(response => {
-                        this.quiz = response.data.data.class;
+                        this.quiz = response.data.data.quiz;
+                        this.answer_arr = response.data.data.quiz;
+                        
                     })
                     .catch(error => alert(error));
             }

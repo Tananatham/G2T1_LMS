@@ -1,6 +1,8 @@
 # G2T1_LMS
 Git: https://github.com/Tananatham/G2T1_LMS
+
 AWS Environment: http://50.16.230.106/G2T1_LMS/HTML/
+
 Database SQL file: https://github.com/Tananatham/G2T1_LMS/tree/main/SQL%20files
 
 # Steps for installment on local machine:
@@ -24,9 +26,15 @@ James - Learner
 
 ## For Learner:
 You can apply for classes in a course, please note that if a class is full, or if the time now is before or after the class time, you will not be able to apply.
+
 Please note that some courses have prerequisites, it will be stated in the first line of the course description, your application to a class in this course will fail if you do not meet the prerequisites.
+
 After you apply, Human Resources needs to approve your application.
 
 ## For Human Resources:
 You can approve a learner’s application to a class, or you can reject an application.
+
 You can set a course's prerequisite, please note that once it is set, it cannot be revoked.
+
+## For Trainers:
+You can create a quiz for a lesson.

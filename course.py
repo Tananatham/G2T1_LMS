@@ -961,7 +961,7 @@ def update(course_id):
     ), 404
 
 
-# Update a course start and end date
+# Update a course start and end enrolment date
 @app.route("/course_date_update/<string:course_id>", methods=['PUT'])
 def update_course_date(course_id):
     course_one = Course.query.filter_by(course_id=course_id).first()
@@ -1242,78 +1242,78 @@ def find_by_classid(class_id):
     ), 404
 
 #  POST > Insert a new class
-@app.route("/class", methods=['POST'])
-def create_class():
-
-    data = request.get_json()
-    new_class = Class(None, **data)
-
-    try:
-        db.session.add(new_class)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                },
-                "message": "An error occurred creating the class."
-            }
-        ), 500
-
-    return jsonify(
-        {
-            "code": 201,
-            "data": new_class.json()
-        }
-    ), 201
+# @app.route("/class", methods=['POST'])
+# def create_class():
+# 
+    # data = request.get_json()
+    # new_class = Class(None, **data)
+# 
+    # try:
+        # db.session.add(new_class)
+        # db.session.commit()
+    # except:
+        # return jsonify(
+            # {
+                # "code": 500,
+                # "data": {
+                # },
+                # "message": "An error occurred creating the class."
+            # }
+        # ), 500
+# 
+    # return jsonify(
+        # {
+            # "code": 201,
+            # "data": new_class.json()
+        # }
+    # ), 201
 
 # Update a class
-@app.route("/class/<string:class_id>", methods=['PUT'])
-def update_class(class_id):
-    a_class = Class.query.filter_by(class_id=class_id).first()
-    data = request.get_json()
-    if data['class_id']:
-        a_class.class_id = data['class_id']
-    if data['course_id']:
-        a_class.course_id = data['course_id']
-    if data['lesson_id']:
-        a_class.lesson_id = data['lesson_id']
-    if data['course_name']:
-        a_class.course_name = data['course_name']
-    if data['start_date']:
-        a_class.start_date = data['start_date']
-    if data['end_date']:
-        a_class.end_date = data['end_date']
-    if data['start_time']:
-        a_class.start_time = data['start_time']
-    if data['end_time']:
-        a_class.end_time = data['end_time']
-    if data['class_size']:
-        a_class.class_size = data['class_size']    
-    if data['current_class_size']:
-        a_class.current_class_size = data['current_class_size']   
-    if data['employee_id']:
-        a_class.employee_id = data['employee_id']   
-    if data['duration_of_class']:
-        a_class.duration_of_class = data['duration_of_class']   
-        
-    db.session.commit()
-    return jsonify(
-            {
-                "code": 200,
-                "data": a_class.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "class_id": class_id
-            },
-            "message": "Class is not found."
-        }
-    ), 404
+# @app.route("/class/<string:class_id>", methods=['PUT'])
+# def update_class(class_id):
+    # a_class = Class.query.filter_by(class_id=class_id).first()
+    # data = request.get_json()
+    # if data['class_id']:
+        # a_class.class_id = data['class_id']
+    # if data['course_id']:
+        # a_class.course_id = data['course_id']
+    # if data['lesson_id']:
+        # a_class.lesson_id = data['lesson_id']
+    # if data['course_name']:
+        # a_class.course_name = data['course_name']
+    # if data['start_date']:
+        # a_class.start_date = data['start_date']
+    # if data['end_date']:
+        # a_class.end_date = data['end_date']
+    # if data['start_time']:
+        # a_class.start_time = data['start_time']
+    # if data['end_time']:
+        # a_class.end_time = data['end_time']
+    # if data['class_size']:
+        # a_class.class_size = data['class_size']    
+    # if data['current_class_size']:
+        # a_class.current_class_size = data['current_class_size']   
+    # if data['employee_id']:
+        # a_class.employee_id = data['employee_id']   
+    # if data['duration_of_class']:
+        # a_class.duration_of_class = data['duration_of_class']   
+        # 
+    # db.session.commit()
+    # return jsonify(
+            # {
+                # "code": 200,
+                # "data": a_class.json()
+            # }
+        # )
+    # return jsonify(
+        # {
+            # "code": 404,
+            # "data": {
+                # "class_id": class_id
+            # },
+            # "message": "Class is not found."
+        # }
+    # ), 404
 
 
 # Update a class start and end date

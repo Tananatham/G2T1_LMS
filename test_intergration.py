@@ -124,21 +124,93 @@ class TestClass(TestApp):
 
 #Author: Brenda
 class TestQuiz(TestApp):
-    def test_get_all_quiz(self):
-        self.assertEqual(4, 4)
-    
-    def test_find_quiz_by_lesson_id(self):
-        response = self.client.get("/quiz_by_lesson_id/2")
-        self.assertEqual(response.json['data']['quiz'], [])
+
+    def test_find_quiz_by_lesson_id_invalid_lesson_id(self):
+        self.maxDiff = None
+        lesson = Lesson(lesson_id=20,lesson_name="lesson2",quiz_type="ungraded",lesson_material="https://drive.google.com/drive/folders/1OE3IzisueXHNK-91BjVofiy59H80Uht2?usp=sharing",created_on="11/7/2021 3:47:44 AM",class_id=12,course_id=4,quiz_id="",lesson_descriptions="lesson2 descriptions")
+        db.session.add(lesson)
+        db.session.commit()
+
+        request_body = {
+            "quiz_type":lesson.quiz_type,
+            "question_type":"True/False",
+            "quiz_question":"Electrons are larger than molecules",
+            "quiz_selection":"True,False",
+            "time_limit":"5 hours",
+            "correct_answer":"True",
+            "passing_score":'',
+            "datetime_created":"11/7/2021 3:32:52 AM"
+        }
+
+        response = self.client.post("/quiz_by_lesson_id/23",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
 
     def test_find_by_quizs(self):
         self.assertEqual(4, 4)
 
     def test_find_by_quizid(self):
-        self.assertEqual(4, 4)
+        self.maxDiff = None
+        quiz = Quiz(quiz_id=2,lesson_id=14,quiz_type='ungraded',question_type="True/False",quiz_question="Electrons are larger than molecules",quiz_selection="True,False",time_limit="5 hours",correct_answer="True",passing_score='',datetime_created="11/7/2021 3:32:52 AM")
+        db.session.add(quiz)
+        db.session.commit()
+
+        response = self.client.get("/quizid/2",
+                                    content_type='application/json')
+        self.assertEqual(response.json, {
+            "code": 200,
+            'data': {
+            "lesson_id":14,
+            "quiz_type":"ungraded",
+            "question_type":"True/False",
+            "quiz_question":"Electrons are larger than molecules",
+            "quiz_selection":"True,False",
+            "time_limit":"5 hours",
+            "correct_answer":"True",
+            "passing_score":'',
+            "datetime_created":"11/7/2021 3:32:52 AM",
+            'quiz_id': 2
+            }
+        })
 
     def test_create_quiz(self):
-         self.assertEqual(4, 4)
+        self.maxDiff = None
+        lesson = Lesson(lesson_id=22,lesson_name="lesson2",quiz_type="ungraded",lesson_material="https://drive.google.com/drive/folders/1OE3IzisueXHNK-91BjVofiy59H80Uht2?usp=sharing",created_on="11/7/2021 3:47:44 AM",class_id=12,course_id=4,quiz_id="",lesson_descriptions="lesson2 descriptions")
+        db.session.add(lesson)
+        db.session.commit()
+
+        request_body = {
+            "lesson_id":lesson.lesson_id,
+            "quiz_type":lesson.quiz_type,
+            "question_type":"True/False",
+            "quiz_question":"Electrons are larger than molecules",
+            "quiz_selection":"True,False",
+            "time_limit":"5 hours",
+            "correct_answer":"True",
+            "passing_score":'',
+            "datetime_created":"11/7/2021 3:32:52 AM"
+        }
+
+        response = self.client.post("/quiz",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json, {
+            "code": 201,
+            'data': {
+            "lesson_id":22,
+            "quiz_type":"ungraded",
+            "question_type":"True/False",
+            "quiz_question":"Electrons are larger than molecules",
+            "quiz_selection":"True,False",
+            "time_limit":"5 hours",
+            "correct_answer":"True",
+            "passing_score":'',
+            "datetime_created":"11/7/2021 3:32:52 AM",
+            'quiz_id': 1
+            }
+        })
 
 #Author: Frank
 class TestLesson(TestApp):

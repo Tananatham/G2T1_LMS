@@ -151,6 +151,7 @@ class TestClass(TestApp):
             'current_class_size': 0,
             'employee_id': 1,
             'duration_of_class': 2}
+            
             ])
 
     def test_create_class(self):
@@ -213,9 +214,6 @@ class TestQuiz(TestApp):
         self.assertEqual(response.status_code, 405)
 
 
-    def test_find_by_quizs(self):
-        self.assertEqual(4, 4)
-
     def test_find_by_quizid(self):
         self.maxDiff = None
         quiz = Quiz(quiz_id=2,lesson_id=14,quiz_type='ungraded',question_type="True/False",quiz_question="Electrons are larger than molecules",quiz_selection="True,False",time_limit="5 hours",correct_answer="True",passing_score='',datetime_created="11/7/2021 3:32:52 AM")
@@ -276,6 +274,74 @@ class TestQuiz(TestApp):
             'quiz_id': 1
             }
         })
+
+    def test_update_quiz(self):
+        self.maxDiff = None
+        quiz = Quiz(lesson_id=18,quiz_type="ungraded",question_type="True/False",quiz_question="Electrons are larger than molecules",quiz_selection="True,False",time_limit="5 hours",correct_answer="True",passing_score='',datetime_created="11/7/2021 3:32:52 AM",quiz_id= 3)
+        db.session.add(quiz)
+        db.session.commit()
+
+        request_body = {
+            "lesson_id":quiz.lesson_id,
+            "quiz_type":quiz.quiz_type,
+            "question_type":quiz.question_type,
+            "quiz_question":quiz.quiz_question,
+            "quiz_selection":quiz.quiz_selection,
+            "time_limit":"5 minutes",
+            "correct_answer":"False",
+            "passing_score":quiz.passing_score,
+            "datetime_created":quiz.datetime_created,
+            'quiz_id': quiz.quiz_id
+        }
+
+        response = self.client.put("/quiz/3",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json, {
+            "code": 200,
+            'data': {
+            "lesson_id":18,
+            "quiz_type":"ungraded",
+            "question_type":"True/False",
+            "quiz_question":"Electrons are larger than molecules",
+            "quiz_selection":"True,False",
+            "time_limit":"5 minutes",
+            "correct_answer":"False",
+            "passing_score":'',
+            "datetime_created":"11/7/2021 3:32:52 AM",
+            'quiz_id': 3
+            }
+        })
+
+    def test_delete_quiz(self):
+        self.maxDiff = None
+        quiz = Quiz(lesson_id=4,quiz_type="ungraded",question_type="True/False",quiz_question="Electrons are larger than molecules",quiz_selection="True,False",time_limit="5 hours",correct_answer="True",passing_score='',datetime_created="11/7/2021 3:32:52 AM",quiz_id= 7)
+        db.session.add(quiz)
+        db.session.commit()
+
+        request_body = {
+            "lesson_id":quiz.lesson_id,
+            "quiz_type":quiz.quiz_type,
+            "question_type":quiz.question_type,
+            "quiz_question":quiz.quiz_question,
+            "quiz_selection":quiz.quiz_selection,
+            "time_limit":quiz.time_limit,
+            "correct_answer":quiz.correct_answer,
+            "passing_score":quiz.passing_score,
+            "datetime_created":quiz.datetime_created,
+            'quiz_id': quiz.quiz_id
+        }
+
+        response = self.client.delete("/quiz/7",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json, {
+            "code": 200,
+            'data': {
+                'quiz_id': '7'
+            }
+        })
+
 
 if __name__ == '__main__':
     unittest.main()

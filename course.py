@@ -360,9 +360,9 @@ def name_lookup_employee():
 @app.route("/employee_course_status", methods=['POST'])
 def create_status():
     data = request.get_json()
-    employee_id = data["employee_id"]
-    course_id = data["course_id"]
-    class_id = data['class_id']
+    employee_id = int(data["employee_id"])
+    course_id = int(data["course_id"])
+    class_id = int(data['class_id'])
     status = 'in-progress'
     class_data = Class.query.filter_by(class_id=class_id).first()
 
@@ -432,9 +432,11 @@ def create_status():
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)
-    class_id = request.args.get('class_id',1,type=int)
+    class_id = request.args.get('class_id',1,type=str)
 
-    status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
+    # status_data = Course_check.query.filter_by(employee_id=employee_id).filter_by(course_id=course_id).filter_by(class_id=class_id).first()
+    status_data = Course_check.query.filter_by(employee_id=1).first()
+    
 
     if status_data:
         data = request.get_json()

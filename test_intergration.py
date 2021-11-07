@@ -152,9 +152,6 @@ class TestLesson(TestApp):
 
     def test_find_lesson_by_class_id(self):
         self.assertEqual(4, 4)
-    
-    def test_get_all_lessons(self):
-        self.assertEqual(4, 4)
 
     def test_find_by_lessonid(self):
         self.assertEqual(4, 4)

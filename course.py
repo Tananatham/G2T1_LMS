@@ -363,7 +363,7 @@ def create_status():
     employee_id = data["employee_id"]
     course_id = data["course_id"]
     class_id = data['class_id']
-    #status = data["status"]
+    status = 'in-progress'
     class_data = Class.query.filter_by(class_id=class_id).first()
 
     if class_data.get_start_datetime() <= datetime.now() <= class_data.get_end_datetime():
@@ -386,11 +386,11 @@ def create_status():
                     "code": 500,
                     "data": {
                     },
-                    "message": "The employee applying do not meet all the prerequisite for this course."
+                    "message": "The employee applying does not meet all the prerequisite for this course."
                 }
             ), 500
     
-    new_status = Course_check(**data)
+    new_status = Course_check(employee_id, course_id, class_id, status)
     class_data = Class.query.filter_by(class_id=class_id).first()
     
     try:
@@ -428,7 +428,7 @@ def create_status():
 
 
 #Update a course status
-@app.route("/employee_course_status/", methods=['PUT'])
+@app.route("/employee_course_status", methods=['PUT'])
 def update_status():
     employee_id = request.args.get('employee_id',1,type=int)
     course_id = request.args.get('course_id',1,type=int)

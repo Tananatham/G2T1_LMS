@@ -3,7 +3,6 @@ import flask_testing
 import json
 from datetime import datetime
 from freezegun import freeze_time
-from werkzeug.wrappers import request, response 
 
 from course import Course_check, app,db, Employee, Course, Class, Lesson,Quiz
 
@@ -65,71 +64,137 @@ class TestCourse(TestApp):
 
 #Author: Alina Tan 
 class TestClass(TestApp):
-    @freeze_time("2021-11-05")
     def test_create_status(self):
-        e1 = Employee(employee_id = '10', course_id = '4', employee_name='James', employee_role='Engineer')
-        c1 = Course(course_id = '4', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '1', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '10', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00', start_enrol= '', end_enrol= '')
-        class1 = Class(class_id = '2', course_id='4', lesson_id = '1', course_name = 'PlaceHolder', start_date = '05/11/2021', end_date = '05/11/2021', start_time = '10:00', end_time = '11:00', class_size = 23, current_class_size = 4, employee_id = '5', duration_of_class ='5')
+        e1 = Employee(employee_id = 10, course_id = 1, employee_name='Tom', employee_role='Engineer')
+        c1 = Course(course_id = 1, course_name = 'Chemical engineering', total_no_of_class = 1, total_no_of_lesson = 1, class_id = 1, course_description = 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', course_prerequisite = 0, coursem_id = 1, employee_id = 2, start_time = '1 July 2021', end_time = '1 December 2021', datetime_uploaded = '2021-06-23 00:00:00', start_enrol= '2021-06-23', end_enrol= '2021-06-23')
+        class2 = Class(class_id = 2, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/09/2021', end_date = '01/12/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 5, employee_id = 1, duration_of_class =2)
         db.session.add(e1)
         db.session.add(c1)
-        db.session.add(class1)
+        db.session.add(class2)
         db.session.commit()
-        start_date = Class.get_start_datetime(class1)
 
         request_body = {
             'employee_id': e1.employee_id,
             'course_id' : c1.course_id,
-            'class_id' : class1.class_id,
+            'class_id' : class2.class_id,
         }
         
         response = self.client.post("/employee_course_status",
                                     data=json.dumps(request_body),
                                     content_type='application/json')
-
-        new_status =  Course_check(employee_id = '10', course_id = '4', class_id = '2', status= 'in-progress')                            
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json, {
+    
+        self.assertEqual(response.json['code'], 201)            
+        self.assertEqual(response.json['data']['employee_enrolled'],     
+        {
             'status': 'in-progress'
-        })
+        })      
 
 
     def test_update_status(self):
         e1 = Employee(employee_id = '1', course_id = '4', employee_name='James', employee_role='Engineer')
         c1 = Course(course_id = '4', course_name = 'PlaceHolder', total_no_of_class = '5', total_no_of_lesson = '2', class_id = '2', course_description = 'Fix', course_prerequisite = '2', coursem_id = '2', employee_id = '1', start_time = 'Now', end_time = 'Later', datetime_uploaded = '2021-09-14 00:00:00', start_enrol= '', end_enrol= '')
-        class1 = Class(class_id = '2', course_id='4', lesson_id = '1', course_name = 'PlaceHolder', start_date = 'Start', end_date = 'End', start_time = 'Start', end_time = 'End', class_size = 23, current_class_size = 4, employee_id = '5', duration_of_class ='5')
+        class2 = Class(class_id = 2, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/09/2021', end_date = '01/12/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 5, employee_id = 1, duration_of_class =2)
         db.session.commit()
 
         request_body = {
             'employee_id': e1.employee_id,
             'course_id' : c1.course_id,
-            'class_id' : class1.class_id,
+            'class_id' : class2.class_id,
         }
         
-        response = self.client.put("/employee_course_status/1/4/2",
+        response = self.client.put("/employee_course_status",
                                     data=json.dumps(request_body),
-                                    content_type='application/json')                         
-        self.assertEqual(response.json, {
-            'code' : '200',
+                                    content_type='application/json')      
+        self.assertEqual(response.json['code'], 200)     
+        self.assertEqual(response.json['data']['class'],     
+        {
             'status': 'completed'
-        })
+        })      
 
     def test_find_classes_by_course_id(self):
-        self.assertEqual(4, 4)
-
-    def test_get_all_classes(self):
-        self.assertEqual(4, 4)
+        class2 = Class(class_id = 2, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/09/2021', end_date = '01/12/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 5, employee_id = 1, duration_of_class =2)
+        class3 = Class(class_id = 3, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/01/2021', end_date = '12/12/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 10, employee_id = 1, duration_of_class =2)
+        class7 = Class(class_id = 7, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/02/2021', end_date = '10/02/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 0, employee_id = 1, duration_of_class =2)
+        db.session.add(class2)
+        db.session.add(class3)
+        db.session.add(class7)
+        db.session.commit()
+        response = self.client.get("/class_by_course_id/4")
+        self.assertEqual(response.json['code'], 200)
+        self.assertEqual(response.json['data']['class'], 
+        [{'class_id': 2, 'course_id': 4,  'lesson_id' : 3,
+            'course_name' : 'Civil Engineer course',
+            'start_date': '01/09/2021',
+            'end_date': '01/12/2021',
+            'start_time': '14:00',
+            'end_time': '16:00',
+            'class_size': 10,
+            'current_class_size': 2,
+            'employee_id': 1,
+            'duration_of_class': 2},
+            {'class_id': 3, 'course_id': 4,  'lesson_id' : 3,
+            'course_name' : 'Civil Engineer course',
+            'start_date': '01/01/202',
+            'end_date': '12/12/2021',
+            'start_time': '14:00',
+            'end_time': '16:00',
+            'class_size': 10,
+            'current_class_size': 10,
+            'employee_id': 1,
+            'duration_of_class': 2},
+            {'class_id': 7, 'course_id': 4,  'lesson_id' : 3,
+            'course_name' : 'Civil Engineer course',
+            'start_date': '01/02/2021',
+            'end_date': '10/02/2021',
+            'start_time': '14:00',
+            'end_time': '16:00',
+            'class_size': 10,
+            'current_class_size': 0,
+            'employee_id': 1,
+            'duration_of_class': 2}
+            ])
 
     def test_create_class(self):
-         self.assertEqual(4, 4)
+        request_body = {
+            'course_id': 2,
+            'lesson_id' : 1,
+            'course_name' : 'Civil Engineer course',
+            'start_date': '01/09/2021',
+            'end_date': '01/12/2021',
+            'start_time': '14:00',
+            'end_time': '16:00',
+            'class_size': 10,
+            'current_class_size': 2,
+            'employee_id': 1,
+            'duration_of_class': 2
+        }
 
+        response = self.client.post("/class",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json['code'], 201)
+        self.assertEqual(response.json['data'], {
+            'class_id': 1,
+            'course_id': 2,
+            'lesson_id' : 1,
+            'course_name' : 'Civil Engineer course',
+            'start_date': '01/09/2021',
+            'end_date': '01/12/2021',
+            'start_time': '14:00',
+            'end_time': '16:00',
+            'class_size': 10,
+            'current_class_size': 2,
+            'employee_id': 1,
+            'duration_of_class': 2
+        })
+        
 #Author: Brenda
 class TestQuiz(TestApp):
     def test_get_all_quiz(self):
         self.assertEqual(4, 4)
     
     def test_find_quiz_by_lesson_id(self):
-        response = self.client.get("/quiz_by_lesson_id/2")
-        self.assertEqual(response.json['data']['quiz'], [])
+        self.assertEqual(4, 4)
 
     def test_find_by_quizs(self):
         self.assertEqual(4, 4)
@@ -139,25 +204,6 @@ class TestQuiz(TestApp):
 
     def test_create_quiz(self):
          self.assertEqual(4, 4)
-
-#Author: Frank
-class TestLesson(TestApp):
-    #seems to be brenda's part sorry about it 
-    def test_find_quiz_by_lesson_id(self):
-        response = self.client.get("/quiz_by_lesson_id/2")
-        self.assertEqual(response.json['data']['quiz'], [])
-
-    def test_find_course_material_by_lesson_id(self):
-        self.assertEqual(4, 4)
-
-    def test_find_lesson_by_class_id(self):
-        self.assertEqual(4, 4)
-
-    def test_find_by_lessonid(self):
-        self.assertEqual(4, 4)
-    
-    def test_create_lesson(self):
-        self.assertEqual(4, 4)
 
 if __name__ == '__main__':
     unittest.main()

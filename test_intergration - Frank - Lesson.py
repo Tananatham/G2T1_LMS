@@ -22,6 +22,7 @@ class TestApp(flask_testing.TestCase):
         db.session.remove()
         db.drop_all()
 
+#Author: Frank Xiao
 class TestLesson(TestApp):
     maxDiff = None
     def test_create_lesson(self):
@@ -62,7 +63,7 @@ class TestLesson(TestApp):
         self.assertEqual(response.json['code'], 200)
         self.assertEqual(response.json['data']['lesson'], [{'class_id': 5, 'course_id': 4, 'created_on': 'placeholder', 'lesson_descriptions': 'Placeholder', 'lesson_id': 2, 'lesson_material': 'placeholder', 'lesson_name': 'Placeholder', 'quiz_id': 2, 'quiz_type': 'MCQ'}, {'class_id': 5, 'course_id': 4, 'created_on': 'placeholder', 'lesson_descriptions': 'Placeholder', 'lesson_id': 3, 'lesson_material': 'placeholder', 'lesson_name': 'Placeholder', 'quiz_id': 2, 'quiz_type': 'MCQ'}])
 
-
+#Author: Frank Xiao
 class TestEnroll(TestApp):
     def test_employee_course_status(self):
         e1 = Employee(employee_id=1, course_id=2, employee_name='james', employee_role='Engineer')

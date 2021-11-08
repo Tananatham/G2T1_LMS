@@ -3,6 +3,7 @@ import flask_testing
 import json
 from datetime import datetime
 from freezegun import freeze_time
+from werkzeug.wrappers import request
 
 from course import Course_check, app,db, Employee, Course, Class, Lesson,Quiz
 
@@ -23,23 +24,100 @@ class TestApp(flask_testing.TestCase):
 
 #Author: Chelsea
 class TestEmployee(TestApp):
-    def test_employee_course_prerequisite_check(self):
-       self.assertEqual(4,4)
 
     def test_name_lookup_employee(self):
-      self.assertEqual(4,4)
+        e1 = Employee(employee_id=1, course_id=2, employee_name="Tom", employee_role="HR")
 
+        db.session.add(e1)
+        db.session.commit
+
+        request_body = {
+            "employee_name": e1.employee_name
+        }
+
+        response = self.client.get("/employee_name_lookup",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json['data'], { 
+            "course_id": 2,
+            "employee_id": 1,
+            "employee_name": "Tom",
+            "employee_role": "HR"
+        })
+
+     # line 508
     def test_find_status_by_id(self):
-       self.assertEqual(4,4)
+        C1 = Course_check(employee_id= 1, course_id= 4, class_id= 1, status= 'completed')
 
+        db.session.add(C1)
+        db.session.commit()
+
+        response = self.client.get("/employee_course_status/1", content_type='application/json')
+        self.assertEqual(response.json['code'], 201)
+        self.assertEqual(response.json['data'], { 'course': [4]})
+
+    # line 533
     def test_find_inprogress_class_id(self):
-       self.assertEqual(4,4)
-       
-    def test_find_employee_in_progress(self):
-       self.assertEqual(4,4)
+        e1 = Course_check(employee_id=1, course_id=5, class_id=2, status= 'in-progress')
+        c2 = Class(class_id=2, course_id=5, lesson_id=1, course_name="something", start_date="01/01/2021", end_date="02/02/2021", start_time="12:00", end_time="3:00", class_size=10, current_class_size=2, employee_id="1", duration_of_class= 3)
 
+        db.session.add(e1)
+        db.session.add(c2)
+        db.session.commit()
+
+        response = self.client.get("/class_by_engineer_in_progress/1/5", content_type='application/json')
+        self.assertEqual(response.json['code'], 201)
+        self.assertEqual(response.json['data'], { 
+            "class": [
+                {
+                    "class_id": 2, 
+                    "course_id": 5, 
+                    "lesson_id": 1, 
+                    "course_name": "something", 
+                    "start_date": "01/01/2021", 
+                    "end_date": "02/02/2021", 
+                    "start_time": "12:00", 
+                    "end_time": "3:00", 
+                    "class_size": 10, 
+                    "current_class_size": 2, 
+                    "employee_id": 1, 
+                    "duration_of_class": 3
+                }
+            ]
+        })
+       
+    #line 564   
+    def test_find_employee_in_progress(self):
+        C1 = Course_check(employee_id= 1, course_id= 4, class_id= 1, status= 'in-progress')
+
+        db.session.add(C1)
+        db.session.commit()
+
+        response = self.client.get("/employee_course_status_progress/1", content_type='application/json')
+        self.assertEqual(response.json['code'], 201)
+        self.assertEqual(response.json['data'], { 'course': [4]})
+
+    #line 633 wrong
     def test_delete_status(self):
-        self.assertEqual(4,4)
+        e1 = Course_check(employee_id=1, course_id=5, class_id=2, status= 'completed')
+        c2 = Class(class_id=2, course_id=5, lesson_id=1, course_name="something", start_date="01/01/2021", end_date="02/02/2021", start_time="12:00", end_time="3:00", class_size=10, current_class_size=2, employee_id="1", duration_of_class= 3)
+
+        db.session.add(e1)
+        db.session.add(c2)
+        db.session.commit()
+
+        request_body = {
+            "course_id": c2.course_id,
+            "employee_id": c2.employee_id,
+            "class_id": c2.class_id,
+        }
+
+        response = self.client.delete("/employee_course_status/",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json['code'], 200)
+        self.assertEqual(response.json['data'], { 'course': 5})
+
 
 #Author: Tantham 
 class TestCourse(TestApp):

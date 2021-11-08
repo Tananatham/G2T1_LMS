@@ -3,3 +3,6 @@
 /.DS_Store
 FrontEnd/.DS_Store
 .DS_Store
+*.pyc
+.vscode/settings.json
+.DS_Store

@@ -124,11 +124,11 @@ class TestEmployee(TestApp):
 class TestCourse(TestApp):
 
     def test_find_prerequisites_by_id(self):
-        course1 = Course(course_id = 1, course_name = 'Chemical engineering', total_no_of_class = 1, total_no_of_lesson = 1, class_id = 1, course_description = 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', course_prerequisite = 5, coursem_id = 1, employee_id = 2, start_time = '1 July 2021', end_time = '1 December 2021', datetime_uploaded = '2021-06-23 00:00:00', start_enrol= '2021-06-23', end_enrol= '2021-06-23')
+        course1 = PrerequisiteCheck(course_id = 1, prerequisite_course_id = 5)
         db.session.add(course1)
         db.session.commit()
         response = self.client.get("/course_prerequisite/1")
-        self.assertEqual(response.json['code'], 200)
+        self.assertEqual(response.json['code'], 201)
         self.assertEqual(response.json['data'], 5)
 
     def test_find_course_name_by_id(self):

@@ -285,29 +285,6 @@ class TestClass(TestApp):
 #Author: Brenda
 class TestQuiz(TestApp):
 
-    def test_find_quiz_by_lesson_id_invalid_lesson_id(self):
-        self.maxDiff = None
-        lesson = Lesson(lesson_id=20,lesson_name="lesson2",quiz_type="ungraded",lesson_material="https://drive.google.com/drive/folders/1OE3IzisueXHNK-91BjVofiy59H80Uht2?usp=sharing",created_on="11/7/2021 3:47:44 AM",class_id=12,course_id=4,quiz_id="",lesson_descriptions="lesson2 descriptions")
-        db.session.add(lesson)
-        db.session.commit()
-
-        request_body = {
-            "quiz_type":lesson.quiz_type,
-            "question_type":"True/False",
-            "quiz_question":"Electrons are larger than molecules",
-            "quiz_selection":"True,False",
-            "time_limit":"5 hours",
-            "correct_answer":"True",
-            "passing_score":'',
-            "datetime_created":"11/7/2021 3:32:52 AM"
-        }
-
-        response = self.client.post("/quiz_by_lesson_id/23",
-                                    data=json.dumps(request_body),
-                                    content_type='application/json')
-        self.assertEqual(response.status_code, 405)
-
-
     def test_find_by_quizid(self):
         self.maxDiff = None
         quiz = Quiz(quiz_id=2,lesson_id=14,quiz_type='ungraded',question_type="True/False",quiz_question="Electrons are larger than molecules",quiz_selection="True,False",time_limit="5 hours",correct_answer="True",passing_score='',datetime_created="11/7/2021 3:32:52 AM")

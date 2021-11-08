@@ -188,25 +188,25 @@ class TestClass(TestApp):
     #         'status': 'completed'
     #     })      
 
-    def test_find_classes_by_course_id(self):
-        class2 = Class(class_id = 2, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/09/2021', end_date = '01/12/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 5, employee_id = 1, duration_of_class =2)
-        db.session.add(class2)
-        db.session.commit()
-        response = self.client.get("/class_by_course_id/4")
-        self.assertEqual(response.json['code'], 200)
-        self.assertEqual(response.json['data']['class'], 
-        [{'class_id': 2, 'course_id': 4,  'lesson_id' : 3,
-            'course_name' : 'Civil Engineer course',
-            'start_date': '01/09/2021',
-            'end_date': '01/12/2021',
-            'start_time': '14:00',
-            'end_time': '16:00',
-            'class_size': 10,
-            'current_class_size': 5,
-            'employee_id': 1,
-            'duration_of_class': 2}
+    # def test_find_classes_by_course_id(self):
+    #     class2 = Class(class_id = 2, course_id=4, lesson_id = 3, course_name = 'Civil Engineer course', start_date = '01/09/2021', end_date = '01/12/2021', start_time = '14:00', end_time = '16:00', class_size = 10, current_class_size = 5, employee_id = 1, duration_of_class =2)
+    #     db.session.add(class2)
+    #     db.session.commit()
+    #     response = self.client.get("/class_by_course_id/4")
+    #     self.assertEqual(response.json['code'], 200)
+    #     self.assertEqual(response.json['data']['class'], 
+    #     [{'class_id': 2, 'course_id': 4,  'lesson_id' : 3,
+    #         'course_name' : 'Civil Engineer course',
+    #         'start_date': '01/09/2021',
+    #         'end_date': '01/12/2021',
+    #         'start_time': '14:00',
+    #         'end_time': '16:00',
+    #         'class_size': 10,
+    #         'current_class_size': 5,
+    #         'employee_id': 1,
+    #         'duration_of_class': 2}
             
-            ])
+    #         ])
 
     def test_create_class(self):
         request_body = {

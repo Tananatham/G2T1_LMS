@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
 
-    <title>View Classes</title>
+    <title>Take Quiz</title>
 
     <link rel="stylesheet" href="">
     <!--[if lt IE 9]>
@@ -29,6 +29,24 @@
 </head>
 
 <body>
+
+<!-- NavBar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="Engineer_Home.html">
+        <img src="" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        LMS - Engineer
+      </a>
+    </div>
+  </nav>
+  
+  <!-- Navigation Buttons -->
+  <br>
+  <div class="container-fluid">
+      <button id ="viewcourses" type="button" class="btn btn-primary" onclick = "openHome()">Back To Class</button>
+  </div>
+  
+  
 
     <div id="main-container" class="container">
 
@@ -116,7 +134,9 @@
             }
         })
 
-
+        function openHome() {
+            window.location.assign("engineer-class-apply.html?course_id=1")
+          }
         
         
     </script>

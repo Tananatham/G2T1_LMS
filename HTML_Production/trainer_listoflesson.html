@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Lessons</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+    <script>
+        $(async() => {
+
+            var url = window.location.href;
+            var queryparams = url.split('?');
+            var name = queryparams[1].split("=");
+            var serviceURL = "http://50.16.230.106:6900/lessonclass/" + name[1];
+            var x = document.getElementById("checkout");
+            x.href = "trainer_create_lesson.html?classid=" + name[1];
+
+            try {
+                const response =
+                    await fetch(
+                        serviceURL, {
+                            method: 'GET'
+                        }
+                    );
+                const result = await response.json();
+                if (response.status === 200) {
+                    // success case
+                    var lessons = result.data.lessons;
+                    var rows = "";
+                    for (const lessonn of lessons) {
+                        if (lessonn.quiz_id == 0) {
+                            eachRow = "<td>" + lessonn.lesson_name + "</td>" +
+                                "<td>" + lessonn.quiz_type + "</td>" +
+                                "<td>" + lessonn.created_on + "</td>" +
+                                "<td> <a class='btn btn-secondary' href='trainer_edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
+                                "<td> <a class='btn btn-success' href='trainer_create_quiz_MCQ.html?lessonname=" + lessonn.lesson_name + "&quiztype=" + lessonn.quiz_type + "&lessonid=" + lessonn.lesson_id + "' role='button'>Create Quiz</a> </td>";
+                            rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+                        } else {
+                            eachRow = "<td>" + lessonn.lesson_name + "</td>" +
+                                "<td>" + lessonn.quiz_type + "</td>" +
+                                "<td>" + lessonn.created_on + "</td>" +
+                                "<td> <a class='btn btn-secondary' href='trainer_edit_lesson.html?lesson_id=" + lessonn.lesson_id + "' role='button'>Edit</a> </td>" +
+                                "<td> <a class='btn btn-info' href='trainer_view_quiz.html?lesson_id=" + lessonn.lesson_id + "' role='button'>View Quiz</a> </td>";
+                            rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+                        }
+                    }
+                    $('#classTable').append(rows);
+                } else if (response.status == 404) {
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                    ('There is a problem retrieving class data, please try again later.<br />' + error);
+            } // error
+        });
+    </script>
+    <div class="bg-secondary p-2 text-dark bg-opacity-10">
+        <a href="trainer_homepage.html">
+            <h4 style="color: black;">LMS - Trainer</h4>
+        </a>
+    </div>
+    <div id="main-container" style="padding-top:20px;">
+        <div class="container p-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="form-check text-center">
+                            <h1>List of Lessons</h1>
+                        </div>
+                    </div>
+
+                    <table class="table" id="classTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Lessons Name</th>
+                                <th scope="col">Quiz Type</th>
+                                <th scope="col">Created On</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="col-4">
+                        <a type="button" class="btn btn-success w-100 mt-4" href="" id="checkout">Create Lesson</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

@@ -43,8 +43,6 @@ class TestEmployee(TestApp):
 
 #Author: Tantham 
 class TestCourse(TestApp):
-    def test_course_prereq_okay_check(self):
-        self.assertEqual(4, 4)
 
     def test_set_course_prereq(self):
         self.assertEqual(4,4)
@@ -53,13 +51,67 @@ class TestCourse(TestApp):
         self.assertEqual(4,4)
 
     def test_find_course_name_by_id(self):
-        self.assertEqual(4,4)
+        course1 = Course(course_id = 1, course_name = 'Chemical engineering', total_no_of_class = 1, total_no_of_lesson = 1, class_id = 1, course_description = 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', course_prerequisite = 0, coursem_id = 1, employee_id = 2, start_time = '1 July 2021', end_time = '1 December 2021', datetime_uploaded = '2021-06-23 00:00:00', start_enrol= '2021-06-23', end_enrol= '2021-06-23')
+        db.session.add(course1)
+        db.session.commit()
+        response = self.client.get("/course/1")
+        self.assertEqual(response.json['code'], 200)
+        self.assertEqual(response.json['data']['course'], 
+        [{'course_id': 1, 'course_name' : 'Chemical engineering',  'total_no_of_class' : 1,
+            'total_no_of_lesson' : 1,
+            'class_id' : 1,
+            'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
+            'course_prerequisite' : 0,
+            'coursem_id' : 1,
+            'employee_id' : 2, 
+            'start_time' : '1 July 2021', 
+            'end_time' : '1 December 2021', 
+            'datetime_uploaded' : '2021-06-23 00:00:00', 
+            'start_enrol' : '2021-06-23', 
+            'end_enrol'  : '2021-06-23'}
+            
+            ])
 
-    def test_get_pending_enrollment(self):
-        self.assertEqual(4,4)
+    def test_create_course(self):
+        request_body = {
+            'course_id': 1, 
+            'course_name' : 'Chemical engineering',  
+            'total_no_of_class' : 1,
+            'total_no_of_lesson' : 1,
+            'class_id' : 1,
+            'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
+            'course_prerequisite' : 0,
+            'coursem_id' : 1,
+            'employee_id' : 2, 
+            'start_time' : '1 July 2021', 
+            'end_time' : '1 December 2021', 
+            'datetime_uploaded' : '2021-06-23 00:00:00', 
+            'start_enrol' : '2021-06-23', 
+            'end_enrol'  : '2021-06-23'
+        }
+
+        response = self.client.post("/course",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json['code'], 201)
+        self.assertEqual(response.json['data'], {
+            'course_id': 1, 
+            'course_name' : 'Chemical engineering',  
+            'total_no_of_class' : 1,
+            'total_no_of_lesson' : 1,
+            'class_id' : 1,
+            'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
+            'course_prerequisite' : 0,
+            'coursem_id' : 1,
+            'employee_id' : 2, 
+            'start_time' : '1 July 2021', 
+            'end_time' : '1 December 2021', 
+            'datetime_uploaded' : '2021-06-23 00:00:00', 
+            'start_enrol' : '2021-06-23', 
+            'end_enrol'  : '2021-06-23'
+        })
     
-    def test_get_in_progress_enrollment(self):
-        self.assertEqual(4,4)
+
 
 
 #Author: Alina Tan 

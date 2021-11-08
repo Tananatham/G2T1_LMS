@@ -18,21 +18,22 @@ class TestApp(flask_testing.TestCase):
     def setUp(self):
         db.create_all()
 
-    # def tearDown(self):
-    #     db.session.remove()
-    #     db.drop_all()
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
 
 #Author: Chelsea
 class TestEmployee(TestApp):
-
+    maxDiff = None
     def test_name_lookup_employee(self):
         e1 = Employee(employee_id=1, course_id=2, employee_name="Tom", employee_role="HR")
 
         db.session.add(e1)
         db.session.commit
-
+    
         request_body = {
-            "employee_name": e1.employee_name
+            "employee_name": "Tom"
+
         }
 
         response = self.client.get("/employee_name_lookup",
@@ -132,64 +133,49 @@ class TestCourse(TestApp):
         course1 = Course(course_id = 1, course_name = 'Chemical engineering', total_no_of_class = 1, total_no_of_lesson = 1, class_id = 1, course_description = 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.', course_prerequisite = 0, coursem_id = 1, employee_id = 2, start_time = '1 July 2021', end_time = '1 December 2021', datetime_uploaded = '2021-06-23 00:00:00', start_enrol= '2021-06-23', end_enrol= '2021-06-23')
         db.session.add(course1)
         db.session.commit()
-        response = self.client.get("/course/1")
+        response = self.client.get("/course_name/1")
         self.assertEqual(response.json['code'], 200)
-        self.assertEqual(response.json['data']['course'], 
-        [{'course_id': 1, 'course_name' : 'Chemical engineering',  'total_no_of_class' : 1,
-            'total_no_of_lesson' : 1,
-            'class_id' : 1,
-            'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
-            'course_prerequisite' : 0,
-            'coursem_id' : 1,
-            'employee_id' : 2, 
-            'start_time' : '1 July 2021', 
-            'end_time' : '1 December 2021', 
-            'datetime_uploaded' : '2021-06-23 00:00:00', 
-            'start_enrol' : '2021-06-23', 
-            'end_enrol'  : '2021-06-23'}
-            
-            ])
+        self.assertEqual(response.json['data'], 'Chemical engineering')
 
-    def test_create_course(self):
-        request_body = {
-            'course_id': 1, 
-            'course_name' : 'Chemical engineering',  
-            'total_no_of_class' : 1,
-            'total_no_of_lesson' : 1,
-            'class_id' : 1,
-            'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
-            'course_prerequisite' : 0,
-            'coursem_id' : 1,
-            'employee_id' : 2, 
-            'start_time' : '1 July 2021', 
-            'end_time' : '1 December 2021', 
-            'datetime_uploaded' : '2021-06-23 00:00:00', 
-            'start_enrol' : '2021-06-23', 
-            'end_enrol'  : '2021-06-23'
-        }
+    # def test_create(self):
+    #     request_body = {
+    #         'course_id': 3, 
+    #         'course_name' : 'Chemical engineering',  
+    #         'total_no_of_class' : 1,
+    #         'total_no_of_lesson' : 1,
+    #         'class_id' : 1,
+    #         'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
+    #         'course_prerequisite' : 0,
+    #         'coursem_id' : 1,
+    #         'employee_id' : 2, 
+    #         'start_time' : '1 July 2021', 
+    #         'end_time' : '1 December 2021', 
+    #         'datetime_uploaded' : '2021-06-23 00:00:00', 
+    #         'start_enrol' : '2021-06-23', 
+    #         'end_enrol'  : '2021-06-23'
+    #     }
 
-        response = self.client.post("/course",
-                                    data=json.dumps(request_body),
-                                    content_type='application/json')
-        self.assertEqual(response.json['code'], 201)
-        self.assertEqual(response.json['data'], {
-            'course_id': 1, 
-            'course_name' : 'Chemical engineering',  
-            'total_no_of_class' : 1,
-            'total_no_of_lesson' : 1,
-            'class_id' : 1,
-            'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
-            'course_prerequisite' : 0,
-            'coursem_id' : 1,
-            'employee_id' : 2, 
-            'start_time' : '1 July 2021', 
-            'end_time' : '1 December 2021', 
-            'datetime_uploaded' : '2021-06-23 00:00:00', 
-            'start_enrol' : '2021-06-23', 
-            'end_enrol'  : '2021-06-23'
-        })
+    #     response = self.client.post("/course",
+    #                                 data=json.dumps(request_body),
+    #                                 content_type='application/json')
+    #     self.assertEqual(response.json['code'], 201)
+    #     self.assertEqual(response.json['data'], {
+    #         'course_id': 3, 
+    #         'course_name' : 'Chemical engineering',  
+    #         'total_no_of_class' : 1,
+    #         'total_no_of_lesson' : 1,
+    #         'class_id' : 1,
+    #         'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
+    #         'course_prerequisite' : 0,
+    #         'coursem_id' : 1,
+    #         'employee_id' : 2, 
+    #         'start_time' : '1 July 2021', 
+    #         'end_time' : '1 December 2021', 
+    #         'datetime_uploaded' : '2021-06-23 00:00:00', 
+    #         'start_enrol' : '2021-06-23', 
+    #         'end_enrol'  : '2021-06-23'
+    #     })
     
-
 
 
 #Author: Alina Tan 

@@ -121,8 +121,7 @@
                     <td>{{ record.current_class_size }}</td>
                     <td>{{ record.class_size }}</td>
                     <td>
-                        <!-- <lesson-button :lesson_id=record.lesson_id></lesson-button> -->
-                        <button onClick='course()' class='btn btn-outline-info btn-sm'>Lessons</button>
+                        <lesson-button :lesson_id=record.lesson_id></lesson-button>
                     </td>
                     <td>
                         <withdraw-button :class_id=record.class_id></withdraw-button>
@@ -157,7 +156,7 @@
                 course_id: url_course_id
             },
             mounted: function() {
-                axios.get('http://localhost:6900/class_by_course_id/' + this.course_id)
+                axios.get('http://50.16.230.106:6900/class_by_course_id/' + this.course_id)
                     .then(response => {
                         this.classes = response.data.data.class;
                     })
@@ -173,7 +172,7 @@
                 course_id: url_course_id
             },
             mounted: function() {
-                axios.get('http://localhost:6900/class_by_engineer_in_progress/' + this.employee_id + '/' + this.course_id)
+                axios.get('http://50.16.230.106:6900/class_by_engineer_in_progress/' + this.employee_id + '/' + this.course_id)
                     .then(response => {
                         this.classes = response.data.data.class;
                     })
@@ -193,7 +192,7 @@
             },
             methods: {
                 clicked: function(event) {
-                    axios.post('http://localhost:6900/employee_course_status', {
+                    axios.post('http://50.16.230.106:6900/employee_course_status', {
                             course_id: this.course_id,
                             employee_id: this.employee_id,
                             class_id: this.class_id,
@@ -220,7 +219,7 @@
                 };
             },
             created: function() {
-                axios.get('http://localhost:6900/course/' + this.course_id)
+                axios.get('http://50.16.230.106:6900/course/' + this.course_id)
                     .then(response => {
                         this.name = response.data.data.course_name;
                     })
@@ -254,7 +253,7 @@
             },
             methods: {
                 clicked: function(event) {
-                    axios.delete('http://localhost:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id + "&class_id=" + this.class_id)
+                    axios.delete('http://50.16.230.106:6900/employee_course_status/?employee_id=' + this.employee_id + "&course_id=" + this.course_id + "&class_id=" + this.class_id)
                         .then(response => {
                             window.alert("You have withdrawn from the course.");
                             location.reload();
@@ -271,11 +270,7 @@
         //navigation buttons
         function openHome() {
             window.location.assign("engineer_homepage.html")
-            }
-
-            function course() {
-                window.location.assign("engineer_take-course.html")
-                }
+        }
     </script>
 </body>
 

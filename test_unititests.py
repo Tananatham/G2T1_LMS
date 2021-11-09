@@ -1,6 +1,12 @@
-from datetime import datetime 
-import unittest   
-from course import Employee, Course, Class, Lesson, Course_check, PrerequisiteCheck, Quiz
+from datetime import datetime
+import unittest
+from course import Employee
+from course import Course
+from course import Class
+from course import Lesson
+from course import Course_check
+from course import PrerequisiteCheck
+from course import Quiz
 
 # Author: Chelsea
 
@@ -40,20 +46,20 @@ class TestCourse(unittest.TestCase):
                     start_enrol='2021-09-14',
                     end_enrol='2021-09-14')
         self.assertEqual(c1.to_dict(), {
-            'course_id': '1',
-            'course_name': 'PlaceHolder',
-            'total_no_of_class' : '5',
-            'total_no_of_lesson' : '2',
-            'class_id': '1',
-            'course_description': 'Fix',
-            'course_prerequisite': '2',
-            'coursem_id': '2',
-            'employee_id': '1',
-            'start_time': 'Now',
-            'end_time': 'Later',
-            'datetime_uploaded': '2021-09-14 00:00:00',
-            'start_enrol' : '2021-09-14',
-            'end_enrol': '2021-09-14'}
+            'course_id':'1',
+            'course_name':'PlaceHolder',
+            'total_no_of_class':'5',
+            'total_no_of_lesson':'2',
+            'class_id':'1',
+            'course_description':'Fix',
+            'course_prerequisite':'2',
+            'coursem_id':'2',
+            'employee_id':'1',
+            'start_time':'Now',
+            'end_time':'Later',
+            'datetime_uploaded':'2021-09-14 00:00:00',
+            'start_enrol':'2021-09-14',
+            'end_enrol':'2021-09-14'}
         )
 
 # Author: Alina Tan 

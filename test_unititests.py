@@ -57,7 +57,7 @@ class TestClass(unittest.TestCase):
 
     def test_class_withdraw_negative(self):
         class1 = Class(class_id='1', course_id='1',
-        lesson_id = '1', course_name = 'PlaceHolder', 
+        lesson_id='1', course_name='PlaceHolder', 
         start_date = 'Start', end_date = 'End', 
         start_time = 'Start', end_time = 'End', 
         class_size = 23, current_class_size = 1, 

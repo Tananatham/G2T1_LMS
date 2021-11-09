@@ -97,7 +97,7 @@
                             "<td>" + quiz.quiz_selection + "</td>" +
                             "<td>" + quiz.correct_answer + "</td>" +
                             "<td>" + quiz.datetime_created + "</td>" +
-                            "<td> <a class='btn btn-secondary' href='trainer_edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>" +
+                            "<td> <a class='btn btn-outline-secondary' href='trainer_edit_quiz.html?quiz_id=" + quiz.quiz_id + "' role='button'>Edit Question</a> </td>" +
                             "<td> <img src='image1.png' onclick=deletefunction(" + quiz.quiz_id + "," + lesson_id[1] + ")> </td>";
                         rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                     }
@@ -134,7 +134,7 @@
                     const para1 = document.createElement("a");
                     var text = document.createTextNode("Create Question");
                     para1.setAttribute("role", "button");
-                    para1.setAttribute("class", "btn btn-primary btn-sm");
+                    para1.setAttribute("class", "btn btn-outline-primary btn-sm");
                     para1.setAttribute("href", "trainer_create_quiz_MCQ.html?lessonname=" + lesson.lesson_name + "&quiztype=" + lesson.quiz_type + "&lessonid=" + lesson_id[1] + "");
                     para1.appendChild(text);
                     para.appendChild(para1);

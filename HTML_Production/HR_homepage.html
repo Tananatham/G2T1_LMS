@@ -171,7 +171,7 @@
 
     <script>
         Vue.component("approve-button", {
-            template: "<button @click='clicked' class='btn btn-success'>Approve</button>",
+            template: "<button @click='clicked' class='btn btn-outline-success'>Approve</button>",
             props: ["course_id", "employee_id", "class_id"],
             data: function() {
                 return {
@@ -193,7 +193,7 @@
         })
 
         Vue.component("deny-button", {
-            template: "<button @click='clicked' class='btn btn-danger'>Deny</button>",
+            template: "<button @click='clicked' class='btn btn-outline-danger'>Deny</button>",
             props: ["course_id", "employee_id", "class_id"],
             methods: {
                 clicked: function(event) {
@@ -208,7 +208,7 @@
         })
 
         Vue.component("withdraw-button", {
-            template: "<button @click='clicked' class='btn btn-danger'>Withdraw</button>",
+            template: "<button @click='clicked' class='btn btn-outline-danger'>Withdraw</button>",
             props: ["course_id", "employee_id", "class_id"],
             methods: {
                 clicked: function(event) {

@@ -30,6 +30,8 @@ This is a learning management system for Service Engineers to repair, service an
 
 - Please note that in some classes, the current class size is set to max, while there are not that many learners in the system at the moment, this is made as a test so you cannot apply for that class.
 
+- Please check *Civil Engineering* Course for all the classes you can apply to, the classes have varying open dates, and class capacity.
+
 - After you apply for a class, Human Resources needs to approve your application.
 
 - You can access the lesson and take quizzes, and also check and access materials.

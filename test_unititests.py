@@ -57,23 +57,34 @@ class TestClass(unittest.TestCase):
             self.assertEqual(class1.current_class_size, 23)
 
     def test_class_withdraw(self):
-        class1 = Class(class_id = '1', course_id='1', lesson_id = '1', course_name = 'PlaceHolder', start_date = 'Start', end_date = 'End', start_time = 'Start', end_time = 'End', class_size = 23, current_class_size = 4, employee_id = '5', duration_of_class ='5')
+        class1 = Class(class_id = '1', 
+                        course_id='1',
+                        lesson_id = '1',
+                        course_name = 'PlaceHolder',
+                        start_date = 'Start', 
+                        end_date = 'End', 
+                        start_time = 'Start', 
+                        end_time = 'End', 
+                        class_size = 23, 
+                        current_class_size = 4, 
+                        employee_id = '5', 
+                        duration_of_class ='5')
         class1.class_withdraw()
         self.assertEqual(class1.current_class_size,3)
 
     def test_class_withdraw_negative(self):
         class1 = Class(class_id='1', 
-                    course_id='1',
-                    lesson_id='1', 
-                    course_name='PlaceHolder', 
-                    start_date='Start', 
-                    end_date='End', 
-                    start_time='Start', 
-                    end_time='End', 
-                    class_size=23, 
-                    current_class_size=1, 
-                    employee_id='5', 
-                    duration_of_class='5')
+                        course_id='1',
+                        lesson_id='1', 
+                        course_name='PlaceHolder', 
+                        start_date='Start', 
+                        end_date='End', 
+                        start_time='Start', 
+                        end_time='End', 
+                        class_size=23, 
+                        current_class_size=1, 
+                        employee_id='5', 
+                        duration_of_class='5')
         self.assertEqual(class1.current_class_size, 1)
         try:
             class1.class_withdraw()
@@ -87,9 +98,9 @@ class TestClass(unittest.TestCase):
 class TestCourseCheck(unittest.TestCase):
     def test_to_dict(self):
         checkcourse = Course_check(employee_id='1',
-                                course_id='4',
-                                class_id='2',
-                                status='in-progress')
+                                    course_id='4',
+                                    class_id='2',
+                                    status='in-progress')
         self.assertEqual(checkcourse.to_dict(), {
             'employee_id': '1',
             'course_id': '4',

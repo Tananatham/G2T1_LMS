@@ -50,13 +50,9 @@
 
     <div id="main-container" class="container">
 
-        <h1>Lesson Quiz
-            <!-- <course-name></course-name> -->
+        <h1>
+            <quiz-name></quiz-name>
         </h1>
-
-        <div>
-            <span>{{ answer_arr }}</span>
-        </div>
 
 
         <!-- Displaying Quiz Questions -->
@@ -82,10 +78,11 @@
 
         <div v-for="item in quiz">
                 <h5>Q. {{ item.quiz_question }}</h5>
-                <h5>{{ item.quiz_question }}</h5>
-                <div v-for=""> 
+
+                <div id="answercontainer" v-if="{{ item.question_type }} === 'True/False'"> 
                     <input type="radio" value="HTML">
                     <label for="html"> {{ item.correct_answer }}</label><br>
+                    <div id = "correctanswer" style = "display:none">{{ item.correct_answer }}</div>
                 </div>
         </div>
         
@@ -117,19 +114,35 @@
             }
         });
 
+        const vm2 = new Vue({
+            el: '#answercontainer',
+            data: {
+                quiz_selection: [],
+                
+            },
+            mounted: function() {
+                axios.get('http://localhost:6900/quiz/14')
+                    .then(response => {
+                        this.quiz = response.data.data.quiz.quiz_selection;
+                        
+                    })
+                    .catch(error => alert(error));
+            }
+        });
+
         
-        Vue.component("course-name", {
-            template: "<span><strong>{{name}}</strong></span>",
+        Vue.component("quiz-name", {
+            template: "<span><strong>Quiz {{lesson_id}}</strong></span>",
             data: function() {
                 return {
-                    name: '',
-                    course_id: url_course_id
+                    lesson_id: '',
+  
                 };
             },
             created: function() {
-                axios.get('http://localhost:6900/course/' + this.course_id)
+                axios.get('http://localhost:6900/quiz/14')
                     .then(response => {
-                        this.name = response.data.data.course_name;
+                        this.name = response.data.data.quiz.lesson_id;
                     })
             }
         })

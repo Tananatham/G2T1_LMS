@@ -76,48 +76,47 @@ class TestEmployee(TestApp):
         response = self.client.get("/employee_course_status_progress/1", content_type='application/json')
         self.assertEqual(response.json['code'], 201)
         self.assertEqual(response.json['data'], { 'course': [4]})
-    # def test_name_lookup_employee(self):
-    #     e1 = Employee(employee_id=1, course_id=2, employee_name="Tom", employee_role="HR")
 
-    #     db.session.add(e1)
-    #     db.session.commit
+    def test_name_lookup_employee(self):
+        e1 = Employee(employee_id=1, course_id=2, employee_name="Tom", employee_role="HR")
+
+        db.session.add(e1)
+        db.session.commit
     
-    #     request_body = {
-    #         "employee_name": "Tom"
-
-    #     }
-
-    #     response = self.client.get("/employee_name_lookup",
-    #                                 data=json.dumps(request_body),
-    #                                 content_type='application/json')
-    #     self.assertEqual(response.json['data'], { 
-    #         "course_id": 2,
-    #         "employee_id": 1,
-    #         "employee_name": "Tom",
-    #         "employee_role": "HR"
-    #     })
+        request_body = {
+            "employee_name": "T"
+        }
+        response = self.client.get("/employee_name_lookup",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json['data'], [{ 
+            "course_id": 2,
+            "employee_id": 1,
+            "employee_name": "Tom",
+            "employee_role": "HR"
+        }])
     
-    # def test_delete_status(self):
-    # #line 633 wrong
-    #     maxDiff = None
-    #     e1 = Course_check(employee_id=1, course_id=5, class_id=2, status= 'in-progress')
-    #     c2 = Class(class_id=2, course_id=5, lesson_id=1, course_name="something", start_date="01/01/2021", end_date="02/02/2021", start_time="12:00", end_time="3:00", class_size=10, current_class_size=2, employee_id= 1, duration_of_class= 3)
+    def test_delete_status(self):
+    #line 633
+        maxDiff = None
+        e1 = Course_check(employee_id=1, course_id=1, class_id=1, status= 'in-progress')
+        c2 = Class(class_id=1, course_id=1, lesson_id=1, course_name="something", start_date="01/01/2021", end_date="02/02/2021", start_time="12:00", end_time="3:00", class_size=10, current_class_size=2, employee_id= 1, duration_of_class= 3)
 
-    #     db.session.add(e1)
-    #     db.session.add(c2)
-    #     db.session.commit()
+        db.session.add(e1)
+        db.session.add(c2)
+        db.session.commit()
 
-    #     request_body = {
-    #         'employee_id': e1.employee_id,
-    #         'course_id' : e1.course_id,
-    #         'class_id' : e1.class_id
-    #     }
+        request_body = {
+            'employee_id': e1.employee_id,
+            'course_id' : e1.course_id,
+            'class_id' : e1.class_id
+        }
 
-    #     response = self.client.delete("/employee_course_status/",
-    #                                 data=json.dumps(request_body),
-    #                                 content_type='application/json')
-    #     self.assertEqual(response.json['code'], 200)
-    #     self.assertEqual(response.json['data']['course_id'], 5)
+        response = self.client.delete("/employee_course_status/",
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+        self.assertEqual(response.json['code'], 200)
+        self.assertEqual(response.json['data']['course_id'], 1)
 
 
 #Author: Tantham 
@@ -138,47 +137,6 @@ class TestCourse(TestApp):
         response = self.client.get("/course_name/1")
         self.assertEqual(response.json['code'], 200)
         self.assertEqual(response.json['data'], 'Chemical engineering')
-
-    # def test_create(self):
-    #     request_body = {
-    #         'course_id': 3, 
-    #         'course_name' : 'Chemical engineering',  
-    #         'total_no_of_class' : 1,
-    #         'total_no_of_lesson' : 1,
-    #         'class_id' : 1,
-    #         'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
-    #         'course_prerequisite' : 0,
-    #         'coursem_id' : 1,
-    #         'employee_id' : 2, 
-    #         'start_time' : '1 July 2021', 
-    #         'end_time' : '1 December 2021', 
-    #         'datetime_uploaded' : '2021-06-23 00:00:00', 
-    #         'start_enrol' : '2021-06-23', 
-    #         'end_enrol'  : '2021-06-23'
-    #     }
-
-    #     response = self.client.post("/course",
-    #                                 data=json.dumps(request_body),
-    #                                 content_type='application/json')
-    #     self.assertEqual(response.json['code'], 201)
-    #     self.assertEqual(response.json['data'], {
-    #         'course_id': 3, 
-    #         'course_name' : 'Chemical engineering',  
-    #         'total_no_of_class' : 1,
-    #         'total_no_of_lesson' : 1,
-    #         'class_id' : 1,
-    #         'course_description' : 'This type of engineering concerns the use of chemical and biological processes to produce useful materials or substances. It’s a multidisciplinary subject, combining natural and experimental sciences (such as chemistry and physics), along with life sciences (such as biology, microbiology and biochemistry), plus mathematics and economics.',
-    #         'course_prerequisite' : 0,
-    #         'coursem_id' : 1,
-    #         'employee_id' : 2, 
-    #         'start_time' : '1 July 2021', 
-    #         'end_time' : '1 December 2021', 
-    #         'datetime_uploaded' : '2021-06-23 00:00:00', 
-    #         'start_enrol' : '2021-06-23', 
-    #         'end_enrol'  : '2021-06-23'
-    #     })
-    
-
 
 #Author: Alina Tan 
 class TestClass(TestApp):
@@ -462,7 +420,7 @@ class TestEnroll(TestApp):
             'employee_id': e1.employee_id,
             'course_id': 2,
             'class_id': 6,
-            'status': 'pending'
+            'status': 'in-progress'
         }
 
         response = self.client.post("/employee_course_status",
@@ -474,7 +432,7 @@ class TestEnroll(TestApp):
             'class_id': '6',
             'course_id': 2,
             'employee_id': 1,
-            'status': 'pending'
+            'status': 'in-progress'
         })
     
     def test_employee_course_status_invalid_prerequisite(self):
@@ -504,7 +462,7 @@ class TestEnroll(TestApp):
         print(response.json)
 
         self.assertEqual(response.json['code'], 500)
-        self.assertEqual(response.json['message'], 'The employee applying do not meet all the prerequisite for this course.')
+        self.assertEqual(response.json['message'], 'The employee applying does not meet all the prerequisite for this course.')
     
     def test_employee_course_status_invalid_classSize(self):
         e1 = Employee(employee_id=1, course_id=2, employee_name='james', employee_role='Engineer')

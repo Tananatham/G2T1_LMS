@@ -78,7 +78,7 @@ class TestCourseCheck(unittest.TestCase):
 # Author: Frank
 class TestPrerequisiteCheck(unittest.TestCase):
     def test_to_dict(self):
-        checkprereq = PrerequisiteCheck(course_id='2', prerequisite_course_id='5')
+        checkprereq=PrerequisiteCheck(course_id='2',prerequisite_course_id='5')
         self.assertEqual(checkprereq.to_dict(), {
             'course_id': '2',
             'prerequisite_course_id': '5'}

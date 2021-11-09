@@ -46,29 +46,29 @@ class TestCourse(unittest.TestCase):
                     start_enrol='2021-09-14',
                     end_enrol='2021-09-14')
         self.assertEqual(c1.to_dict(), {
-            'course_id':'1',
-            'course_name':'PlaceHolder',
-            'total_no_of_class':'5',
-            'total_no_of_lesson':'2',
-            'class_id':'1',
-            'course_description':'Fix',
-            'course_prerequisite':'2',
-            'coursem_id':'2',
-            'employee_id':'1',
-            'start_time':'Now',
-            'end_time':'Later',
-            'datetime_uploaded':'2021-09-14 00:00:00',
-            'start_enrol':'2021-09-14',
-            'end_enrol':'2021-09-14'}
+            'course_id': '1',
+            'course_name': 'PlaceHolder',
+            'total_no_of_class': '5',
+            'total_no_of_lesson': '2',
+            'class_id': '1',
+            'course_description': 'Fix',
+            'course_prerequisite': '2',
+            'coursem_id': '2',
+            'employee_id': '1',
+            'start_time': 'Now',
+            'end_time': 'Later',
+            'datetime_uploaded': '2021-09-14 00:00:00',
+            'start_enrol': '2021-09-14',
+            'end_enrol': '2021-09-14'}
         )
 
-# Author: Alina Tan 
+# Author: Alina Tan
 
 
 class TestClass(unittest.TestCase):
     def test_class_enrol(self):
         class1 = Class(
-                        class_id = '1',
+                        class_id= '1',
                         course_id='1',
                         lesson_id='1',
                         course_name='PlaceHolder',
@@ -112,11 +112,11 @@ class TestClass(unittest.TestCase):
                     course_name='PlaceHolder',
                     start_date='Start',
                     end_date='End',
-                    start_time='Start', 
-                    end_time='End', 
-                    class_size=23, 
-                    current_class_size=4, 
-                    employee_id='5', 
+                    start_time='Start',
+                    end_time='End',
+                    class_size=23,
+                    current_class_size=4,
+                    employee_id='5',
                     duration_of_class='5')
         class1.class_withdraw()
         self.assertEqual(class1.current_class_size,3)

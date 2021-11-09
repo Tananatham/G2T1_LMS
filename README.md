@@ -7,7 +7,7 @@ Database SQL file: https://github.com/Tananatham/G2T1_LMS/tree/main/SQL%20files
 
 # Steps for installment on local machine:
 1. Install git, docker, docker desktop, Python, WAMP/MAMP
-2. Launch WAMP, docker desktop
+2. Launch WAMP/MAMP, docker desktop
 3. Git clone https://github.com/Tananatham/G2T1_LMS into your WAMP web server root directory (e.g. C:\wamp\www)
 4. Launch PhpMyAdmin, import lms_course.sql in the /SQL files folder
 5. In the G2T1_LMS folder, run docker-compose up

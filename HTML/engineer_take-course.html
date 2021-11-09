@@ -10,8 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   -->
   
-  <!-- CSS file -->
-  <link href="/FrontEnd/CSS/Engineer_Home.css" rel="stylesheet" type="text/css"/>
+ 
 
   <!-- Bootstrap libraries -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -88,11 +87,12 @@
       </div>
         <!-- Display Downloadable Materials -->
         <div class="card-body">
-            <a v-bind:href="item.lesson_material" target="_blank"> Lesson {{ item.lesson_id }} Materials </a><br>
+            <a v-bind:href="item.lesson_material" target="_blank">{{ item.lesson_name }} Materials </a><br>
             <i> *Click on link to download lesson materials </i>
         </div>
         <div class="card-body">
-            <button type="button" class="btn btn-success">Quiz 1</button>  
+            <button type="button" class="btn btn-success" onclick="quiz()">Quiz</button>  
+            <!-- <go-to-quiz-button :lesson_id=item.lesson_id></go-to-quiz-button> -->
         </div>
       </div>
     </div>
@@ -123,10 +123,30 @@
       }
   });
 
+
+  Vue.component("go-to-quiz-button", {
+    template: "<button @click='clicked' class='btn btn-outline-info'>Quiz</button>",
+    props: ["lesson_id"],
+    data: function() {
+        return {
+            employee_id: 1
+        };
+    },
+    methods: {
+        clicked: function(event) {
+            window.open("Engineer_Takequiz.html?course_id=" + this.lesson_id, '_blank')
+        }
+    }
+})
+
+
   function openHome() {
     window.location.assign("engineer-class-apply.html?course_id=1")
   }
 
+  function quiz() {
+    window.location.assign("Engineer_Takequiz.html")
+  }
 
 </script>
 

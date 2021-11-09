@@ -121,7 +121,8 @@
                     <td>{{ record.current_class_size }}</td>
                     <td>{{ record.class_size }}</td>
                     <td>
-                        <lesson-button :lesson_id=record.lesson_id></lesson-button>
+                        <!-- <lesson-button :lesson_id=record.lesson_id></lesson-button> -->
+                        <button onClick='course()' class='btn btn-outline-info btn-sm'>Lessons</button>
                     </td>
                     <td>
                         <withdraw-button :class_id=record.class_id></withdraw-button>
@@ -271,6 +272,10 @@
         function openHome() {
             window.location.assign("engineer_homepage.html")
             }
+
+            function course() {
+                window.location.assign("engineer_take-course.html")
+                }
     </script>
 </body>
 

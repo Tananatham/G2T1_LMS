@@ -388,7 +388,17 @@ class TestQuiz(TestApp):
                 'quiz_id': '7'
             }
         })
+        
+    def test_find_quiz_by_invalid_lesson_id(self):
+        self.maxDiff = None
+        lesson = Lesson(lesson_id=20,lesson_name="lesson2",quiz_type="ungraded",lesson_material="https://drive.google.com/drive/folders/1OE3IzisueXHNK-91BjVofiy59H80Uht2?usp=sharing",created_on="11/7/2021 3:47:44 AM",class_id=12,course_id=4,quiz_id="88",lesson_descriptions="lesson2 descriptions")
+        db.session.add(lesson)
+        db.session.commit()
 
+        response = self.client.get("/quiz_by_lesson_id/",
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 404)
+        
 
 if __name__ == '__main__':
     unittest.main()

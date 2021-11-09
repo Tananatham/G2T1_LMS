@@ -35,6 +35,26 @@
 
 <body>
 
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="engineer_homepage.html">
+        LMS - Engineer
+      </a>
+        </div>
+    </nav>
+
+
+    <!-- Viewing Buttons -->
+    <br>
+    <div class="container-fluid">
+        <button id="home" type="button" class="btn btn-primary" onclick="openHome()">Engineer Home</button>
+        <button id="completedcourses" type="button" class="btn btn-secondary">Completed Courses</button>
+        <button id="mybadges" type="button" class="btn btn-secondary">My badges</button>
+    </div>
+
+
+    <!-- List of Available Classes -->
     <div id="main-container" class="container">
 
         <h1>View Classes for
@@ -71,7 +91,7 @@
         </table>
     </div>
 
-
+    <!-- List of enrolled classes-->
     <div id="main-container-2" class="container">
 
         <h1>Classes I am enrolled in</h1>
@@ -110,7 +130,7 @@
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='engineer-course-list.html'">Back to all courses</button>
+        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.href='engineer_homepage.html'">Back to all courses</button>
     </div>
 
 
@@ -126,7 +146,7 @@
 
         var url_course_id = getParameterByName('course_id');
         if (url_course_id == null) {
-            window.location.replace("engineer-course-list.html")
+            window.location.replace("engineer_homepage.html")
         }
 
         const vm = new Vue({
@@ -217,7 +237,7 @@
             },
             methods: {
                 clicked: function(event) {
-                    window.location.replace("class-lesson.html?class_id=" + this.lesson_id)
+                    window.location.replace("engineer_take-course.html?class_id=" + this.lesson_id)
                 }
             }
         })
@@ -245,6 +265,12 @@
                 }
             }
         })
+
+
+        //navigation buttons
+        function openHome() {
+            window.location.assign("engineer_homepage.html")
+        }
     </script>
 </body>
 

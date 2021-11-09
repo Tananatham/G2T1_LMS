@@ -74,7 +74,8 @@ class TestCourseCheck(unittest.TestCase):
     def test_to_dict(self):
         checkcourse = Course_check(employee_id='1',
         course_id='4',
-        class_id='2',status='in-progress')
+        class_id='2',
+        status='in-progress')
         self.assertEqual(checkcourse.to_dict(), {
             'employee_id': '1',
             'course_id': '4',
@@ -93,6 +94,7 @@ class TestPrerequisiteCheck(unittest.TestCase):
             'course_id': '2',
             'prerequisite_course_id': '5'}
         )
+
 
 if __name__ == '__main__':
     unittest.main()

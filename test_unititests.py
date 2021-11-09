@@ -119,7 +119,7 @@ class TestClass(unittest.TestCase):
                     employee_id='5',
                     duration_of_class='5')
         class1.class_withdraw()
-        self.assertEqual(class1.current_class_size,3)
+        self.assertEqual(class1.current_class_size, 3)
 
     def test_class_withdraw_negative(self):
         class1 = Class(

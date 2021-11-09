@@ -61,7 +61,7 @@ class TestClass(unittest.TestCase):
         start_date = 'Start', end_date = 'End', 
         start_time = 'Start', end_time = 'End', 
         class_size = 23, current_class_size = 1, 
-        employee_id = '5', duration_of_class ='5')
+        employee_id='5', duration_of_class ='5')
         self.assertEqual(class1.current_class_size, 1)
         try:
             class1.class_withdraw()

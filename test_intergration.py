@@ -420,7 +420,7 @@ class TestEnroll(TestApp):
             'employee_id': e1.employee_id,
             'course_id': 2,
             'class_id': 6,
-            'status': 'pending'
+            'status': 'in-progress'
         }
 
         response = self.client.post("/employee_course_status",
@@ -432,7 +432,7 @@ class TestEnroll(TestApp):
             'class_id': '6',
             'course_id': 2,
             'employee_id': 1,
-            'status': 'pending'
+            'status': 'in-progress'
         })
     
     def test_employee_course_status_invalid_prerequisite(self):
@@ -462,7 +462,7 @@ class TestEnroll(TestApp):
         print(response.json)
 
         self.assertEqual(response.json['code'], 500)
-        self.assertEqual(response.json['message'], 'The employee applying do not meet all the prerequisite for this course.')
+        self.assertEqual(response.json['message'], 'The employee applying does not meet all the prerequisite for this course.')
     
     def test_employee_course_status_invalid_classSize(self):
         e1 = Employee(employee_id=1, course_id=2, employee_name='james', employee_role='Engineer')

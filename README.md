@@ -6,8 +6,8 @@ Git: https://github.com/Tananatham/G2T1_LMS
 Database SQL file: https://github.com/Tananatham/G2T1_LMS/tree/main/SQL%20files
 
 # Steps for installment on local machine:
-1. Install git, docker, docker desktop, Python, WAMP/MAMP
-2. Launch WAMP/MAMP, docker desktop
+1. Install git, Docker, Docker Desktop, Python, WAMP/MAMP
+2. Launch WAMP/MAMP, Docker Desktop
 3. Git clone https://github.com/Tananatham/G2T1_LMS into your WAMP web server root directory (e.g. C:\wamp\www)
 4. Launch PhpMyAdmin, import lms_course.sql in the /SQL files folder
 5. In the G2T1_LMS folder, run docker-compose up
@@ -30,13 +30,15 @@ This is a learning management system for Service Engineers to repair, service an
 
 - Please note that in some classes, the current class size is set to max, while there are not that many learners in the system at the moment, this is made as a test so you cannot apply for that class.
 
-- Please check *Civil Engineering* Course for all the classes you can apply to, the classes have varying open dates, and class capacity.
+- In *Basic Printer Repairs* Course, the classes have varying open dates, and class capacity.
 
 - After you apply for a class, Human Resources needs to approve your application.
 
 - You can access the lesson and take quizzes, and also check and access materials.
 
 - You can withdraw from a class you are enrolled in.
+
+- The default engineer, James, has not cleared the prerequisite for *Computer Engineering*, the prerequisite is *Electrical/electronic engineering*
 
 ## For Human Resources:
 - You can see a list of learner for each class.

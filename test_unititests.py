@@ -68,7 +68,7 @@ class TestCourse(unittest.TestCase):
 class TestClass(unittest.TestCase):
     def test_class_enrol(self):
         class1 = Class(
-                        class_id= '1',
+                        class_id='1',
                         course_id='1',
                         lesson_id='1',
                         course_name='PlaceHolder',
@@ -79,9 +79,9 @@ class TestClass(unittest.TestCase):
                         class_size=23,
                         current_class_size=4,
                         employee_id='5',
-                        duration_of_class ='5')
+                        duration_of_class='5')
         class1.class_enroll()
-        self.assertEqual(class1.current_class_size,5)
+        self.assertEqual(class1.current_class_size, 5)
 
     def test_class_enrol_negative(self):
         class1 = Class(
@@ -106,7 +106,7 @@ class TestClass(unittest.TestCase):
 
     def test_class_withdraw(self):
         class1 = Class(
-                    class_id = '1',
+                    class_id='1',
                     course_id='1',
                     lesson_id='1',
                     course_name='PlaceHolder',

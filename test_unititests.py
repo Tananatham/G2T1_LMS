@@ -1,12 +1,9 @@
-from datetime import datetime
 import unittest
 from course import Employee
 from course import Course
 from course import Class
-from course import Lesson
 from course import Course_check
 from course import PrerequisiteCheck
-from course import Quiz
 
 # Author: Chelsea
 
